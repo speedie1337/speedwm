@@ -1,0 +1,12 @@
+## Installation
+
+In order to install this build of speedwm, all dependencies must be installed.
+You can see (Dependencies) for a list of all dependencies required to use this fork.
+
+  - git clone https://codeberg.org/speedie/speedwm
+  - cd speedwm
+  - make clean install
+    - If any warnings/errors show up, fix it by installing the missing dependency.
+  - If a .xinitrc is used, add 'speedwm' to the end.
+    - If you do not have a .xinitrc, you can add autostart commands to the file ~/.config/speedwm/autostart.sh.
+

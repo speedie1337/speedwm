@@ -1,0 +1,63 @@
+#!/bin/sh
+# date module for status/stellar
+
+command -v date > /dev/null || exit
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+
+
+# click
+CLICK() {
+		# values
+		DATE_DAY="$(date +%d)" # day number
+		DATE_DAY_OF_YEAR="$(date +%j)" # year day number
+		DATE_DAY_W_SHORT="$(date +%a)" # short day (ie. mon)
+		DATE_DAY_W_LONG="$(date +%A)" # long day (ie. monday)
+		DATE_MONTH="$(date +%m)" # month number
+		DATE_MONTH_W_SHORT="$(date +%b)" # short month (ie. oct)
+		DATE_MONTH_W_LONG="$(date +%B)" # long month (ie. october)
+		DATE_YEAR="$(date +%Y)" # year number
+		DATE_WEEK="$(date +%W)" # week number
+		DATE_WEEKDAY="$(date +%w)" # day of the week in number
+		ICON="$ITEM3_ICON" # icon is first argument
+    	[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
+
+		[ -z "$TERMINAL" ] && TERMINAL=st
+        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+        
+        # check value of button
+		case "$BUTTON" in
+		"3") pgrep -x gsimplecal > /dev/null && pkill gsimplecal || gsimplecal ; return ;;
+		esac
+		
+		# send the notification
+		SEND_NOTIF() {
+				FULL_DATE="$(printf "${ICON}${ICONSPACING}$DATE_DAY_W_LONG, $DATE_MONTH_W_LONG, $DATE_DAY $DATE_YEAR\nWeek: $DATE_WEEK\nDay of the week: $DATE_WEEKDAY")" && notify-send "$FULL_DATE"
+		
+                # some output
+				echo "Notification sent successfully!"
+				echo "INFO: $FULL_DATE"
+		
+				return
+		}
+		
+		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+		
+		return
+}
+
+# information itself
+PRINT() {
+  [ "$ENABLE_ITEM3" = "true" ] && DAY="$(date +%d)" && MONTH="$(date +%m)" && YEAR="$(date +%Y)" && \
+      echo "$ITEM3_SEPARATOR $ITEM3_ICON $ITEM3_FORMAT" | sed "s|@d|$DAY|; s|@m|$MONTH|; s|@y|$YEAR|"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_date ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

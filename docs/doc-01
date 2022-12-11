@@ -1,0 +1,12 @@
+# speedwm
+![image](/docs/preview.png)
+
+## What is speedwm?
+
+speedwm is a window manager forked from suckless.org's dwm or dynamic window manager. It manages the user's open windows and tiles them according to a set layout (dynamic). 
+
+Just like dwm, speedwm also tries to be minimal but also has functionality and aesthetics as a goal. It is also much more minimal than other window managers like i3-gaps while offering many more features.
+
+Tiling window managers (unlike floating window managers that you may be used to) tile windows based on a set layout making them easy to get productive on. 
+They also encourage the user to use their keyboard instead of the mouse so that the user doesn't have to move their hands much but there are mouse keybinds and more can be added.
+

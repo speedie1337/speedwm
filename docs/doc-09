@@ -1,0 +1,7 @@
+## Additional note on autostart
+
+If you wish to add autostart entries without recompiling, consider using $HOME/.config/speedwm/autostart.sh. This is a path added to autostart.h and you can fill it with anything you want.
+
+Do note that it will NOT just run once. It will run every time you restart and start speedwm (restart signals count as well, color reloads do not).
+To get around this, you may wrap stuff in a function in the script and have some way of checking if it has ran before such as pgrep. If it hasn't, call the function.
+

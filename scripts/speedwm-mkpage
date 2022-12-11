@@ -1,0 +1,58 @@
+#!/bin/bash
+# speedwm-mkpage
+
+cd scripts
+
+export DOCDIR="../docs" # Set documentation directory so that it will ALWAYS use the latest documentation
+export USEPREFIX="false" # Set empty prefix
+
+# make page
+MKPAGE() {
+  ./speedwm-help --generate-html
+  ./speedwm-help --generate-page
+  cd ..
+  mv readme.temp.html readme.html
+  sed -i "s|/docs/preview.png|preview.png|g" readme.html
+  echo "Created readme.html"
+}
+
+# push page only
+PUSHPAGE() {
+  HTMLDIR=$(cat /tmp/speedwm-htmldir)
+  cd $HTMLDIR || exit 1
+  git commit -a -m "speedwm-mkpage: Uploaded new page."
+  git push && exit 0
+  echo "Could not git push."
+  exit 1
+}
+
+# make html
+MKHTML() {
+  MKMD
+  ./speedwm-help --generate-html
+  cd ..
+  echo "Created readme.html"
+}
+
+# make markdown
+MKMD() {
+  ./speedwm-help --generate-markdown
+  echo "Created README.md"
+}
+
+# make man page
+MK1() {
+  MKMD
+  ./speedwm-help --generate-man
+  cd ..
+}
+
+# Perform actions based on user input
+case "$1" in
+"--make-man") MK1 && exit 0 ;;
+"--make-page") MKPAGE && exit 0 ;;
+"--make-html") MKHTML && exit 0 ;;
+"--make-markdown") MKMD && cd .. ; exit 0 ;;
+"--release-page") PUSHPAGE && exit 0 ;;
+"--release") cd .. && git add * && git commit -a -m "speedwm-mkpage: Auto-pushed speedwm changes!" && git push && exit 0 ;;
+esac

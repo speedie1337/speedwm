@@ -1,0 +1,62 @@
+#!/bin/sh
+# dfmpeg module for status/stellar
+
+command -v speedwm-dfmpeg > /dev/null || exit
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+
+# click
+CLICK() {
+		# values
+		DFMPEG_STOP_CMD="speedwm-dfmpeg -s" # command to run to stop recording
+		ICON="$ITEM7_ICON"
+		DFMPEG_ENCODING="Not encoding" # placeholder, we can override this later
+		[ -e "/tmp/outputfilename" ] && DFMPEG_REC_PATH="$(cat /tmp/outputfilename)"
+		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)"
+        [ -z "$TERMINAL" ] && TERMINAL=st
+		
+		pgrep -x ffmpeg > /dev/null || return
+		
+		case "$BUTTON" in
+		"3") speedwm-dfmpeg ; exit ;;
+		"2") $DFMPEG_STOP_CMD ; exit ;;
+		esac
+		
+		# check a few things
+		[ -e "/tmp/isaudio" ] && DFMPEG_AUDIO="Recording audio" || DFMPEG_AUDIO="Not recording audio"
+		[ -e "/tmp/isencoding" ] && DFMPEG_ENCODING="Encoding"
+        [ -e "/tmp/encoding-codec" ] && DFMPEG_ENCODING="Encoding with $(cat /tmp/encoding-codec)"
+		[ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+		
+		# send the notification
+		SEND_NOTIF() {
+				FULL_RECSTATUS="$(printf "${ICON}${ICONSPACING}Recording video $DFMPEG_REC_PATH\n${DFMPEG_AUDIO}, ${DFMPEG_ENCODING}\nMiddle click to stop recording.")"
+				notify-send "$FULL_RECSTATUS"
+		
+                # some output
+				echo "Notification sent successfully!"
+				echo "INFO: $FULL_RECSTATUS"
+		
+				return
+		}
+		
+		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+        
+        return
+}
+
+# information itself
+PRINT() {
+  # check if we're recording with dfmpeg or not
+  [ "$ENABLE_ITEM7" = "true" ] && [ -e "/tmp/dfmpeg-recording" ] && echo "$ITEM7_SEPARATOR $ITEM7_ICON $ITEM7_RECORDING_TEXT"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_dfmpeg ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

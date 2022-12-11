@@ -1,0 +1,129 @@
+#!/bin/sh
+# speedwm-help
+# Documentation generator/list for speedwm.
+# Licensed under the GNU LGPLv3 free software license.
+
+[ -z "${DOCDIR}" ] && DOCDIR=/usr/share/speedwm
+[ -z "$PREFIX" ] && PREFIX=""
+[ -z "$2" ] && VIEWER=less || VIEWER="$2"
+[ -e "../options.mk" ] && [ -z "$VERSION" ] && VERSION="$(grep "VERSION" ../options.mk | head -n 1 | awk '{ print $3 }')"
+[ "$VIEWER" = "-o" ] && VIEWER="cat"
+
+[ -e "${DOCDIR}/${PREFIX}example.Xresources" ] && sed 's|\(!*\)!.*|\1|' ${DOCDIR}/${PREFIX}example.Xresources | grep -v "!" | grep "speedwm" > "/tmp/example.Xresources" && \
+        sed "s/speedwm[.]/- speedwm./g" /tmp/example.Xresources > /tmp/example.Xresources.tmp && \
+        mv /tmp/example.Xresources.tmp /tmp/example.Xresources
+
+# full list of arguments
+HELP() {
+    printf "speedwm help\n"
+    printf "This small shell script works with pandoc to write and display documentation for speedwm.\n"
+    printf "All displayed documentation is Markdown, and can be parsed however you want. This allows it to be really portable.\n\n\n"
+    printf "%s-h                          View this list of arguments.\n"
+    printf "%s-a                          View everything.\n"
+    printf "%s-1                          What is speedwm?\n"
+    printf "%s-2                          List of all keybinds\n"
+    printf "%s-3                          List of all dependencies\n"
+    printf "%s-4                          .Xresources/Pywal information.\n"
+    printf "%s-5                          Signals information\n"
+    printf "%s-6                          Status bar information.\n"
+    printf "%s-7                          Installation\n"
+    printf "%s-8                          Layouts\n"
+    printf "%s-9                          Important details.\n"
+    printf "%s-10                         Additional note on autostart.\n"
+    printf "%s-11                         Credits.\n"
+    printf "%sNo arguments                View this list of arguments.\n"
+    printf "\n"
+    printf "%s--generate-markdown         Write documentation (Markdown)\n"
+    printf "%s--generate-html             Write documentation (HTML) using markdown-to-html. Requires --generate-markdown previously.\n"
+    printf "%s--generate-man              Write documentation (man) using pandoc. Requires --generate-markdown previously.\n"
+    printf "%s--generate-page             Combine template 1, output of --generate-html and template 2 (from docs/) to create a full HTML document.\n\n"
+    printf "If second argument is -o, the requested output will be sent to stdout.\n-o can be replaced with a text editor or reader of your choice (such as less, vim, emacs, etc.)\n"; exit 0
+}
+
+# format man page properly
+FORMATMANPAGE() {
+    command -v pandoc > /dev/null || exit 1
+    test ../README.md || exit 1
+
+    mv ../README.md ../README.md.orig
+    printf "%% speedwm(1) $VERSION | speedie's window manager.\n" > ../README.md
+    grep -v "docs/preview" ../README.md.orig >> ../README.md
+    
+    pandoc --standalone --to man ../README.md -o ../speedwm.1
+
+    printf "Man page generated at ../speedwm.1.\n"
+
+    mv ../README.md.orig ../README.md && exit 0
+
+    exit 1
+}
+
+# format html page properly
+FORMATHTMLPAGE() {
+    command -v pandoc > /dev/null || exit 1
+    test ../README.md || exit 1
+
+    mv ../README.md ../README.md.orig
+    grep -v "docs/preview" ../README.md.orig > ../README.md
+
+    rm -f ../README.md.orig
+
+    pandoc -f markdown -t html5 -o ../readme.html "../README.md" && exit 0
+
+    exit 1
+}
+
+# format page properly
+FORMATPAGE() {
+    test ../readme.html && cat ../docs/speedwm.html.template.1 ../readme.html ../docs/speedwm.html.template.2 >> ../readme.temp.html && exit 0 || printf "You need to %s --generate-html first." "$0"
+    exit 1
+}
+
+# format markdown properly
+FORMATMD() {
+    mv "/tmp/${PREFIX}doc" ../README.md && exit 0
+    exit 1
+}
+
+# write docs
+cat "${DOCDIR}/${PREFIX}doc-01" \
+"${DOCDIR}/${PREFIX}doc-02" \
+"${DOCDIR}/${PREFIX}doc-03" \
+"${DOCDIR}/${PREFIX}doc-04" \
+"${DOCDIR}/${PREFIX}keybinds" \
+"${DOCDIR}/${PREFIX}dependencies" \
+"${DOCDIR}/${PREFIX}doc-05" \
+"${DOCDIR}/${PREFIX}doc-06" \
+"/tmp/example.Xresources" \
+"${DOCDIR}/${PREFIX}doc-07" \
+"${DOCDIR}/${PREFIX}example.signal" \
+"${DOCDIR}/${PREFIX}doc-08" \
+"${DOCDIR}/${PREFIX}doc-09" \
+"${DOCDIR}/${PREFIX}doc-10" | \
+    grep -v "!!" > "/tmp/${PREFIX}doc"
+
+# check arguments and perform actions based on it
+case "$1" in
+"--generate-markdown") FORMATMD ;;
+"--generate-html") FORMATHTMLPAGE ;;
+"--generate-page") FORMATPAGE ;;
+"--generate-man") FORMATMANPAGE ;;
+"") $0 -h && exit 0 ;;
+"-h") HELP && exit 0 ;;
+"--help") HELP && exit 0 ;;
+"-1") tail -n +4 "${DOCDIR}/${PREFIX}doc-01" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-2") cat "${DOCDIR}/${PREFIX}doc-04" "${DOCDIR}/${PREFIX}keybinds" > "/tmp/stdout" ; $VIEWER "/tmp/stdout" ; exit 0 ;;
+"-3") cat "${DOCDIR}/${PREFIX}dependencies" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-4") cat "${DOCDIR}/${PREFIX}doc-06" "/tmp/example.Xresources" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-5") cat "${DOCDIR}/${PREFIX}doc-07" "${DOCDIR}/${PREFIX}example.signal" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-6") cat "${DOCDIR}/${PREFIX}doc-08" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-7") cat "${DOCDIR}/${PREFIX}doc-02" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-8") cat "${DOCDIR}/${PREFIX}doc-03" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-9") cat "${DOCDIR}/${PREFIX}doc-05" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-10") cat "${DOCDIR}/${PREFIX}doc-09" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-11") cat "${DOCDIR}/${PREFIX}doc-10" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+"-a") cat "/tmp/${PREFIX}doc" > /tmp/stdout ; $VIEWER /tmp/stdout ; exit 0 ;;
+esac
+
+printf "Unknown argument: '%s'.\n" "$1"
+exit 1

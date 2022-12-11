@@ -1,0 +1,123 @@
+- 1  - Switch to the Tiling layout
+- 2  - Switch to the Floating layout
+- 3  - Switch to the Monocle layout
+- 4  - Switch to the Grid layout
+- 5  - Switch to the Deck layout
+- 6  - Switch to the Centered Master layout
+- 7  - Switch to the Tatami layout
+- 8  - Switch to the Fibonacci Spiral layout
+- 9  - Switch to the Fibonacci Dwindle layout
+- 10 - Switch to the Bottom Stack Vertical layout
+- 11 - Switch to the Bottom Stack Horizontal layout
+- 12 - Switch to the Horizontal Grid layout
+- 13 - Switch to the Dynamic Grid layout
+- 14 - Switch to the Custom layout
+- 15 - Custom layout options
+- 16 - Switch to the next layout
+- 17 - Switch to the previous layout
+- 18 - Increase mfact by 0.05
+- 19 - Decrease mfact by 0.05
+- 20 - Toggle sticky
+- 21 - Toggle the bar
+- 22 - Toggle fullscreen
+- 23 - Toggle floating
+- 24 - Swap the current window with the next
+- 25 - Reorganize tags (Reorder them)
+- 26 - Shutdown speedwm
+- 27 - Restart speedwm
+- 28 - Show the focused window
+- 29 - Hide the focused window
+- 30 - Kill the focused window
+- 31 - Rotate the stack up
+- 32 - Rotate the stack down
+- 33 - Increase number of windows in the master stack
+- 34 - Decrease number of windows in the master stack
+- 35 - Focus the Master window
+- 36 - Switch focus between windows +1
+- 37 - Switch focus between windows -1
+- 38 - Switch focus between hidden windows +1
+- 39 - Switch focus between hidden windows -1
+- 40 - Toggle opacity for windows
+- 41 - Increase cfact by 0.05
+- 42 - Decrease cfact by 0.05
+- 43 - Switch to the previous tag
+- 44 - Switch to the next tag
+- 45 - Reset gaps to the default size
+- 46 - Toggle gaps
+- 47 - Increase gaps by 1
+- 48 - Decrease gaps by 1
+- 49 - Increase inner gaps by 1
+- 50 - Decrease inner gaps by 1
+- 51 - Increase outer gaps by 1
+- 52 - Decrease outer gaps by 1
+- 53 - Kill all windows except focused
+- 54 - Focus the next monitor
+- 55 - Focus the previous monitor
+- 56 - Show the scratchpad
+- 57 - Hide the scratchpad
+- 58 - Remove the scratchpad
+- 59 - Reset layout/mfact
+- 60 - Reset mastercount
+- 61 - Toggle systray
+- 62 - Hide all windows
+- 63 - Show all windows
+- 64 - Reset mfact 
+- 65 - Reload .Xresources on the fly
+- 66 - Switch to the previous tag, skipping empty tags
+- 67 - Switch to the next tag, skipping empty tags
+- 68 - Toggle the tag area in the bar
+- 69 - Toggle the empty tags in the bar
+- 70 - Unused
+- 71 - Unused
+- 72 - Unused
+- 73 - Unused
+- 74 - Unused
+- 75 - Unused
+- 76 - Unused
+- 77 - Toggle the title area in the bar
+- 78 - Toggle the unselected title area in the bar
+- 79 - Toggle the layout area in the bar
+- 80 - Toggle the status area in the bar
+- 81 - Toggle the floating indicator area in the bar
+- 82 - Toggle the sticky indicator area in the bar
+- 83 - Toggle the icon in the window title
+- 84 - Unused
+- 85 - Unused
+- 86 - Unused
+- 87 - Increase bar height by 1
+- 88 - Decrease bar height by 1
+- 89 - Reset bar height
+- 90 - Increase vertical barpadding by 1
+- 91 - Decrease vertical barpadding by 1
+- 92 - Increase horizontal barpadding by 1
+- 93 - Decrease horizontal barpadding by 1
+- 94 - Increase vertical and horizontal barpadding by 1
+- 95 - Decrease vertical and horizontal barpadding by 1
+- 96 - Toggle vertical barpadding
+- 97 - Toggle horizontal barpadding
+- 98 - Toggle vertical and horizontal barpadding
+- 99 - Reset vertical barpadding
+- 100 - Reset horizontal barpadding
+- 101 - Reset vertical and horizontal barpadding
+- 102 - Increase stack count by 1
+- 103 - Decrease stack count by 1
+- 104 - Rotate forward in the layout axis
+- 105 - Rotate forward in the master axis
+- 106 - Rotate forward in the stack axis
+- 107 - Rotate forward in the secondary stack axis
+- 108 - Rotate backwards in the layout axis
+- 109 - Rotate backwards in the master axis
+- 110 - Rotate backwards in the stack axis
+- 111 - Rotate backwards in the secondary stack axis
+- 112 - Mirror the layout
+- 113 - Enter an empty layout where all windows are hidden
+- 114 - Increase barpadding and gaps by 1
+- 115 - Decrease barpadding and gaps by 1
+- 116 - Toggle mark on a window.
+- 117 - Swap focus with the marked window.
+- 118 - Swap the focused window with the marked window.
+- 119 - Center the focused window
+- 120 - Toggle border for the focused window
+- 121 - Toggle border for when there's only one window.
+- 122 - Reset bar padding and gaps
+

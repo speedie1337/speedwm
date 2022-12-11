@@ -1,0 +1,97 @@
+#!/bin/sh
+# weather module for status/stellar
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ "$ENABLE_ITEM5" = "true" ] || exit
+command -v curl > /dev/null || exit
+
+# weather data
+DATA1="$(curl -s wttr.in/?format="%C")"
+DATA2="$(curl -s wttr.in/?format=3 | sed 's/.* //; s/.*\(.....\)/\1/')"
+
+# if no internet connection/it failed to download
+[ -z "$DATA1" ] && printf "No internet connection.\n" > /tmp/module_weather_log && exit 1
+
+# full data
+# TODO: formatting support
+WEATHER_FULL="$(echo "$DATA1, $DATA2")"
+
+# if unknown location or <html> tag, exit
+echo "$WEATHER_FULL" | grep -qE "Unknown location|<html>" && printf "Invalid data.\n" > /tmp/module_weather_log && exit 1
+
+GETICON() {
+    # default to no icon, we'll override this with $ITEM5_ICON if -z
+    ICON=""
+
+    # check icon
+    echo "$WEATHER_FULL" | grep -qE "Cloudy|cloudy" && ICON=CLOUDY
+    echo "$WEATHER_FULL" | grep -qE "Windy|windy|wind" && ICON=WINDY
+    echo "$WEATHER_FULL" | grep -qE "Fog|fog|Foggy|foggy" && ICON=FOGGY
+    echo "$WEATHER_FULL" | grep -qE "Sunny|sunny|sun" && ICON=SUNNY
+    echo "$WEATHER_FULL" | grep -qE "Rain|rain" && ICON=RAIN
+    echo "$WEATHER_FULL" | grep -qE "Snow|snow" && ICON=SNOW
+    echo "$WEATHER_FULL" | grep -qE "Hail|hail" && ICON=HAIL
+    echo "$WEATHER_FULL" | grep -qE "Thunder|thunder|lightning|Lightning|Storm|storm" && ICON=STORM
+
+    case "$ICON" in
+    "SUNNY") ICON="$ITEM5_SUNNY_ICON" ;;
+    "CLOUDY") ICON="$ITEM5_CLOUDY_ICON" ;;
+    "WINDY") ICON="$ITEM5_WINDY_ICON" ;;
+    "FOGGY") ICON="$ITEM5_FOGGY_ICON" ;;
+    "RAIN") ICON="$ITEM5_RAIN_ICON" ;;
+    "SNOW") ICON="$ITEM5_SNOW_ICON" ;;
+    "STORM") ICON="$ITEM5_STORM_ICON" ;;
+    "HAIL") ICON="$ITEM5_HAIL_ICON" ;;
+    esac
+
+    [ -z "$ICON" ] && ICON="$ITEM5_ICON"
+}
+
+# clicking
+CLICK() {
+        GETICON
+		# values
+		WEATHER_TERM="speedwm-core -curl-weather"
+		ICON="$ICON"
+		BUTTON="$(cat /tmp/speedwm-button)"
+        
+        [ -z "$TERMINAL" ] && TERMINAL=st
+        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+		
+        # check value of button
+		case "$BUTTON" in
+		"3") $TERMINAL "clear ; curl -s wttr.in | head -n 38 | tail -n 37 ; read a ; return " ;;
+		esac
+		
+		# send the notification
+		SEND_NOTIF() {
+				FULL_WEATHER="${ICON}${ICONSPACING}$WEATHER_FULL"
+				notify-send "$FULL_WEATHER"
+		
+                # some information
+				echo "Notification sent successfully!"
+				echo "INFO: $FULL_WEATHER"
+		
+				return
+		}
+		
+		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+		
+		return
+}
+
+# information itself
+PRINT() {
+    GETICON
+    echo "$ITEM5_SEPARATOR $ICON $WEATHER_FULL"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_weather ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

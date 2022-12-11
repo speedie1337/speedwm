@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=speedwm
+Comment=speedwm: speedie's window manager
+Exec=/usr/bin/speedwm
+Type=XSession

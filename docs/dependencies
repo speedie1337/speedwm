@@ -1,0 +1,52 @@
+## Dependencies
+
+These are absolutely necessary, speedwm will NOT compile without them
+- libxft
+- pango
+- libXinerama
+  - Can be disabled through editing toggle.mk if you're not interested in multiple monitors.
+- imlib2
+  - Tag previews, Window icons. Can be disabled through editing toggle.mk and toggle.h if you don't want these features.
+- yajl
+  - Required for the IPC patch. If the IPC patch is disabled, you do not need this.
+- tcc
+  - Very minimal C compiler that speedwm uses to speed up compile times. If you don't want this dependency, edit host.mk and set CC to 'cc' (or what you prefer).
+
+## Features
+
+These are necessary for certain features and keybinds.
+If you want to use an alternative, change it in options.h and/or keybinds.h and mouse.h.
+
+- dmenu
+  - NOTE: dmenu is required for most scripts included with this build of speedwm. My build is required for proper Pywal support.
+- picom
+  - Optional but speedwm looks sort of ugly without a compositor.
+- xrdb (Install if you want .Xresources support)
+- pywal (Install if you want pywal support. Requires swal (the default way to set wallpapers) or a tool that supports the correct signal for instant reloading)
+- j4-dmenu-desktop
+  - Required for dmenu desktop entries..
+  
+## Software
+
+This build of speedwm comes with binds for software. 
+You can add, change and remove keybinds by editing 'keybinds.h' and running 'make clean install'.
+
+- libspeedwm
+- speedwm-extras
+  - Important metapackage containing extra scripts that speedwm makes use of. (https://codeberg.org/speedie/speedwm-extras)
+- st (Terminal)
+- Chromium (Web browser)
+- htop (Status monitor)
+- newsboat (RSS reader)
+- zathura (PDF reader)
+- cmus (Default music player)
+  - Default status bar also has support for moc (Music On Console)
+- neovim (Text editor)
+- neomutt (Email client)
+- lf (File manager)
+- slock (Lock screen)
+- weechat (IRC client)
+- tmux (Used for the music player and IRC client)
+
+And everything under 'Features'.
+

@@ -1,0 +1,51 @@
+#!/bin/sh
+# cpu temp module for status/stellar
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ "$ENABLE_ITEM8" != "true" ] && exit
+command -v sensors > /dev/null || exit
+
+# click
+CLICK() {
+	# values
+	ICON="$ITEM8_ICON"
+	[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
+	
+	[ "$ITEM8_FORMAT_CELSIUS" = "true" ] || FARG="-F"
+    [ -z "$TERMINAL" ] && TERMINAL=st
+    [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+
+	TEMP_FULL="$(sensors $FARG)"
+	
+	# send the notification
+	SEND_NOTIF() {
+			FULL_TEMP="${ICON}${ICONSPACING}$TEMP_FULL"
+			notify-send "$FULL_TEMP"
+	
+            # some information
+			echo "Notification sent successfully!"
+			echo "INFO: $FULL_TEMP"
+	
+			return
+	}
+	
+	command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+
+    return
+}
+
+# information itself
+PRINT() {
+    [ "$ITEM8_FORMAT_CELSIUS" = "true" ] && TEMP="$(sensors | grep temp1 | awk '{ print $2 }')" || TEMP="$(sensors -f | grep temp1 | awk '{ print $2 }')"
+    [ -z "$TEMP" ] || echo "$ITEM8_SEPARATOR $ITEM8_ICON $TEMP"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_temp ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

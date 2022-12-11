@@ -1,0 +1,76 @@
+#!/bin/sh
+# network module for status/stellar
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ -z "$URL" ] && URL="1.1.1.1"
+[ "$ENABLE_ITEM6" = "true" ] || exit
+
+# get stats
+GETNSTAT() {
+    ip link | grep -q "UP mode" || exit
+	R1="$(head -n 1 /sys/class/net/[ew]*/statistics/rx_bytes)"
+	T1="$(head -n 1 /sys/class/net/[ew]*/statistics/tx_bytes)"
+	sleep 0.1
+	R2="$(head -n 1 /sys/class/net/[ew]*/statistics/rx_bytes)"
+	T2="$(head -n 1 /sys/class/net/[ew]*/statistics/tx_bytes)"
+    TXPMS="$(("$T2" "-" "$T1"))"
+	RXPMS="$(expr "$R2" "-" "$R1")"
+	TX="$(expr "$TXPMS" / "1024" "*" "10")"
+	RX="$(expr "$RXPMS" / "1024" "*" "10")"
+	[ ! -z "$TX" ] && printf "$TX\n" > /tmp/module_net_tx || exit
+	[ ! -z "$RX" ] && printf "$RX\n" > /tmp/module_net_rx || exit
+    [ -e "/tmp/module_net_tx" ] || exit
+    [ -e "/tmp/module_net_rx" ] || exit
+}
+
+[ ! -e "/tmp/module_net_tx" ] && GETNSTAT
+		
+NETWORK_TRANSMITTED="$(cat /tmp/module_net_tx)"
+NETWORK_RECEIVED="$(cat /tmp/module_net_rx)"
+
+# click
+CLICK() {
+		# values
+		ICON="$ITEM6_ICON"
+		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
+        [ -z "$TERMINAL" ] && TERMINAL=st
+        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+		
+        # check value of button
+		case "$BUTTON" in
+		"3") $TERMINAL -e bmon ; return ;;
+		esac
+		
+		# send the notification
+		SEND_NOTIF() {
+				FULL_NETWORK="${ICON}${ICONSPACING}${NETWORK_TRANSMITTED} transmitted, ${NETWORK_RECEIVED} received."
+				notify-send "$FULL_NETWORK"
+		
+                # some information
+				echo "Notification sent successfully!"
+				echo "INFO: $FULL_NETWORK"
+		
+				return
+		}
+		
+		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+        return
+}
+
+# information itself
+PRINT() {
+    [ ! -z "$NETWORK_TRANSMITTED" ] && [ ! -z "$NETWORK_RECEIVED" ] && echo "$ITEM6_SEPARATOR $ITEM6_ICON $ITEM6_FORMAT" | sed "s|@t|$NETWORK_TRANSMITTED|g; s|@r|$NETWORK_RECEIVED|g"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_net ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac
+
+# gather some stats before exiting
+GETNSTAT

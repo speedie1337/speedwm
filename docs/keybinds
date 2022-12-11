@@ -1,0 +1,192 @@
+Keybinds for regular applications
+
+- Super+Shift+Enter         - Opens the defined terminal (default is st)
+- Super+Shift+Colon         - Opens a dmenu prompt
+- Super+Shift+s             - Opens 'maim' to take a screenshot and copies it to the clipboard using 'xclip' (requires speedwm-extras)
+- Super+Shift+f             - Opens the defined file manager
+- Super+Shift+w             - Opens the defined web browser
+- Super+Shift+o             - Opens the speedwm-dfmpeg dmenu script to record your screen. (requires speedwm-extras)
+- Super+Shift+t             - Opens the defined editor in your terminal
+- Super+Shift+m             - Kills the defined music player
+- Super+Shift+a             - Opens the defined mixer in your terminal
+- Super+Shift+m             - Opens the defined music player
+- Super+Shift+x             - Opens the defined system process viewer in your terminal
+- Super+Shift+c             - Opens the defined chat client
+- Super+Shift+d             - Opens iron in the terminal if it is installed
+- Super+Shift+u             - Opens the defined RSS reader
+- Super+Shift+r             - Opens the defined email client
+
+These keybinds are for navigating speedwm
+
+- Super+f                   - Fullscreen the selected window
+- Super+b                   - Show/hide the speedwm bar
+- Super+s                   - Show/hide the systray
+- Super+j/k                 - Move focus between visible windows
+- Super+m                   - Moves focus to the Master window (or back if Master is already focused)
+- Super+a/d                 - Increase/decrease size of each window
+- Super+w/e                 - Resize the window keeping the aspect ratio of it.
+- Super+o                   - Hide a window
+- Super+Minus               - Show the scratchpad
+- Super+Equal               - Remove the scratchpad
+- Super+Enter               - Switch order of windows
+- Super+Colon               - Open a list of desktop entries in dmenu
+- Super+Tab                 - Switch between windows on the same tag. (Microsoft Windows-like Alt+Tab)
+- Super+v                   - Center the focused window.
+- Super+0                   - Reset mfact
+- Super+r                   - Reset number of masters
+- Super+y                   - Make the current selected window sticky
+- Super+d                   - Focus the previous monitor.
+- Super+/                   - Focus the next monitor.
+- Super+.                   - Increase bar padding by 1
+- Super+,                   - Decrease bar padding by 1
+- Super+\                   - Toggle mark on a client.
+- Super+]                   - Swap focused client with the marked client.
+- Super+[                   - Swap focus with the marked client.
+- Super+1                   - Move to tag 1
+- Super+2                   - Move to tag 2
+- Super+3                   - Move to tag 3
+- Super+4                   - Move to tag 4
+- Super+5                   - Move to tag 5
+- Super+6                   - Move to tag 6
+- Super+7                   - Move to tag 7
+- Super+8                   - Move to tag 8
+- Super+9                   - Move to tag 9
+- Super+Shift+1             - Preview tag 1
+- Super+Shift+2             - Preview tag 2
+- Super+Shift+3             - Preview tag 3
+- Super+Shift+4             - Preview tag 4
+- Super+Shift+5             - Preview tag 5
+- Super+Shift+6             - Preview tag 6
+- Super+Shift+7             - Preview tag 7
+- Super+Shift+8             - Preview tag 8
+- Super+Shift+9             - Preview tag 9
+- Super+Shift+q             - Close the current window
+- Super+Shift+.             - Increase bar padding and gaps by 1
+- Super+Shift+,             - Decrease bar padding and gaps by 1
+- Super+Shift+/             - Reset bar padding and gaps
+- Super+Shift+h/j/k/l       - Rotates a stack.
+- Super+Shift+Arrow         - Resizes a window in floating mode
+- Super+Shift+Escape        - Ask the user if they want to shutdown or reboot or nothing
+- Super+Shift+Tab           - Switch between windows and tags in detail.
+- Super+Shift+Equal         - Toggle scratchpads
+- Super+Shift+Minus         - Hide the scratchpad
+- Super+Shift+Space         - Toggle floating windows
+- Super+Control+1           - Combine the current tag with tag 1 
+- Super+Control+2           - Combine the current tag with tag 2
+- Super+Control+3           - Combine the current tag with tag 3
+- Super+Control+4           - Combine the current tag with tag 4
+- Super+Control+5           - Combine the current tag with tag 5
+- Super+Control+6           - Combine the current tag with tag 6
+- Super+Control+7           - Combine the current tag with tag 7
+- Super+Control+8           - Combine the current tag with tag 8
+- Super+Control+9           - Combine the current tag with tag 9
+- Super+Control+q           - Mutes your audio
+- Super+Control+w           - Increases your volume
+- Super+Control+e           - Decreases your volume
+- Super+Control+0           - Tag all tags at once.
+- Super+Control+Enter       - Mirror the layout
+- Super+Control+i           - Increase stackcount by 1
+- Super+Control+u           - Decrease stack count by 1
+- Super+Control+z/x         - Increase/decrease gaps between windows by 5
+- Super+Control+j/k         - Move focus between hidden windows (Can then 'Show')
+- Super+Control+Arrow       - Moves a window to any corner of your screen (Arrow key)
+- Super+Control+Tab         - Open a dmenu prompt asking the user what layout to switch to
+- Super+Control+h           - Open the man page for speedwm in dmenu.
+- Super+Control+o           - Show a hidden focused window
+- Super+Control+a/d         - Move to the next/previous tag
+- Super+Control+Shift+o     - Show all hidden windows
+- Super+Control+Shift+p     - Hide all windows
+- Super+Control+Shift+Colon - Open a list of extra software in dmenu
+- Super+Control+Shift+z/c   - Move to the next/previous tag skipping any without windows open
+- Super+Control+Shift+a/d   - Move between available layouts
+- Super+Control+Shift+1     - Move the focused window to tag 1
+- Super+Control+Shift+2     - Move the focused window to tag 2
+- Super+Control+Shift+3     - Move the focused window to tag 3
+- Super+Control+Shift+4     - Move the focused window to tag 4
+- Super+Control+Shift+5     - Move the focused window to tag 5
+- Super+Control+Shift+6     - Move the focused window to tag 6
+- Super+Control+Shift+7     - Move the focused window to tag 7
+- Super+Control+Shift+8     - Move the focused window to tag 8
+- Super+Control+Shift+9     - Move the focused window to tag 9
+- Super+Control+Shift+Esc   - Open speedwm-utils (requires speedwm-extras)
+- Super+Control+Shift+Arrow - Resize the window to the screen size.
+- Super+Control+Shift+s     - Set a wallpaper (requires speedwm-extras)
+- Super+Control+Shift+n     - Connect to WLAN using iwd (requires speedwm-extras)
+- Super+Control+Shift+b     - Connect to a Bluetooth device using bluez (requires speedwm-extras)
+- Super+Control+Shift+q     - Pauses your music
+- Super+Control+Shift+w     - Decreases your music volume
+- Super+Control+Shift+e     - Increase your music volume
+- Super+Control+Shift+r     - Restart speedwm
+- Super+Control+Shift+j/k   - Change window size vertically (cfact)
+- Super+Control+Shift+Equal - Increase bar height by 1
+- Super+Control+Shift+Minus - Decrease bar height by 1
+
+Chained keybinds
+
+- Super+r & s               - Run screenkey if it is installed
+- Super+r & d               - Kill screenkey
+- Super+t & r               - Reorganize tags and move windows
+- Super+t & t               - Toggle tag area in the bar
+- Super+t & y               - Toggle empty tag area in the bar
+- Super+t & w               - Toggle title area in the bar
+- Super+t & u               - Toggle unselected title area in the bar
+- Super+t & s               - Toggle status area in the bar
+- Super+t & l               - Toggle layout area in the bar
+- Super+t & o               - Toggle inactive fade
+- Super+t & r               - Reset all bar modules
+- Super+t & s               - Make the current selected window sticky
+- Super+c & w               - Get the weather (Using wttr.in) using speedwm-core (requires speedwm-extras)
+- Super+c & n               - Switch to the next track
+- Super+c & p               - Switch to the previous track
+- Super+g & t               - Toggle gaps
+- Super+g & 0               - Reset gaps
+- Super+g & i               - Increase inner gaps by 1
+- Super+g & o               - Increase outer gaps by 1
+- Super+g & j/k             - Increase/decrease gaps between windows by 1
+- Super+p & j/k             - Increase/decrease bar padding by 1
+- Super+p & u/d             - Increase/decrease bar padding by 5
+- Super+p & r               - Reset bar padding to default
+- Super+p & t               - Toggle bar padding on/off
+- Super+, & r               - Reset powerline options
+- Super+q & o               - Kill every window except the focused
+- Super+q & n/p             - Switch to the next/previous track
+- Super+q & l/h             - Seek 3 seconds forward/backwards
+- Super+q & u/d             - Seek 10 seconds forward/backwards
+- Super+q & 0               - Seek to the beginning of the track
+- Super+Shift+g & i         - Decrease inner gaps by 1
+- Super+Shift+g & o         - Decrease outer gaps by 1
+- Super+Shift+e & a         - Open the virtual keyboard
+- Super+Shift+e & e         - Open a list of all emojis and copy the selection
+- Super+Shift+e & r         - Randomize wallpaper
+- Super+Shift+e & p         - Set wallpaper to the previous
+
+These will only work if your keyboard has special multimedia buttons.
+
+- Mute button               - Mutes your audio
+- Up Volume button          - Increases your volume
+- Next/Previous song button - Switch to the next/previous track      
+- Down Volume button        - Decreases your volume
+- Pause button              - Pauses the current track
+- Stop button               - Stops your defined music player
+- Browser button            - Opens your defined web browser
+- Power button              - Ask if you wanna shut down, restart or lock your computer. (requires speedwm-extras)
+- Email button              - Open your defined email client
+- System button             - Open your defined status viewer in a terminal
+- Music button              - Open your defined music player
+- WLAN button               - Disconnect from WLAN (requires speedwm-extras)
+
+These binds can be activated using your mouse
+
+- Tag <num> (Left click)                  - Switch to tag <num>
+- Tag (Scrolling up/down)                 - Switch to the next/previous tag
+- Layout indicator (Left click)           - Switch to the next layout
+- Layout indicator (Middle click)         - Switch to the previous layout
+- Layout indicator (Right click)          - Open a dmenu list of all layouts (requires speedwm-extras)
+- Window title (Right click)              - Open speedwm-utils (requires speedwm-extras)
+- Focused window (Super+Alt+Left click)   - Move the focused window around
+- Focused window (Super+Alt+Middle click) - Make the focused window floating
+- Focused window title (Middle click)     - Rotate stack
+- Dragging (Super+Right click)            - Increase/decrease size of each window (mfact)
+- Dragging (SuperControl+Right click)     - Increase/decrease cfact
+- Root window (Right click)               - List .desktop entries and open them (requires j4-dmenu-desktop)
+

@@ -1,0 +1,72 @@
+#!/bin/sh
+# battery module for status/stellar
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+
+# clicking
+CLICK() {
+		# values
+		ICON="$ITEM11_ICON"
+		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
+
+		command -v acpi > /dev/null && BATTERY_FULL="$(acpi)" || return
+
+        # default terminal
+        [ -z "$TERMINAL" ] && TERMINAL=st
+
+        # enable icon spacing
+		[ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+		
+		# send the notification
+		SEND_NOTIF() {
+				FULL_BATTERY="${ICON}${ICONSPACING}$BATTERY_FULL"
+				notify-send "$FULL_BATTERY"
+		
+				echo "Notification sent successfully!"
+				echo "INFO: $FULL_BATTERY"
+		
+				exit 0
+		}
+		
+		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+        exit 1
+}
+
+# get icon
+GETICON() {
+    [ "$BATTERYPERC_0" -gt "99" ] && ICON="$ITEM11_ICON_FULL"
+    [ "$BATTERYPERC_0" -lt "100" ] && ICON="$ITEM11_ICON_75"
+    [ "$BATTERYPERC_0" -lt "51" ] && ICON="$ITEM11_ICON_50"
+    [ "$BATTERYPERC_0" -lt "26" ] && ICON="$ITEM11_ICON_25"
+    [ "$BATTERYPERC_0" -lt "6" ] && ICON="$ITEM11_ICON_5"
+
+    command -v acpi > /dev/null && acpi | grep -q "Charging" && ICON="$ITEM11_ICON_CHARGING"
+
+    [ -z "$ICON" ] && ICON="$ITEM11_ICON"
+}
+
+# information itself
+PRINT() {
+  [ "$ENABLE_ITEM11" != "true" ] && return
+
+  # battery 0, copy + paste this if you need more than one battery
+  [ -e "/sys/class/power_supply/BAT0/capacity" ] && BATTERY="${BATTERY}$(cat /sys/class/power_supply/BAT0/capacity)%" && BATTERYPERC_0="$(cat /sys/class/power_supply/BAT0/capacity)" || return
+  GETICON
+
+  echo "$ITEM11_SEPARATOR $ICON $BATTERY"
+
+  # print charging status
+  command -v acpi > /dev/null && [ "$ITEM11_SHOW_CHARGING_STATUS" ] && \
+      CHARGESTATUS=$(echo ", $(acpi | awk '{ print $3 }' | sed "s|,||g; s|Discharging|$ITEM11_DISCHARGING_TEXT|g; s|Charging|$ITEM11_CHARGING_TEXT|g; s|Fully charged|$ITEM11_FULL_TEXT|g")") && \
+        [ ! -z "$CHARGESTATUS" ] && echo "$CHARGESTATUS"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_bat ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

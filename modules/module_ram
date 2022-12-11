@@ -1,0 +1,60 @@
+#!/bin/sh
+# ram module for status/stellar
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ "$ENABLE_ITEM1" = "true" ] || exit
+command -v free > /dev/null || exit
+
+# get status
+GETSTAT() {
+	RAM_USED="$(echo "$(free -h --giga | awk '/^Mem/ {print $3}')B")"
+	RAM_TOTAL="$(echo "$(free -h --giga | awk '/^Mem/ {print $2}')B")"
+	RAM_LEFT="$(echo "$(free -h --giga | awk '/^Mem/ {print $7}')B")"
+}
+
+GETSTAT
+
+CLICK() {
+	# values
+	ICON="$ITEM1_ICON"
+	[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)"
+    [ -z "$TERMINAL" ] && TERMINAL=st
+    [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+	
+    # check value of button
+	case "$BUTTON" in
+	"2") command -v notify-send > /dev/null && notify-send "$(ps axch -o cmd:12,%mem --sort=%mem | tail -n 10)" ; exit ;;
+	"3") $TERMINAL -e htop ; exit ;;
+	esac
+	
+	# send the notification
+	SEND_NOTIF() {
+			FULL_RAM="$(printf "${ICON}${ICONSPACING}Used: $RAM_USED\nFree: $RAM_LEFT\nTotal: $RAM_TOTAL\n")"
+			notify-send "$FULL_RAM"
+	
+            # some information
+			echo "Notification sent successfully!"
+			echo "INFO: $FULL_RAM"
+	
+			return
+	}
+	
+	command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+	
+	return
+}
+
+# information itself
+PRINT() {
+    echo "$ITEM1_SEPARATOR $ITEM1_ICON $ITEM1_FORMAT" | sed "s|@u|$RAM_USED|; s|@t|$RAM_TOTAL|; s|@l|$RAM_LEFT|"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_ram ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

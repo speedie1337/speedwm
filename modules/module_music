@@ -1,0 +1,118 @@
+#!/bin/sh
+# music module for status/stellar
+
+# load config
+module_config
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ "$ENABLE_ITEM9" = "true" ] || exit
+
+# get information, the following functions depend on this
+GETPROP() {
+    # get backend from the two available options, please pr for more ;)
+    [ "$ITEM9_BACKEND" = "auto" ] && pgrep -x cmus > /dev/null && ITEM9_BACKEND=cmus || pgrep -x mocp > /dev/null && ITEM9_BACKEND=mocp
+    [ "$ITEM9_BACKEND" = "cmus" ] && command -v cmus > /dev/null || ITEM9_BACKEND=mocp
+    [ "$ITEM9_BACKEND" = "mocp" ] && command -v mocp > /dev/null || ITEM9_BACKEND=cmus
+    [ -z "$ITEM9_BACKEND" ] && exit
+    pgrep -x "$ITEM9_BACKEND" > /dev/null || exit
+    
+    # for cmus
+    CMUS() {
+		    MUSIC_FILENAME="$(basename "$(cmus-remote -C status | grep file)")"
+		    MUSIC_FILENAME_CUT="$(basename "$(cmus-remote -C status | grep file)"| sed 's|\(.*\)[.].*|\1|')"
+		    MUSIC_FILEDIR="$(dirname "$(cmus-remote -C status | grep file | sed 's/file //g')")"
+            MUSIC_ARTIST="$(cmus-remote -C status | grep "tag artist" | sed "s|\&|stellar_amp|g; s/tag artist //g")"
+      		MUSIC_TITLE="$(cmus-remote -C status | grep "tag title" | sed "s|\&|stellar_amp|g; s/tag title //g")"
+     		MUSIC_ALBUM="$(cmus-remote -C status | grep "tag album " | head -n 1 | sed "s|\&|stellar_amp|g; s/tag album //g")"
+		    MUSIC_GENRE="$(cmus-remote -C status | grep "tag genre" | sed "s/tag genre //g")"
+		    MUSIC_TIMEELAPSED="$(cmus-remote -Q | grep position | sed "s/position //g" | awk '{printf "%02d:%02d:%02d",$0/3600,$0%3600/60,$0%60}' | sed "s/00://")"
+		    MUSIC_TIMETOTAL="$(cmus-remote -Q | grep duration | sed "s/duration //g" | awk '{printf "%02d:%02d:%02d",$0/3600,$0%3600/60,$0%60}' | sed "s/00://")"
+		    MUSIC_REPEAT="$(cmus-remote -C status | grep 'repeat ' | sed "s/true/Yes/; s/false/No/; s/set repeat //")"
+		    MUSIC_SHUFFLE="$(cmus-remote -C status | grep 'shuffle' | sed "s/on/Yes/; s/off/No/; s/set shuffle //")"
+		    
+            # for notification
+            FULL_MUSIC="$(printf "${ICON}${ICONSPACING}Artist: $MUSIC_ARTIST\nTitle: $MUSIC_TITLE\nAlbum: $MUSIC_ALBUM\nGenre: $MUSIC_GENRE\nTime elapsed: $MUSIC_TIMEELAPSED\nTotal time: $MUSIC_TIMETOTAL\nFile: $MUSIC_FILENAME\nDirectory: $MUSIC_FILEDIR\nPath: $MUSIC_FILEDIR/$MUSIC_FILENAME\nRepeat: $MUSIC_REPEAT\nShuffle: $MUSIC_SHUFFLE" | sed "s/stellar_amp/\&/g")"
+    }
+    
+    # for mocp
+    MOCP() {
+		    MUSIC_FILENAME="$(basename "$(mocp -Q %file)")"
+		    MUSIC_FILENAME_CUT="$(basename "$(mocp -Q %file)" | sed 's|\(.*\)[.].*|\1|')"
+		    MUSIC_FILEDIR="$(dirname "$(mocp -Q %file)")"
+   			MUSIC_ARTIST="$(mocp -Q %artist | sed "s|\&|stellar_amp|g")"
+     		MUSIC_TITLE="$(mocp -Q %song | sed "s|\&|stellar_amp|g")"
+      		MUSIC_ALBUM="$(mocp -Q %album | sed "s|\&|stellar_amp|g")"
+		    MUSIC_TIMEELAPSED="$(mocp -Q %ct)"
+		    MUSIC_TIMETOTAL="$(mocp -Q %tt)"
+		    # todo: genre
+		    
+            # for notification
+            FULL_MUSIC="$(printf "${ICON}${ICONSPACING}Artist: $MUSIC_ARTIST\nTitle: $MUSIC_TITLE\nAlbum: $MUSIC_ALBUM\nTime elapsed: $MUSIC_TIMEELAPSED\nTotal time: $MUSIC_TIMETOTAL\nFile: $MUSIC_FILENAME\nDirectory: $MUSIC_FILEDIR\nPath: $MUSIC_FILEDIR/$MUSIC_FILENAME" | sed "s/stellar_amp/\&/g")"
+    }
+    
+    [ "$ITEM9_BACKEND" = "cmus" ] && CMUS || MOCP
+}
+
+GETPROP
+
+CLICK() {
+		# values
+		ICON="$ITEM9_ICON"
+		BUTTON="$(cat /tmp/speedwm-button)"
+		
+        [ -z "$TERMINAL" ] && TERMINAL=st
+        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+		
+		# button
+		case "$BUTTON" in
+		"3") $TERMINAL -e $ITEM9_BACKEND ; exit ;;
+		esac
+		
+		# send the notification
+		SEND_NOTIF() {
+				notify-send "$FULL_MUSIC"
+		
+                # some information
+				echo "Notification sent successfully!"
+				echo "INFO: $FULL_MUSIC"
+		
+				return
+		}
+		
+		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+        return
+}
+
+# information itself
+PRINT() {
+  # define mocp data
+  define_mocp_data() {
+      # filename
+      [ "$(mocp -Q %file | head -n 1)" != "" ] && [ "$ITEM9_DISPLAY_FILE" = "true" ] && echo "$MUSIC_FILENAME_CUT" && return
+
+      # put data together
+  	  data="$(printf "%s$ITEM9_FORMAT" | sed "s|@ab|$MUSIC_ALBUM|; s|@t|$MUSIC_TITLE|; s|@g||; s|@a|$MUSIC_ARTIST|; s|@tt|$MUSIC_TIMETOTAL|; s|@te|$MUSIC_TIMEELAPSED|; s|  ||g; s|stellar_amp|\&|g")" || return
+  }
+
+  # define cmus data
+  define_cmus_data() {
+    # filename
+	[ "$(cmus-remote -C status | head -n 1 | awk '{ print $2 }')" = "playing" ] && [ "$ITEM9_DISPLAY_FILE" = "true" ] && echo "$MUSIC_FILENAME_CUT" && return
+
+    [ "$(cmus-remote -Q | grep status | awk '{ print $2 }')" = "stopped" ] && return
+
+    # put data together
+	data="$(printf "%s$ITEM9_FORMAT" | sed "s|@ab|$MUSIC_ALBUM|; s|@t|$MUSIC_TITLE|; s|@g|$MUSIC_GENRE|; s|@a|$MUSIC_ARTIST|; s|@tt|$MUSIC_TIMETOTAL|; s|@te|$MUSIC_TIMEELAPSED|; s|  ||g; s|() ||g; s|stellar_amp|\&|g")"
+  }
+
+  [ "$ITEM9_BACKEND" = "cmus" ] && define_cmus_data || define_mocp_data
+
+  [ -z "$data" ] || echo "$ITEM9_SEPARATOR $ITEM9_ICON $data"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_music ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

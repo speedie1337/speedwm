@@ -1,0 +1,4 @@
+- Rewrite statuscmd and powerline status syntax so that they can be used together.
+- Figure out how to get toggletopbar func working
+- Logo to replace speedwm.png
+- Click to minimize
