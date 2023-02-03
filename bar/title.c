@@ -37,14 +37,17 @@ draw_title(Bar *bar, BarDrawArg *a)
 			if (!ISVISIBLE(c))
 				continue;
 
-			if (bar->mon->sel == c && colorselectedtitle)
+			if (bar->mon->sel == c)
 				scm = SchemeTitleSel;
-            else if (!colorselectedtitle)
-                scm = SchemeTitleNorm;
-			else if (HIDDEN(c) && !selmon->hideunselectedtitle)
+            else if (HIDDEN(c))
 				scm = SchemeTitleHidden;
-			else if (!selmon->hideunselectedtitle)
+            else
 				scm = SchemeTitleNorm;
+
+            if (!colorselectedtitle && !HIDDEN(c))
+                scm = SchemeTitleNorm;
+            else if (!colorselectedtitle && HIDDEN(c))
+                scm = SchemeTitleHidden;
 
            	/* hide unselected title */
 			if (bar->mon->sel != c && selmon->hideunselectedtitle) {
@@ -55,10 +58,10 @@ draw_title(Bar *bar, BarDrawArg *a)
 			if (TEXTW(c->name) < tabw && titleposition)
 				padding = (tabw - TEXTW(c->name) + lrpad) / 2;
 
-			drw_setscheme(drw, scheme[scm]);
+            if (!selmon->hideunselectedtitle) drw_setscheme(drw, scheme[scm]);
             #if USEWINICON
             if (!selmon->hideicon) {
-			    drw_text(drw, x, 0, tabw + (i < remainder ? 1 : 0), bh, padding + (c->name ? c->icw + iconspacing : 0), c->name, 0, False);
+			    drw_text(drw, x, 0, tabw + (i < remainder ? 1 : 0), bh, padding + (c->icw + iconspacing), c->name, 0, False);
             } else {
 			    drw_text(drw, x, 0, tabw + (i < remainder ? 1 : 0), bh, padding, c->name, 0, False);
             }
@@ -100,7 +103,7 @@ click_title(Bar *bar, Arg *arg, BarClickArg *a)
 
 	if (c) {
 		arg->v = c;
-		return ClkWinTitle;
+		return clicktitle;
 	}
 	return -1;
 }

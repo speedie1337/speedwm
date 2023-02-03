@@ -4,9 +4,10 @@
 # load config
 module_config
 [ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ -e "/tmp/module_news_hidden" ] && exit
 [ "$ENABLE_ITEM10" = "true" ] || exit
 command -v newsboat > /dev/null || exit
-	
+
 NEWS_COUNT="$(newsboat -x print-unread | awk '{ print $1 }' || return)"
 
 # clicking
@@ -17,26 +18,26 @@ CLICK() {
 		[ "$NEWS_COUNT" = "Error:" ] && return
 		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
         [ -z "$TERMINAL" ] && TERMINAL=st
-        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+        [ -n "$ICON" ] && ICONSPACING=" " # one character spacing
 
         # check value of button
 		case "$BUTTON" in
 		"3") $TERMINAL newsboat ; return ;;
 		esac
-		
+
 		# send the notification
 		SEND_NOTIF() {
 				notify-send "${ICON}${ICONSPACING}$NEWS_COUNT $ITEM10_TEXT"
-		
+
                 # some information
 				echo "Notification sent successfully!"
 				echo "INFO: ${ICON}${ICONSPACING}$NEWS_COUNT $ITEM10_TEXT"
-		
+
 				return
 		}
-		
+
 		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
-		
+
 		return
 }
 

@@ -78,7 +78,7 @@ draw_tags_pwl(Bar *bar, BarDrawArg *a)
 
 		x += plw;
 		drw_setscheme(drw, nxtscheme);
-		drw_text(drw, x, 0, w, bh, lrpad / 2, tagtext, invert, False);
+		drw_text(drw, x, 0, w, bh, lrpad / 2, tagtext, invert, True);
 		if (occ & 1 << i && !selmon->hideemptytags && !selmon->hideclientindicator)
 			drw_rect(drw, x + boxs, boxs, boxw, boxw, bar->mon == selmon && selmon->sel && selmon->sel->tags & 1 << i, invert);
         if (underline)
@@ -128,5 +128,5 @@ click_tags_pwl(Bar *bar, Arg *arg, BarClickArg *a)
 	if (i < LENGTH(tags)) {
 		arg->ui = 1 << i;
 	}
-	return ClkTagBar;
+	return clicktags;
 }

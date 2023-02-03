@@ -61,7 +61,7 @@
 - 61 - Toggle systray
 - 62 - Hide all windows
 - 63 - Show all windows
-- 64 - Reset mfact 
+- 64 - Reset mfact
 - 65 - Reload .Xresources on the fly
 - 66 - Switch to the previous tag, skipping empty tags
 - 67 - Switch to the next tag, skipping empty tags
@@ -118,6 +118,5 @@
 - 118 - Swap the focused window with the marked window.
 - 119 - Center the focused window
 - 120 - Toggle border for the focused window
-- 121 - Toggle border for when there's only one window.
-- 122 - Reset bar padding and gaps
+- 121 - Reset bar padding and gaps
 

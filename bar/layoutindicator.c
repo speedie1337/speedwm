@@ -14,7 +14,7 @@ draw_ltsymbol(Bar *bar, BarDrawArg *a)
     if (selmon->hidelayout) {
         return 0;
     } else {
-	    return drw_text(drw, a->x, 0, a->w, bh, lrpad / 2, bar->mon->ltsymbol, 0, False);
+	    return drw_text(drw, a->x, 0, a->w, bh, lrpad / 2, bar->mon->ltsymbol, 0, True);
     }
 }
 
@@ -24,6 +24,6 @@ click_ltsymbol(Bar *bar, Arg *arg, BarClickArg *a)
     if (selmon->hidelayout) {
         return 0;
     } else {
-	   return ClkLtSymbol;
+	   return clicklayout;
     }
 }

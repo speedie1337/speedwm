@@ -9,15 +9,15 @@
 
 static char *ipcsockpath        = "/tmp/speedwm.sock"; /* May be a good idea to change this to 'dwm.sock' for compatibility reasons. */
 static IPCCommand ipccommands[] = {
-  ipccmd( view,                1,      { ARG_TYPE_UINT } ),
-  ipccmd( tagmon,              1,      { ARG_TYPE_UINT } ),
-  ipccmd( focusmon,            1,      { ARG_TYPE_SINT } ),
-  ipccmd( focusstackvis,       1,      { ARG_TYPE_SINT } ),
-  ipccmd( zoom,                1,      { ARG_TYPE_NONE } ),
-  ipccmd( incmastercount,      1,      { ARG_TYPE_SINT } ),
-  ipccmd( killclient,          1,      { ARG_TYPE_SINT } ),
-  ipccmd( togglefloating,      1,      { ARG_TYPE_NONE } ),
-  ipccmd( setmfact,            1,      { ARG_TYPE_FLOAT } ),
-  ipccmd( setlayoutsafe,       1,      { ARG_TYPE_PTR } ),
-  ipccmd( quit,                1,      { ARG_TYPE_NONE } )
+  ipccmd( view,                1,      {  arg_uint  } ),
+  ipccmd( tagmon,              1,      {  arg_uint  } ),
+  ipccmd( focusmon,            1,      {  arg_sint  } ),
+  ipccmd( focusstackvis,       1,      {  arg_sint  } ),
+  ipccmd( zoom,                1,      {  arg_none  } ),
+  ipccmd( incmastercount,      1,      {  arg_sint  } ),
+  ipccmd( killclient,          1,      {  arg_sint  } ),
+  ipccmd( togglefloating,      1,      {  arg_none  } ),
+  ipccmd( setmfact,            1,      {  arg_float } ),
+  ipccmd( setlayoutsafe,       1,      {  arg_ptr   } ),
+  ipccmd( quit,                1,      {  arg_none  } )
 };

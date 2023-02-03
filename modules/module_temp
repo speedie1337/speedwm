@@ -5,6 +5,7 @@
 module_config
 [ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
 [ "$ENABLE_ITEM8" != "true" ] && exit
+[ -e "/tmp/module_temp_hidden" ] && exit
 command -v sensors > /dev/null || exit
 
 # click
@@ -12,25 +13,25 @@ CLICK() {
 	# values
 	ICON="$ITEM8_ICON"
 	[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
-	
+
 	[ "$ITEM8_FORMAT_CELSIUS" = "true" ] || FARG="-F"
     [ -z "$TERMINAL" ] && TERMINAL=st
-    [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
+    [ -n "$ICON" ] && ICONSPACING=" " # one character spacing
 
 	TEMP_FULL="$(sensors $FARG)"
-	
+
 	# send the notification
 	SEND_NOTIF() {
 			FULL_TEMP="${ICON}${ICONSPACING}$TEMP_FULL"
 			notify-send "$FULL_TEMP"
-	
+
             # some information
 			echo "Notification sent successfully!"
 			echo "INFO: $FULL_TEMP"
-	
+
 			return
 	}
-	
+
 	command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
 
     return

@@ -1,7 +1,7 @@
 /* Signal definitions
  * Signum must be greater than 0
- * Trigger signals using `speedwm-utils -exec <signum>"` 
- * 
+ * Trigger signals using `speedwm-utils -exec <signum>"`
+ *
  * Once you're done with your edits, run 'make clean install'. */
 static Signal signals[] = {
 	/* signum       function           argument  */
@@ -24,7 +24,7 @@ static Signal signals[] = {
 	{ 17,           cyclelayout,          {.i = -1 } },
 	{ 18,           setmfact,             {.f = +0.05} },
 	{ 19,           setmfact,             {.f = -0.05} },
-	{ 20,           togglesticky,         {0} },          
+	{ 20,           togglesticky,         {0} },
 	{ 21,           togglebar,            {0} },
 	{ 22,           togglefullscr,        {0} },
 	{ 23,           togglefloating,       {0} },
@@ -102,17 +102,17 @@ static Signal signals[] = {
 	{ 87,           setbarheight,         {.i = +1 } },
 	{ 88,           setbarheight,         {.i = -1 } },
 	{ 89,           resetbarheight,       {0} },
-	{ 90,           setbarpaddingv,       {.i = +1 } },
-	{ 91,           setbarpaddingv,       {.i = -1 } },
-	{ 92,           setbarpaddingh,       {.i = +1 } },
-	{ 93,           setbarpaddingh,       {.i = -1 } },
+	{ 90,           setbarpaddingov,      {.i = +1 } },
+	{ 91,           setbarpaddingov,      {.i = -1 } },
+	{ 92,           setbarpaddingoh,      {.i = +1 } },
+	{ 93,           setbarpaddingoh,      {.i = -1 } },
 	{ 94,           setbarpadding,        {.i = +1 } },
 	{ 95,           setbarpadding,        {.i = -1 } },
-	{ 96,           togglebarpaddingv,    {0} },
-	{ 97,           togglebarpaddingh,    {0} },
+	{ 96,           togglebarpaddingov,   {0} },
+	{ 97,           togglebarpaddingoh,   {0} },
 	{ 98,           togglebarpadding,     {0} },
-	{ 99,           resetbarpaddingv,     {0} },
-	{ 100,          resetbarpaddingh,     {0} },
+	{ 99,           resetbarpaddingov,    {0} },
+	{ 100,          resetbarpaddingoh,    {0} },
 	{ 101,          resetbarpadding,      {0} },
 	{ 102,          incstackcount,        {.i = +1 } },
 	{ 103,          incstackcount,        {.i = -1 } },
@@ -133,6 +133,5 @@ static Signal signals[] = {
     { 118,          swapclient,           {0} },
     { 119,          centerwindow,         {0} },
     { 120,          toggleborder,         {0} },
-    { 121,          togglesingleborder,   {0} },
-    { 122,          resetbpgaps,          {0} },
+    { 121,          resetbpgaps,          {0} },
 };

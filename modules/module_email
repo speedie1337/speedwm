@@ -1,0 +1,51 @@
+#!/bin/sh
+# email module for status/stellar
+
+# load config
+module_config
+[ -z "$ITEM12_EMAIL_DIR" ] && ITEM12_EMAIL_DIR="$HOME/.local/share/mail"
+[ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ -z "$ICON" ] && ICON="$ITEM12_ICON"
+[ -z "$EMAIL_UNREADS" ] && EMAIL_UNREADS="$(find $ITEM12_EMAIL_DIR/*/[Ii][Nn][Bb][Oo][Xx]/new/* -type f >/tmp/module_email_data 2>/dev/null && wc -l </tmp/module_email_data || echo 0)"
+[ -d "$ITEM12_EMAIL_DIR" ] || exit
+[ -e "/tmp/module_email_hidden" ] && exit
+
+# clicking
+CLICK() {
+		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
+
+        # default terminal
+        [ -z "$TERMINAL" ] && TERMINAL=st
+
+        # enable icon spacing
+		[ -n "$ICON" ] && ICONSPACING=" " # one character spacing
+
+		# send the notification
+		SEND_NOTIF() {
+				FULL_EMAIL="${ICON}${ICONSPACING}$EMAIL_UNREADS"
+				notify-send "$FULL_EMAIL $ITEM12_UNREAD_TEXT"
+
+				echo "Notification sent successfully!"
+				echo "INFO: $FULL_EMAIL $ITEM12_UNREAD_TEXT"
+
+				exit 0
+		}
+
+		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
+        exit 1
+}
+
+# information itself
+PRINT() {
+  [ "$ENABLE_ITEM12" != "true" ] && return
+
+  echo "$ITEM12_SEPARATOR $ICON $EMAIL_UNREADS $ITEM12_UNREAD_TEXT"
+}
+
+# argument 1
+case "$1" in
+"") CLICK ;;
+"--print-file") PRINT > /tmp/module_email ;;
+"--print") PRINT ;;
+"--click") CLICK ;;
+esac

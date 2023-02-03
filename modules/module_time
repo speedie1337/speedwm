@@ -6,6 +6,7 @@ module_config
 [ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
 [ "$ENABLE_ITEM2" = "true" ] || exit
 command -v date > /dev/null || exit
+[ -e "/tmp/module_time_hidden" ] && exit
 
 # click
 CLICK() {
@@ -18,22 +19,22 @@ CLICK() {
 		ICON="$ITEM2_ICON"
 		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
         [ -z "$TERMINAL" ] && TERMINAL=st
-        [ ! -z "$ICONSPACING" ] && ICONSPACING=" " # one character spacing
-		
+        [ -n "$ICONSPACING" ] && ICONSPACING=" " # one character spacing
+
 		# send the notification
 		SEND_NOTIF() {
 				FULL_TIME="${ICON}${ICONSPACING}The time is $TIME_FULL $TIME_ZONE."
 				notify-send "$FULL_TIME"
-		
+
                 # some information
 				echo "Notification sent successfully!"
 				echo "INFO: $FULL_TIME"
-		
+
 				return
 		}
 
 		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
-		
+
 		return
 }
 

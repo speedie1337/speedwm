@@ -1,0 +1,49 @@
+#!/bin/sh
+# module_toggle
+
+orig=34
+
+module_time=1
+module_date=2
+module_bat=3
+module_vol=4
+module_ram=5
+module_net=6
+module_temp=7
+module_weather=8
+module_music=9
+module_dfmpeg=10
+module_news=11
+module_email=12
+
+module_bat_id="$(expr $orig + $module_bat)"
+module_date_id="$(expr $orig + $module_date)"
+module_time_id="$(expr $orig + $module_time)"
+module_vol_id="$(expr $orig + $module_vol)"
+module_ram_id="$(expr $orig + $module_ram)"
+module_net_id="$(expr $orig + $module_net)"
+module_temp_id="$(expr $orig + $module_temp)"
+module_weather_id="$(expr $orig + $module_weather)"
+module_music_id="$(expr $orig + $module_music)"
+module_dfmpeg_id="$(expr $orig + $module_dfmpeg)"
+module_news_id="$(expr $orig + $module_news)"
+module_email_id="$(expr $orig + $module_email)"
+
+init() {
+    case "${1}" in
+    "module_bat") [ -e "/tmp/module_bat_hidden" ] && rm -f /tmp/module_bat_hidden || touch /tmp/module_bat_hidden; kill -$module_bat_id $(pidof status) ;;
+    "module_date") [ -e "/tmp/module_date_hidden" ] && rm -f /tmp/module_date_hidden || touch /tmp/module_date_hidden; kill -$module_date_id $(pidof status) ;;
+    "module_time") [ -e "/tmp/module_time_hidden" ] && rm -f /tmp/module_time_hidden || touch /tmp/module_time_hidden; kill -$module_time_id $(pidof status) ;;
+    "module_vol") [ -e "/tmp/module_vol_hidden" ] && rm -f /tmp/module_vol_hidden || touch /tmp/module_vol_hidden; kill -$module_vol_id $(pidof status) ;;
+    "module_ram") [ -e "/tmp/module_ram_hidden" ] && rm -f /tmp/module_ram_hidden || touch /tmp/module_ram_hidden; kill -$module_ram_id $(pidof status) ;;
+    "module_net") [ -e "/tmp/module_net_hidden" ] && rm -f /tmp/module_net_hidden || touch /tmp/module_net_hidden; kill -$module_net_id $(pidof status) ;;
+    "module_temp") [ -e "/tmp/module_temp_hidden" ] && rm -f /tmp/module_temp_hidden || touch /tmp/module_temp_hidden; kill -$module_temp_id $(pidof status) ;;
+    "module_weather") [ -e "/tmp/module_weather_hidden" ] && rm -f /tmp/module_weather_hidden || touch /tmp/module_weather_hidden; kill -$module_weather_id $(pidof status) ;;
+    "module_music") [ -e "/tmp/module_music_hidden" ] && rm -f /tmp/module_music_hidden || touch /tmp/module_music_hidden; kill -$module_music_id $(pidof status) ;;
+    "module_dfmpeg") [ -e "/tmp/module_dfmpeg_hidden" ] && rm -f /tmp/module_dfmpeg_hidden || touch /tmp/module_dfmpeg_hidden; kill -$module_dfmpeg_id $(pidof status) ;;
+    "module_news") [ -e "/tmp/module_news_hidden" ] && rm -f /tmp/module_news_hidden || touch /tmp/module_news_hidden; kill -$module_news_id $(pidof status) ;;
+    "module_email") [ -e "/tmp/module_email_hidden" ] && rm -f /tmp/module_email_hidden || touch /tmp/module_email_hidden; kill -$module_email_id $(pidof status) ;;
+    esac
+}
+
+init "${@}"

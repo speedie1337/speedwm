@@ -6,6 +6,7 @@ command -v date > /dev/null || exit
 # load config
 module_config
 [ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
+[ -e "/tmp/module_date_hidden" ] && exit
 
 
 # click
@@ -25,26 +26,26 @@ CLICK() {
     	[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
 
 		[ -z "$TERMINAL" ] && TERMINAL=st
-        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
-        
+        [ -n "$ICON" ] && ICONSPACING=" " # one character spacing
+
         # check value of button
 		case "$BUTTON" in
 		"3") pgrep -x gsimplecal > /dev/null && pkill gsimplecal || gsimplecal ; return ;;
 		esac
-		
+
 		# send the notification
 		SEND_NOTIF() {
 				FULL_DATE="$(printf "${ICON}${ICONSPACING}$DATE_DAY_W_LONG, $DATE_MONTH_W_LONG, $DATE_DAY $DATE_YEAR\nWeek: $DATE_WEEK\nDay of the week: $DATE_WEEKDAY")" && notify-send "$FULL_DATE"
-		
+
                 # some output
 				echo "Notification sent successfully!"
 				echo "INFO: $FULL_DATE"
-		
+
 				return
 		}
-		
+
 		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
-		
+
 		return
 }
 

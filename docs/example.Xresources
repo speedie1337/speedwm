@@ -1,244 +1,296 @@
-!! speedwm example .Xresources configuration file
+!! - speedwm 1.9 example .Xresources configuration file -
+!!
+!! Copy to ~/.speedwmrc or ~/.config/speedwm/speedwmrc to use.
+!! Alternatively append the values to your existing .Xresources.
 
 !! Bar options
-
-speedwm.bar.height:                   4 ! Height of the bar in pixels (<num>)
-speedwm.bar.position:                 1 ! Position of the bar (0: Bottom, 1: Top)
-speedwm.bar.paddingh:                 10 ! Horizontal padding (extra space) around the bar in pixels (<num>)
-speedwm.bar.paddingv:                 10 ! Vertical padding (extra space) around the bar in pixels (<num>)
+speedwm.bar.alpha:                     1 ! Enable alpha (0/1)
+speedwm.bar.height:                    3 ! Height of the bar in pixels (<num>)
+speedwm.bar.position:                  1 ! Position of the bar (0:  Bottom, 1:  Top)
+speedwm.bar.paddingoh:                 0 ! Horizontal padding (extra space) around the bar in pixels (<num>)
+speedwm.bar.paddingov:                 0 ! Vertical padding (extra space) around the bar in pixels (<num>)
+speedwm.bar.paddingih:                 0 ! Horizontal padding (extra space) inside the bar in pixels (<num>)
+speedwm.bar.paddingiv:                 0 ! Vertical padding (extra space) inside the bar in pixels (<num>)
 
 !! Bar module options
+speedwm.bar.hide:                      0 ! Hide the bar by default (0/1)
+speedwm.bar.hide.tags:                 0 ! Hide the tags (0/1)
+speedwm.bar.hide.emptytags:            1 ! Hide the tags that have no windows open (0/1)
+speedwm.bar.hide.floating:             0 ! Hide the floating window indicator (0/1)
+speedwm.bar.hide.layout:               0 ! Hide the layout indicator (0/1)
+speedwm.bar.hide.sticky:               0 ! Hide the sticky indicator (0/1)
+speedwm.bar.hide.status:               0 ! Hide the status bar (0/1)
+speedwm.bar.hide.systray:              1 ! Hide the systray (0/1)
+speedwm.bar.hide.unselected.title:     0 ! Hide the unselected window title (0/1)
+speedwm.bar.hide.title:                0 ! Hide the window title (0/1)
+speedwm.bar.hide.icon:                 0 ! Hide the window icon (0/1)
+speedwm.bar.hide.clientindicator:      0 ! Hide the client indicator on the tags (0/1)
 
-speedwm.bar.hide:                     0 ! Hide the bar by default (0/1)
-speedwm.bar.hide.tags:                0 ! Hide the tags (0/1)
-speedwm.bar.hide.emptytags:           1 ! Hide the tags that have no windows open (0/1)
-speedwm.bar.hide.floating:            0 ! Hide the floating window indicator (0/1)
-speedwm.bar.hide.layout:              0 ! Hide the layout indicator (0/1)
-speedwm.bar.hide.sticky:              0 ! Hide the sticky indicator (0/1)
-speedwm.bar.hide.status:              0 ! Hide the status bar (0/1)
-speedwm.bar.hide.systray:             0 ! Hide the systray (0/1)
-speedwm.bar.hide.title:               0 ! Hide the window title (0/1)
-speedwm.bar.hide.icon:                0 ! Hide the window icon (0/1)
-speedwm.bar.hide.clientindicator:     0 ! Hide the client indicator on the tags (0/1)
+!! Inset options
+speedwm.inset.x:                       0 ! x inset
+speedwm.inset.y:                       0 ! y inset
+speedwm.inset.w:                       0 ! w inset
+speedwm.inset.h:                       0 ! h inset
 
 !! Title options
-
-speedwm.bar.titleposition:            1 ! Position of the title (0: Left, 1: Center)
+speedwm.bar.titleposition:             1 ! Position of the title (0:  Left, 1:  Center)
 
 !! Border options
-
-speedwm.border.roundedcorners:        0 ! Enable rounded corners around the border of windows (0/1)
-speedwm.border.cornerradius:          2 ! Corner radius when rounded corners are enabled (<num>)
-speedwm.border.size:                  1 ! Size of the border around windows in pixels (<num>)
+speedwm.border.size:                   1 ! Size of the border around windows in pixels (<num>)
 
 !! Client options
+speedwm.client.map:                    1 ! Map and unmap windows through X11 (0/1)
+speedwm.client.allowurgent:            1 ! Allow windows to have the 'urgent' status (0/1)
+speedwm.client.automove:               1 ! Allow windows to move themselves on demand. This may be annoying depending on what software you use and is disabled by default for this reason (0/1)
+speedwm.client.autofocus:              1 ! Allow windows to focus themselves on demand. This may be annoying depending on what software you use and is disabled by default for this reason (0/1)
+speedwm.client.autoresize:             1 ! Allow windows to resize themselves on demand (0/1)
+speedwm.client.decorhints:             1 ! Respect decoration hints for windows (0/1)
+speedwm.client.hide.border:            0 ! Hide all window borders for windows (0/1)
+speedwm.client.hide.unselected.border: 1 ! Hide all window borders for windows (0/1)
+speedwm.client.fade.inactive:          1 ! Fade inactive windows (windows that are not focused) (0/1)
+speedwm.client.fade.windows:           1 ! Fade windows (0/1)
+speedwm.client.floatscratchpad:        0 ! Float a scratchpad window when it is shown (0/1)
+speedwm.client.savefloat:              1 ! Save the position of floating windows when they are no longer floating (0/1)
+speedwm.client.swallow:                1 ! Allow clients to be swallowed by the terminal emulator (0/1)
+speedwm.client.swallowfloating:        1 ! Also allow floating clients to be swallowed (0/1)
+speedwm.client.wmclass:                1 ! Enable workaround for when a class cannot be grabbed from a client (0/1)
 
-speedwm.client.allowurgent:           1 ! Allow windows to have the 'urgent' status (0/1)
-speedwm.client.automove:              1 ! Allow windows to move themselves on demand. This may be annoying depending on what software you use and is disabled by default for this reason (0/1)
-speedwm.client.autofocus:             1 ! Allow windows to focus themselves on demand. This may be annoying depending on what software you use and is disabled by default for this reason (0/1)
-speedwm.client.autoresize:            1 ! Allow windows to resize themselves on demand (0/1)
-speedwm.client.decorhints:            1 ! Respect decoration hints for windows (0/1)
-speedwm.client.hide.border:           0 ! Hide all window borders for windows (0/1)
-speedwm.client.hide.singleborder:     1 ! Hide the window border when only a single window is visible (0/1)
-speedwm.client.fade.inactive:         1 ! Fade inactive windows (windows that are not focused) (0/1)
-speedwm.client.fade.windows:          1 ! Fade windows (0/1)
-speedwm.client.floatscratchpad:       0 ! Float a scratchpad window when it is shown (0/1)
-speedwm.client.savefloat:             1 ! Save the position of floating windows when they are no longer floating (0/1)
-speedwm.client.swallow:               1 ! Allow clients to be swallowed by the terminal emulator (0/1)
-speedwm.client.swallowfloating:       1 ! Also allow floating clients to be swallowed (0/1)
-speedwm.client.wmclass:               1 ! Enable workaround for when a class cannot be grabbed from a client (0/1)
+!! Font used for the bar
+speedwm.fonts.font:                    NotoSans Regular 9
 
-!! Font options
+!! Layout colors
+speedwm.col.layout:                    #99b3ff
+speedwm.col.layouttext:                #000000
 
-speedwm.fonts.font:                   NotoSans Regular 8
+!! Status colors
+speedwm.col.status0:                   #131210
+speedwm.col.status1:                   #bf616a
+speedwm.col.status2:                   #A16F9D
+speedwm.col.status3:                   #68ABAA
+speedwm.col.status4:                   #A89F93
+speedwm.col.status5:                   #D3A99B
+speedwm.col.status6:                   #AFC9AC
+speedwm.col.status7:                   #eae1cb
+speedwm.col.status8:                   #a39d8e
+speedwm.col.status9:                   #6D5E8E
+speedwm.col.status10:                  #a16f9d
+speedwm.col.status11:                  #d3a99b
+speedwm.col.status12:                  #afc9ac
+speedwm.col.status13:                  #eae1cb
+speedwm.col.status14:                  #6d5e8e
+speedwm.col.status15:                  #ffffff
 
-!! Color options
+!! Powerline background colors
+speedwm.col.powerline0:                #131210
+speedwm.col.powerline1:                #bf616a
+speedwm.col.powerline2:                #A16F9D
+speedwm.col.powerline3:                #68ABAA
+speedwm.col.powerline4:                #A89F93
+speedwm.col.powerline5:                #D3A99B
+speedwm.col.powerline6:                #AFC9AC
+speedwm.col.powerline7:                #eae1cb
 
-speedwm.col.background:               #222222
-speedwm.col.layout:                   #99b3ff
-speedwm.col.layouttext:               #000000
-speedwm.col.status0:                  #131210
-speedwm.col.status1:                  #bf616a
-speedwm.col.status2:                  #A16F9D
-speedwm.col.status3:                  #68ABAA
-speedwm.col.status4:                  #A89F93
-speedwm.col.status5:                  #D3A99B
-speedwm.col.status6:                  #AFC9AC
-speedwm.col.status7:                  #eae1cb
-speedwm.col.status8:                  #a39d8e
-speedwm.col.status9:                  #6D5E8E
-speedwm.col.status10:                 #a16f9d
-speedwm.col.status11:                 #d3a99b
-speedwm.col.status12:                 #afc9ac
-speedwm.col.status13:                 #eae1cb
-speedwm.col.status14:                 #6d5e8e
-speedwm.col.status15:                 #ffffff
-speedwm.col.powerline0:               #131210
-speedwm.col.powerline1:               #bf616a
-speedwm.col.powerline2:               #A16F9D
-speedwm.col.powerline3:               #68ABAA
-speedwm.col.powerline4:               #A89F93
-speedwm.col.powerline5:               #D3A99B
-speedwm.col.powerline6:               #AFC9AC
-speedwm.col.powerline7:               #eae1cb
-speedwm.col.powerline0_text:          #eeeeee
-speedwm.col.powerline1_text:          #131210
-speedwm.col.powerline2_text:          #131210
-speedwm.col.powerline3_text:          #131210
-speedwm.col.powerline4_text:          #131210
-speedwm.col.powerline5_text:          #131210
-speedwm.col.powerline6_text:          #131210
-speedwm.col.powerline7_text:          #131210
-speedwm.col.systray:                  #222222
-speedwm.col.tag1:                     #99b3ff
-speedwm.col.tag1.text:                #eeeeee
-speedwm.col.tag2:                     #99b3ff
-speedwm.col.tag2.text:                #eeeeee
-speedwm.col.tag3:                     #99b3ff
-speedwm.col.tag3.text:                #eeeeee
-speedwm.col.tag4:                     #99b3ff
-speedwm.col.tag4.text:                #eeeeee
-speedwm.col.tag5:                     #99b3ff
-speedwm.col.tag5.text:                #eeeeee
-speedwm.col.tag6:                     #99b3ff
-speedwm.col.tag6.text:                #eeeeee
-speedwm.col.tag7:                     #99b3ff
-speedwm.col.tag7.text:                #eeeeee
-speedwm.col.tag8:                     #99b3ff
-speedwm.col.tag8.text:                #eeeeee
-speedwm.col.tag9:                     #99b3ff
-speedwm.col.tag9.text:                #eeeeee
-speedwm.col.tagurgent:                #f0e68c
-speedwm.col.textnorm:                 #bbbbbb
-speedwm.col.textsel:                  #222222
-speedwm.col.titlenorm:                #222222
-speedwm.col.titlesel:                 #99b3ff
-speedwm.col.titlehid:                 #222222
-speedwm.col.windowbordernorm:         #000000
-speedwm.col.windowbordersel:          #eeeeee
-speedwm.col.windowborderurg:          #f0e68c
+!! Powerline foreground colors
+speedwm.col.powerline0_text:           #eeeeee
+speedwm.col.powerline1_text:           #131210
+speedwm.col.powerline2_text:           #131210
+speedwm.col.powerline3_text:           #131210
+speedwm.col.powerline4_text:           #131210
+speedwm.col.powerline5_text:           #131210
+speedwm.col.powerline6_text:           #131210
+speedwm.col.powerline7_text:           #131210
+
+!! Systray colors
+speedwm.col.systray:                   #222222
+
+!! Tag background colors
+speedwm.col.tag1:                      #99b3ff
+speedwm.col.tag2:                      #99b3ff
+speedwm.col.tag3:                      #99b3ff
+speedwm.col.tag4:                      #99b3ff
+speedwm.col.tag5:                      #99b3ff
+speedwm.col.tag6:                      #99b3ff
+speedwm.col.tag7:                      #99b3ff
+speedwm.col.tag8:                      #99b3ff
+speedwm.col.tag9:                      #99b3ff
+
+!! Tag foreground colors
+speedwm.col.tag1.text:                 #eeeeee
+speedwm.col.tag2.text:                 #eeeeee
+speedwm.col.tag3.text:                 #eeeeee
+speedwm.col.tag4.text:                 #eeeeee
+speedwm.col.tag5.text:                 #eeeeee
+speedwm.col.tag6.text:                 #eeeeee
+speedwm.col.tag7.text:                 #eeeeee
+speedwm.col.tag8.text:                 #eeeeee
+speedwm.col.tag9.text:                 #eeeeee
+
+!! Tag misc colors
+speedwm.col.tagurgent:                 #f0e68c
+
+!! Generic background colors
+speedwm.col.background:                #222222
+
+!! Generic foreground colors
+speedwm.col.textnorm:                  #bbbbbb
+speedwm.col.textsel:                   #222222
+
+!! Title colors
+speedwm.col.titlenorm:                 #222222
+speedwm.col.titlesel:                  #99b3ff
+speedwm.col.titlehid:                  #222222
+
+!! Window border colors
+speedwm.col.windowbordernorm:          #000000
+speedwm.col.windowbordersel:           #eeeeee
+speedwm.col.windowborderurg:           #f0e68c
+
+!! Text options
+!!
+!! Empty tags
+speedwm.text.tag1.empty:               
+speedwm.text.tag2.empty:               
+speedwm.text.tag3.empty:               
+speedwm.text.tag4.empty:               
+speedwm.text.tag5.empty:               
+speedwm.text.tag6.empty:               
+speedwm.text.tag7.empty:               
+speedwm.text.tag8.empty:               
+speedwm.text.tag9.empty:               
+
+!! Used tags
+speedwm.text.tag1.used:                
+speedwm.text.tag2.used:                
+speedwm.text.tag3.used:                
+speedwm.text.tag4.used:                
+speedwm.text.tag5.used:                
+speedwm.text.tag6.used:                
+speedwm.text.tag7.used:                
+speedwm.text.tag8.used:                
+speedwm.text.tag9.used:                
+
+!! Layout text
+speedwm.text.layout1:                  
+speedwm.text.layout2:                  
+speedwm.text.layout3:                  
+speedwm.text.layout4:                  
+speedwm.text.layout5:                  
+speedwm.text.layout6:                  
+speedwm.text.layout7:                  
+speedwm.text.layout8:                  
+speedwm.text.layout9:                  
+speedwm.text.layout10:                 
+speedwm.text.layout11:                 
+speedwm.text.layout12:                 
+speedwm.text.layout13:                 
+speedwm.text.layout14:                 
+speedwm.text.layout15:                 
 
 !! Color toggles
-
-speedwm.color.hiddentitle:            1 ! Color the hidden title (0/1)
-speedwm.color.layout:                 0 ! Color the layout indicator (0/1)
-speedwm.color.selectedtitle:          1 ! Color the selected title (0/1)
+speedwm.color.hiddentitle:             1 ! Color the hidden title (0/1)
+speedwm.color.layout:                  0 ! Color the layout indicator (0/1)
+speedwm.color.selectedtitle:           0 ! Color the selected title (0/1)
 
 !! Powerline options
-
-speedwm.bar.powerline.tag.shape:      0 ! Shape of the tag powerlines (0: >, 1: /)
-
-!! Cursor options
-
-speedwm.cursor.warp:                  1 ! Warp the cursor to the next focused window/monitor (0/1)
-
-!! Focus options
-
-speedwm.focus.spawned:                0 ! Focus the newly spawned window or keep focus (0/1)
+speedwm.bar.powerline.tag.shape:       0 ! Shape of the tag powerlines (0:  >, 1:  /)
 
 !! Fullscreen options
-
-speedwm.fullscreen.hidebar:           1 ! Hide the bar when a client is fullscreened (0/1)
-speedwm.fullscreen.lockfullscreen:    1 ! Lock the fullscreen (0/1)
-speedwm.fullscreen.movefullscreenmon: 0 ! Allow moving fullscreened windows to another monitor (0/1)
+speedwm.fullscreen.hidebar:            1 ! Hide the bar when a client is fullscreened (0/1)
+speedwm.fullscreen.lockfullscreen:     1 ! Lock the fullscreen (0/1)
+speedwm.fullscreen.movefullscreenmon:  0 ! Allow moving fullscreened windows to another monitor (0/1)
 
 !! Gap options
-
-speedwm.gaps.enable:                  1 ! Enable gaps around the windows
-speedwm.gaps.sizeih:                  10 ! Horizontal inner gap size (<num>)
-speedwm.gaps.sizeiv:                  10 ! Vertical inner gap size (<num>)
-speedwm.gaps.sizeoh:                  10 ! Horizontal outer gap size (<num>)
-speedwm.gaps.sizeov:                  10 ! Vertical outer gap size (<num>)
-speedwm.gaps.smartgaps:               0 ! Enable different gap size when only one client is spawned (0/1)
-speedwm.gaps.smartgapsize:            0 ! Size of the gaps when only one client is spawned (0/1)
+speedwm.gaps.enable:                   1 ! Enable gaps around the windows
+speedwm.gaps.sizeih:                   10 ! Horizontal inner gap size (<num>)
+speedwm.gaps.sizeiv:                   10 ! Vertical inner gap size (<num>)
+speedwm.gaps.sizeoh:                   10 ! Horizontal outer gap size (<num>)
+speedwm.gaps.sizeov:                   10 ! Vertical outer gap size (<num>)
+speedwm.gaps.smartgaps:                0 ! Enable different gap size when only one client is spawned (0/1)
+speedwm.gaps.smartgapsize:             0 ! Size of the gaps when only one client is spawned (0/1)
 
 !! Icon options
+speedwm.icon.size:                     15 ! Size of the window icon in the taskbar (<num>)
+speedwm.icon.spacing:                  5 ! Spacing between icon and text in the taskbar (<num>)
 
-speedwm.icon.size:                    10 ! Size of the window icon in the taskbar (<num>)
-speedwm.icon.spacing:                 5 ! Spacing between icon and text in the taskbar (<num>)
- 
 !! Layout options
+!!
 !! Deck layout
+speedwm.layout.deck.count:             0 ! Enable deck count in the deck layout (0/1)
+speedwm.layout.deck.format:            [%d]
 
-speedwm.layout.deck.count:            0 ! Enable deck count in the deck layout (0/1)
-  
-speedwm.layout.deck.format:           [%d]
-
-  !! Monocle layout
-
-speedwm.layout.monocle.clientcount:   0 ! Enable client count in the monocle layout (0/1)
-speedwm.layout.monocle.count:         0 ! Enable focused client and number of total clients in the monocle layout (0/1)
-
-speedwm.layout.monocle.format:        [%d/%d]
+!! Monocle layout
+speedwm.layout.monocle.clientcount:    0 ! Enable client count in the monocle layout (0/1)
+speedwm.layout.monocle.count:          0 ! Enable focused client and number of total clients in the monocle layout (0/1)
+speedwm.layout.monocle.format:         [%d/%d]
 
 !! mfact options
-
-speedwm.mfact:                        0.50 ! Default mfact (0-1)
-speedwm.mfact.lowest:                 0.05 ! Lowest possible mfact (0-1)
+speedwm.mfact:                         0.50 ! Default mfact (0-1)
+speedwm.mfact.lowest:                  0.05 ! Lowest possible mfact (0-1)
 
 !! Mouse options
-
-speedwm.mouse.clicktofocus:           0 ! Require clicking on a window to focus or focus when the cursor touches it (0/1)
-speedwm.mouse.mfact:				  1 ! Enable adjusting mfact with your mouse (0/1)
-speedwm.mouse.cfact:                  1 ! Enable adjusting cfact with your mouse (0/1)
+speedwm.mouse.clicktofocus:            0 ! Require clicking on a window to focus or focus when the cursor touches it (0/1)
+speedwm.mouse.mfact: 		           1 ! Enable adjusting mfact with your mouse (0/1)
+speedwm.mouse.cfact:                   1 ! Enable adjusting cfact with your mouse (0/1)
 
 !! Rule options
-
-speedwm.rule.refresh:                 0 ! Allow rules to be refreshed if a title/class changes (0/1)
+speedwm.rule.refresh:                  0 ! Allow rules to be refreshed if a title/class changes (0/1)
 
 !! Stack options
-
-speedwm.stack.attachdirection:        3 ! Direction to attach windows in (0: Default, 1: Above, 2: Aside, 3: Below, 4: Bottom, 5: Top)
-speedwm.stack.centerfloating:         1 ! Center floating windows (0/1)
-speedwm.stack.i3mcount:               0 ! Enable i3 like nmaster/mastercount (0/1)
-speedwm.stack.mastercount:            1 ! Number of master clients in the master stack to start with (0/1)
-speedwm.stack.snap:                   20 ! Snap pixel (<char>)
+speedwm.stack.attachdirection:         3 ! Direction to attach windows in (0:  Default, 1:  Above, 2:  Aside, 3:  Below, 4:  Bottom, 5:  Top)
+speedwm.stack.centerfloating:          1 ! Center floating windows (0/1)
+speedwm.stack.i3mcount:                0 ! Enable i3 like nmaster/mastercount (0/1)
+speedwm.stack.mastercount:             1 ! Number of master clients in the master stack to start with (0/1)
+speedwm.stack.snap:                    20 ! Snap pixel (<char>)
 
 !! Text to print when no status bar is running. Empty means nothing.
-
+speedwm.status.separator:              ;
 speedwm.status.defaultstatus:
 
 !! Switcher options
-
-speedwm.switcher.maxheight:           200 ! Max height of the switcher in pixels (<char>)
-speedwm.switcher.maxwidth:            600 ! Max width of the switcher in pixels (<char>)
-speedwm.switcher.menupositionv:       1 ! Menu position of the switcher vertically (0: Bottom, 1: Center, 2: Top)
-speedwm.switcher.menupositionh:       1 ! Menu position of the switcher horizontally (0: Left, 1: Center, 2: Right)
+speedwm.switcher.maxheight:            200 ! Max height of the switcher in pixels (<char>)
+speedwm.switcher.maxwidth:             600 ! Max width of the switcher in pixels (<char>)
+speedwm.switcher.menupositionv:        1 ! Menu position of the switcher vertically (0:  Bottom, 1:  Center, 2:  Top)
+speedwm.switcher.menupositionh:        1 ! Menu position of the switcher horizontally (0:  Left, 1:  Center, 2:  Right)
 
 !! Systray options
-
-speedwm.systray.padding:              2 ! Extra padding between status and systray (0/1)
-speedwm.systray.pinning:              0 ! Always show systray on the focused monitor or <num> (0/<monitor number>)
-speedwm.systray.position:             0 ! Position of the systray horizontally (0: Right, 1: Left)
+speedwm.systray.padding:               2 ! Extra padding between status and systray (0/1)
+speedwm.systray.pinning:               0 ! Always show systray on the focused monitor or <num> (0/<monitor number>)
+speedwm.systray.position:              0 ! Position of the systray horizontally (0:  Right, 1:  Left)
 
 !! Tag options
-
-speedwm.tag.pertag:                   1 ! Allow tags to have their own values (0/1)
-speedwm.tag.preview:                  1 ! Enable tag previews (0/1)
-speedwm.tag.preview.bar:              1 ! Include the bar in the tag preview (0/1)
-speedwm.tag.preview.paddingh:         0 ! Extra horizontal padding between the tag preview and the edge of the screen (<num>)
-speedwm.tag.preview.paddingv:         0 ! Extra vertical padding between the tag preview and the bar (<num>)
-speedwm.tag.preview.scale:            4 ! Amount to scale down the preview picture by (<num>)
-speedwm.tag.resetgaps:                0 ! Reset gaps when the tag has no clients (0/1)
-speedwm.tag.resetlayout:              0 ! Reset layout when the tag has no clients (0/1)
-speedwm.tag.resetmfact:               0 ! Reset mfact when the tag has no clients (0/1)
-speedwm.tag.start:                    1 ! Start on a tag on startup (0/1)
-speedwm.tag.underline:                0 ! Draw an underline on the tags (0/1)
-speedwm.tag.underlineall:             0 ! Show underline on all tags or just the selected tags (0/1)
-speedwm.tag.underlinepad:             5 ! Horizontal padding between the underline and tag (<num>)
-speedwm.tag.underlinestroke:          2 ! Height of the underline in pixels (<num>)
-speedwm.tag.underlinevoffset:         0 ! How far above the bottom of the bar the line should appear (<num)
-speedwm.tag.urgentwindows:            1 ! Color tags that have urgent tags on them (0/1)
+speedwm.tag.pertag:                    1 ! Allow tags to have their own values (0/1)
+speedwm.tag.preview:                   1 ! Enable tag previews (0/1)
+speedwm.tag.preview.bar:               1 ! Include the bar in the tag preview (0/1)
+speedwm.tag.preview.paddingh:          0 ! Extra horizontal padding between the tag preview and the edge of the screen (<num>)
+speedwm.tag.preview.paddingv:          0 ! Extra vertical padding between the tag preview and the bar (<num>)
+speedwm.tag.preview.scale:             4 ! Amount to scale down the preview picture by (<num>)
+speedwm.tag.resetgaps:                 0 ! Reset gaps when the tag has no clients (0/1)
+speedwm.tag.resetlayout:               0 ! Reset layout when the tag has no clients (0/1)
+speedwm.tag.resetmfact:                0 ! Reset mfact when the tag has no clients (0/1)
+speedwm.tag.start:                     1 ! Start on a tag on startup (0/1)
+speedwm.tag.underline:                 0 ! Draw an underline on the tags (0/1)
+speedwm.tag.underlineall:              0 ! Show underline on all tags or just the selected tags (0/1)
+speedwm.tag.underlinepad:              5 ! Horizontal padding between the underline and tag (<num>)
+speedwm.tag.underlinestroke:           2 ! Height of the underline in pixels (<num>)
+speedwm.tag.underlinevoffset:          0 ! How far above the bottom of the bar the line should appear (<num)
+speedwm.tag.urgentwindows:             1 ! Color tags that have urgent tags on them (0/1)
 
 !! Tiling options
-
-speedwm.tiling.resizehints:           0 ! Enable resize hints (0/1)
+speedwm.tiling.resizehints:            0 ! Enable resize hints (0/1)
 
 !! Shell to run commands with (<char>)
+speedwm.run.shell:                     /bin/sh
 
-speedwm.run.shell:                    /bin/sh
+!! Status options
+!!
+!! Note that these only apply if you use the built-in speedwm status (status)
+speedwm.status.hideemptymodule:        1
+/*
+speedwm.status.leftpadding:
+speedwm.status.rightpadding:
+speedwm.status.separator:
+*/
 
 !! You have reached the bottom of the speedwm config file.
 !! It may be used as a reference for writing a config file from scratch, or simply copied somewhere and edited.
 !! Defaults here should more or less represent the settings in the speedwm source code.
-

@@ -26,6 +26,6 @@ click_status_basic(Bar *bar, Arg *arg, BarClickArg *a)
     if (selmon->hidestatus) {
         return 0;
     } else {
-	    return ClkStatusText;
+	    return clickstatusbar;
     }
 }

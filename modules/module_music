@@ -5,6 +5,7 @@
 module_config
 [ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
 [ "$ENABLE_ITEM9" = "true" ] || exit
+[ -e "/tmp/module_music_hidden" ] && exit
 
 # get information, the following functions depend on this
 GETPROP() {
@@ -14,7 +15,7 @@ GETPROP() {
     [ "$ITEM9_BACKEND" = "mocp" ] && command -v mocp > /dev/null || ITEM9_BACKEND=cmus
     [ -z "$ITEM9_BACKEND" ] && exit
     pgrep -x "$ITEM9_BACKEND" > /dev/null || exit
-    
+
     # for cmus
     CMUS() {
 		    MUSIC_FILENAME="$(basename "$(cmus-remote -C status | grep file)")"
@@ -28,11 +29,11 @@ GETPROP() {
 		    MUSIC_TIMETOTAL="$(cmus-remote -Q | grep duration | sed "s/duration //g" | awk '{printf "%02d:%02d:%02d",$0/3600,$0%3600/60,$0%60}' | sed "s/00://")"
 		    MUSIC_REPEAT="$(cmus-remote -C status | grep 'repeat ' | sed "s/true/Yes/; s/false/No/; s/set repeat //")"
 		    MUSIC_SHUFFLE="$(cmus-remote -C status | grep 'shuffle' | sed "s/on/Yes/; s/off/No/; s/set shuffle //")"
-		    
+
             # for notification
             FULL_MUSIC="$(printf "${ICON}${ICONSPACING}Artist: $MUSIC_ARTIST\nTitle: $MUSIC_TITLE\nAlbum: $MUSIC_ALBUM\nGenre: $MUSIC_GENRE\nTime elapsed: $MUSIC_TIMEELAPSED\nTotal time: $MUSIC_TIMETOTAL\nFile: $MUSIC_FILENAME\nDirectory: $MUSIC_FILEDIR\nPath: $MUSIC_FILEDIR/$MUSIC_FILENAME\nRepeat: $MUSIC_REPEAT\nShuffle: $MUSIC_SHUFFLE" | sed "s/stellar_amp/\&/g")"
     }
-    
+
     # for mocp
     MOCP() {
 		    MUSIC_FILENAME="$(basename "$(mocp -Q %file)")"
@@ -44,11 +45,11 @@ GETPROP() {
 		    MUSIC_TIMEELAPSED="$(mocp -Q %ct)"
 		    MUSIC_TIMETOTAL="$(mocp -Q %tt)"
 		    # todo: genre
-		    
+
             # for notification
             FULL_MUSIC="$(printf "${ICON}${ICONSPACING}Artist: $MUSIC_ARTIST\nTitle: $MUSIC_TITLE\nAlbum: $MUSIC_ALBUM\nTime elapsed: $MUSIC_TIMEELAPSED\nTotal time: $MUSIC_TIMETOTAL\nFile: $MUSIC_FILENAME\nDirectory: $MUSIC_FILEDIR\nPath: $MUSIC_FILEDIR/$MUSIC_FILENAME" | sed "s/stellar_amp/\&/g")"
     }
-    
+
     [ "$ITEM9_BACKEND" = "cmus" ] && CMUS || MOCP
 }
 
@@ -58,26 +59,26 @@ CLICK() {
 		# values
 		ICON="$ITEM9_ICON"
 		BUTTON="$(cat /tmp/speedwm-button)"
-		
+
         [ -z "$TERMINAL" ] && TERMINAL=st
-        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
-		
+        [ -n "$ICON" ] && ICONSPACING=" " # one character spacing
+
 		# button
 		case "$BUTTON" in
 		"3") $TERMINAL -e $ITEM9_BACKEND ; exit ;;
 		esac
-		
+
 		# send the notification
 		SEND_NOTIF() {
 				notify-send "$FULL_MUSIC"
-		
+
                 # some information
 				echo "Notification sent successfully!"
 				echo "INFO: $FULL_MUSIC"
-		
+
 				return
 		}
-		
+
 		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
         return
 }

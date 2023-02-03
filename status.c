@@ -1,8 +1,12 @@
-/* This is a fork of dwmblocks licensed under GNU General Public License version 2. 
+/* This is a fork of dwmblocks licensed under GNU General Public License version 2.
  * See LICENSE file for copyright details. */
 
 #define _POSIX_C_SOURCE 200112L
 
+#include "toggle.h"
+#if USEXRESOURCES
+#include <X11/Xresource.h>
+#endif
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,12 +19,29 @@
 #include <err.h>
 #define LENGTH(X) (sizeof(X) / sizeof (X[0]))
 
+int isquit = 0;
+
 typedef struct {
 	char* icon;
 	char* command;
 	unsigned int interval;
 	unsigned int signal;
 } Module;
+enum resource_type {
+	STRING = 0,
+	INTEGER = 1,
+	FLOAT = 2
+};
+typedef struct {
+	char *name;
+	enum resource_type type;
+	void *dst;
+} StatusResourcePref;
+/* this is only here so we can use status.h for clickstatus too */
+typedef struct {
+    char* mcommand;
+    int clickstatuss;
+} ClickStatus;
 typedef struct Thread_ev {
     const Module *module;
     size_t idx;
@@ -50,6 +71,15 @@ static char statusstr[2][256];
 static volatile int statusContinue = 1;
 static pthread_mutex_t write_mut = PTHREAD_MUTEX_INITIALIZER;
 static void (*writestatus) () = setroot;
+
+/* Xresources
+ * Basically dwmblocks version of https://dwm.suckless.org/patches/xresources/dwm-xresources-20210827-138b405.diff
+ */
+#if USEXRESOURCES
+static void load_xresources(void);
+static void resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst);
+#endif
+
 
 void replace(char *str, char old, char new)
 {
@@ -88,10 +118,10 @@ getcmd(const Module *module, char *output)
 	pclose(cmdf);
 	int i = strlen(module->icon);
 
-    if (s && hideemptymodule)
+    if (s && hideemptymodule || !hideemptymodule)
         strcpy(output, module->icon);
-    else if (!hideemptymodule)
-        strcpy(output, module->icon);
+    else
+        strcpy(output, "");
 
     strcpy(output+i, tmpstr);
 
@@ -122,8 +152,8 @@ void
 getcmds(void)
 {
 	const Module* current;
-	for(int i = 0; i < LENGTH(modules); i++)
-	{
+
+	for(int i = 0; i < LENGTH(modules); i++) {
 		current = modules + i;
 		getcmd(current,statusbar[i]);
 	}
@@ -172,21 +202,25 @@ int
 getstatus(char *str, char *last)
 {
 	strcpy(last, str);
+
 	str[0] = '\0';
    	if (leftpadding[0] != '\0')
 		strcat(str, leftpadding);
     for(int i = 0; i < LENGTH(modules); i++) {
 		strcat(str, statusbar[i]);
+
         if (i == LENGTH(modules) - 1)
             strcat(str, " ");
     }
 	str[strlen(str)-1] = '\0';
    	if (rightpadding[0] != '\0')
 		strcat(str, rightpadding);
+
 	return strcmp(str, last);
 }
 
-void setroot()
+void
+setroot()
 {
 	if (!getstatus(statusstr[0], statusstr[1]))
 		return;
@@ -200,7 +234,8 @@ void setroot()
 	XCloseDisplay(dpy);
 }
 
-void pstdout()
+void
+pstdout()
 {
 	if (!getstatus(statusstr[0], statusstr[1]))
 		return;
@@ -209,11 +244,9 @@ void pstdout()
 }
 
 
-void statusloop()
+void
+statusloop()
 {
-#ifndef __OpenBSD__
-	setupsignals();
-#endif
 	setupsignals();
 	getcmds();
 
@@ -283,6 +316,8 @@ void statusloop()
 
     while(statusContinue) {
         syncwrite();
+        if (isquit)
+            exit(0);
         pause();
     }
 
@@ -290,6 +325,66 @@ void statusloop()
         timer_delete(timer_ids[idx]);
     }
 }
+
+#if USEXRESOURCES
+void
+resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst)
+{
+	char *sdst = NULL;
+	int *idst = NULL;
+	float *fdst = NULL;
+
+	sdst = dst;
+	idst = dst;
+	fdst = dst;
+
+	char fullname[256];
+	char *type;
+	XrmValue ret;
+
+	snprintf(fullname, sizeof(fullname), "%s.%s", "speedwm.status", name);
+	fullname[sizeof(fullname) - 1] = '\0';
+
+	XrmGetResource(db, fullname, "*", &type, &ret);
+	if (!(ret.addr == NULL || strncmp("String", type, 64)))
+	{
+		switch (rtype) {
+		case STRING:
+			strcpy(sdst, ret.addr);
+			break;
+		case INTEGER:
+			*idst = strtoul(ret.addr, NULL, 10);
+			break;
+		case FLOAT:
+			*fdst = strtof(ret.addr, NULL);
+			break;
+		}
+	}
+}
+
+void
+load_xresources(void)
+{
+	char *resm;
+	XrmDatabase db;
+	StatusResourcePref *p;
+
+	Display *d = XOpenDisplay(NULL);
+	if (d) {
+		dpy = d;
+	}
+
+	resm = XResourceManagerString(dpy);
+
+	if (!resm)
+		return;
+
+	db = XrmGetStringDatabase(resm);
+	for (p = res; p < res + LENGTH(res); p++)
+		resource_load(db, p->name, p->type, p->dst);
+	XCloseDisplay(dpy);
+}
+#endif
 
 #ifndef __OpenBSD__
 void sighandler(int signum)
@@ -310,11 +405,27 @@ int main(int argc, char** argv)
 {
 	for(int i = 0; i < argc; i++)
 	{
-		if (!strcmp("-d",argv[i]))
-			separator = argv[++i];
-		else if(!strcmp("-p",argv[i]))
+        if(!strcmp("-p",argv[i]))
 			writestatus = pstdout;
+		else if(!strcmp("-pq",argv[i])) {
+            isquit = 1;
+			writestatus = pstdout;
+        } else if (!strcmp("-h", argv[i])) {
+            fputs("status: speedwm status bar\n"
+                    "\nUsage:\n\n"
+                    "status -h        Get help with status.\n"
+                    "status -p        Run status bar and print text to stdout.\n"
+                    "status -pq       Run status bar once and print text to stdout.\n"
+                    , stderr);
+            exit(0);
+        }
 	}
+
+    #if USEXRESOURCES
+    XrmInitialize();
+    load_xresources();
+    #endif
+
 	signal(SIGTERM, termhandler);
 	signal(SIGINT, termhandler);
 	statusloop();

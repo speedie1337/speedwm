@@ -3,10 +3,11 @@
 #include "tags.h"
 #include "layoutindicator.h"
 #include "statusbar.h"
+#include "statusbar-es.h"
 #include "statusbar-basic.h"
+#include "statusbar-basic-es.h"
 #include "statusbar-powerline.h"
+#include "statusbar-powerline-es.h"
 #include "title-basic.h"
 #include "title.h"
-#if USESYSTRAY
 #include "systray.h"
-#endif

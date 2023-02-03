@@ -28,6 +28,7 @@ drawstatustext(int x, char* stext)
 	short isCode = 0;
 	char *text;
 	char *p;
+    Clr oldbg, oldfg;
 
 	len = strlen(stext);
 	if (!(text = (char*) malloc(sizeof(char)*(len + 1))))
@@ -103,6 +104,17 @@ drawstatustext(int x, char* stext)
 					drw_rect(drw, rx + x, ry, rw, rh, 1, 0);
 				} else if (text[i] == 'f') {
 					x += atoi(text + ++i);
+                } else if (text[i] == 'w') {
+					Clr swp;
+					swp = drw->scheme[ColFg];
+					drw->scheme[ColFg] = drw->scheme[ColBg];
+					drw->scheme[ColBg] = swp;
+				} else if (text[i] == 'v') {
+					oldfg = drw->scheme[ColFg];
+					oldbg = drw->scheme[ColBg];
+				} else if (text[i] == 't') {
+					drw->scheme[ColFg] = oldfg;
+					drw->scheme[ColBg] = oldbg;
 				}
 			}
 
@@ -176,6 +188,7 @@ click_status(Bar *bar, Arg *arg, BarClickArg *a)
 int
 click_status_text(Arg *arg, int rel_x, char *text)
 {
+    #if USEMOUSE
 	int i = -1;
 	int x = 0;
 	char ch;
@@ -194,7 +207,8 @@ click_status_text(Arg *arg, int rel_x, char *text)
 				clickstatusn = ch;
 		}
 	}
-	return ClkStatusText;
+    #endif
+	return clickstatusbar;
 }
 
 void

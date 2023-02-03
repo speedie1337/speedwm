@@ -13,7 +13,7 @@
  *
  * For the rest, leave as they currently are and copy them for new rules.
  * Once you're done with your edits, run 'make clean install'.
- * 
+ *
  ***************************************************************/
 
 /* For terminal applications */
@@ -24,21 +24,21 @@
 
 static const Rule rules[]                     = {
     	/* class                instance    title                          tags mask isfloating ispermanent isterminal noswallow monitor unmanaged ignoretransient float x,y,w,h scratch key */
-		{ TERMINAL_CLASS,       NULL,       NULL,                          0,        0,         0,          1,         0,        -1,     0,        0,			   -1,           0 },
-        { "Zathura",            NULL,       NULL,                          0,        0,         0,          0,         0,        -1,     0,        0,			   -1,           0 },
-	    { "qutebrowser",        NULL,       NULL,                          0,        0,         0,          0,         0,        -1,     0,        0,              -1,           0 },
-	    { "Navigator",          NULL,       NULL,                          0,        0,         0,          0,         0,        -1,     0,        0,              -1,           0 },
-	    { BROWSER_CLASS,        NULL,       NULL,                          0,        0,         0,          0,         0,        -1,     0,        0,              -1,           0 },
-        { "mpv",                NULL,       NULL,                          0,        0,         0,          0,         0,        -1,     0,        0,              -1,           0 },
-        { "tabbed",             NULL,       NULL,                          0,        0,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-        { "trayer",             NULL,       NULL,                          0,        1,         1,          0,         1,        -1,     1,        0,              -1,           0 },
-        { "Gsimplecal",         NULL,       NULL,                          0,        1,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-		{ NULL,                 NULL,       "CustomizeMii 3.11 by Leathl", 0,        1,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-	    { NULL,                 NULL,       "Picture-in-Picture",          0,        1,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-	    { NULL,                 NULL,       "About GNU IceCat",            0,        1,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-	    { NULL,                 NULL,       "About LibreWolf",             0,        1,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-	    { NULL,                 NULL,       "About Mozilla Firefox",       0,        1,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-	    { NULL,                 NULL,       "Save Image",                  0,        1,         0,          0,         1,        -1,     0,        0,              -1,           0 },
-		{ NULL,                 NULL,       "scratchpad",                  0,                   0,          0,                   -1,										   's' },
+		{ TERMINAL_CLASS,       NULL,       NULL,                          0,        0,         0,          1,         0,        0,      0,        0,			   -1,           0 },
+        { "Zathura",            NULL,       NULL,                          0,        0,         0,          0,         0,        0,      0,        0,			   -1,           0 },
+	    { "qutebrowser",        NULL,       NULL,                          0,        0,         0,          0,         0,        0,      0,        0,              -1,           0 },
+	    { "Navigator",          NULL,       NULL,                          0,        0,         0,          0,         0,        0,      0,        0,              -1,           0 },
+	    { BROWSER_CLASS,        NULL,       NULL,                          0,        0,         0,          0,         0,        0,      0,        0,              -1,           0 },
+        { "mpv",                NULL,       NULL,                          0,        0,         0,          0,         0,        0,      0,        0,              -1,           0 },
+        { "tabbed",             NULL,       NULL,                          0,        0,         0,          0,         1,        0,      0,        0,              -1,           0 },
+        { "trayer",             NULL,       NULL,                          0,        1,         1,          0,         1,        0,      1,        0,              -1,           0 },
+        { "Gsimplecal",         NULL,       NULL,                          0,        1,         0,          0,         1,        0,      0,        0,              -1,           0 },
+		{ NULL,                 NULL,       "CustomizeMii 3.11 by Leathl", 0,        1,         0,          0,         1,        0,      0,        0,              -1,           0 },
+	    { NULL,                 NULL,       "Picture-in-Picture",          0,        1,         0,          0,         1,        0,      0,        0,              -1,           0 },
+	    { NULL,                 NULL,       "About GNU IceCat",            0,        1,         0,          0,         1,        0,      0,        0,              -1,           0 },
+	    { NULL,                 NULL,       "About LibreWolf",             0,        1,         0,          0,         1,        0,      0,        0,              -1,           0 },
+	    { NULL,                 NULL,       "About Mozilla Firefox",       0,        1,         0,          0,         1,        0,      0,        0,              -1,           0 },
+	    { NULL,                 NULL,       "Save Image",                  0,        1,         0,          0,         1,        0,      0,        0,              -1,           0 },
+		{ NULL,                 NULL,       "scratchpad",                  0,                   0,          0,                   0, 										   's' },
 };
 

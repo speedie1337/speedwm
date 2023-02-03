@@ -29,7 +29,23 @@ options:
 	@echo
 
 .c.o:
-	${CC} -c ${CFLAGS} $<
+	cp bar.h bar.def.h
+	cp options.h options.def.h
+	cp keybinds.h keybinds.def.h
+	cp mouse.h mouse.def.h
+	[ -f "bar.rl.h" ] && cp bar.rl.h bar.h || :
+	[ -f "options.rl.h" ] && cp options.rl.h options.h || :
+	[ -f "keybinds.rl.h" ] && cp keybinds.rl.h keybinds.h || :
+	[ -f "mouse.rl.h" ] && cp mouse.rl.h mouse.h || :
+	${CC} -c ${CFLAGS} -g $<
+	mv bar.def.h bar.h
+	mv options.def.h options.h
+	mv keybinds.def.h keybinds.h
+	mv mouse.def.h mouse.h
+	chmod 0777 bar.h
+	chmod 0777 options.h
+	chmod 0777 keybinds.h
+	chmod 0777 mouse.h
 
 ${OBJ}: options.mk
 
@@ -38,7 +54,7 @@ speedwm: ${OBJ}
 
 ifdef USESTATUS
 status: status.o
-	$(CC) status.o $(CFLAGS) $(LDFLAGS) -o status
+	$(CC) status.o $(CFLAGS) $(LDFLAGS) -o speedwm_status
 status.o: status.c status.h
 	$(CC) -c status.c
 endif
@@ -51,13 +67,13 @@ endif
 clean:
 	rm -f speedwm *.o speedwm-${VERSION}.tar.gz
 	rm -f speedwm-ipc
-	rm -f status
+	rm -f speedwm_status
 	rm -f *.html *.php
 	echo "Cleaned!"
 
 dist: clean
 	mkdir -p speedwm-${VERSION}
-	cp -R *.mk *.c *.h *.png docs/ modules/ scripts/ toggle/ LICENSE Makefile speedwm-${VERSION}
+	cp -R *.mk *.c *.h *.png docs/ modules/ scripts/ toggle/ bar/ LICENSE Makefile speedwm-${VERSION}
 	[ -f README.md ] && cp -f README.md speedwm-${VERSION} || :
 	[ -f speedwm.1 ] && cp -f speedwm.1 speedwm-${VERSION} || :
 	tar -cf speedwm-${VERSION}.tar speedwm-${VERSION}
@@ -85,8 +101,8 @@ install_only_bin: all
 install_only_misc:
 	mkdir -p ${DESTDIR}${PREFIX}/bin
 	mkdir -p ${DESTDIR}${PREFIX}/share/speedwm
-	cp -f docs/keybinds ${DESTDIR}${PREFIX}/share/speedwm/keybinds
-	cp -f docs/dependencies ${DESTDIR}${PREFIX}/share/speedwm/dependencies
+	cp -f docs/keybinds.md ${DESTDIR}${PREFIX}/share/speedwm/keybinds.md
+	cp -f docs/dependencies.md ${DESTDIR}${PREFIX}/share/speedwm/dependencies.md
 	cp -f docs/doc-* ${DESTDIR}${PREFIX}/share/speedwm/
 	cp -f docs/example.* ${DESTDIR}${PREFIX}/share/speedwm/
 	cp -f scripts/speedwm* ${DESTDIR}${PREFIX}/bin ; chmod +x ${DESTDIR}${PREFIX}/bin/speedwm*
@@ -102,31 +118,33 @@ install: all
 	mkdir -p ${DESTDIR}${PREFIX}/share/speedwm
 	mkdir -p ${DESTDIR}${PREFIX}/share/xsessions/
 	mkdir -p ${DESTDIR}${PREFIX}/share/pixmaps/
+	rm -f "${DESTDIR}${PREFIX}/bin/speedwm_status"
 	[ -f speedwm-ipc ] && cp -f speedwm-ipc ${DESTDIR}${PREFIX}/bin || :
-	[ -f status ] && cp -f status ${DESTDIR}${PREFIX}/bin || :
+	[ -f speedwm_status ] && cp -f speedwm_status ${DESTDIR}${PREFIX}/bin || :
 	[ -f speedwm ] && cp -f speedwm ${DESTDIR}${PREFIX}/bin || :
 	[ -f docs/entry.desktop ] && cp -f docs/entry.desktop ${DESTDIR}${PREFIX}/share/xsessions/speedwm.desktop || :
 	[ -f speedwm-ipc ] && chmod 755 ${DESTDIR}${PREFIX}/bin/speedwm-ipc || :
 	[ -f speedwm.png ] && cp -f speedwm.png ${DESTDIR}${PREFIX}/share/pixmaps/speedwm.png || :
 	[ -f speedwm.1 ] && mkdir -p ${DESTDIR}${MANPREFIX}/man1 || :
 	[ -f speedwm.1 ] && cp speedwm.1 ${DESTDIR}${MANPREFIX}/man1/speedwm.1 || :
-	cp -f docs/keybinds ${DESTDIR}${PREFIX}/share/speedwm/keybinds
-	cp -f docs/dependencies ${DESTDIR}${PREFIX}/share/speedwm/dependencies
+	cp -f docs/keybinds.md ${DESTDIR}${PREFIX}/share/speedwm/keybinds.md
+	cp -f docs/dependencies.md ${DESTDIR}${PREFIX}/share/speedwm/dependencies.md
 	cp -f docs/doc-* ${DESTDIR}${PREFIX}/share/speedwm/
 	cp -f docs/example.* ${DESTDIR}${PREFIX}/share/speedwm/
 	cp -f scripts/speedwm* ${DESTDIR}${PREFIX}/bin ; chmod +x ${DESTDIR}${PREFIX}/bin/speedwm*
+	cp -f docs/font-symbols.ttf ${DESTDIR}${PREFIX}/share/fonts/
 	chmod 755 ${DESTDIR}${PREFIX}/bin/speedwm
-	[ -f status ] && chmod 755 ${DESTDIR}${PREFIX}/bin/status || :
+	[ -f speedwm_status ] && chmod 755 ${DESTDIR}${PREFIX}/bin/speedwm_status || :
 	make modules_install
 	[ -f ${DESTDIR}${PREFIX}/bin/speedwm ] && rm -f drw.o speedwm.o util.o speedwm speedwm-ipc || :
 	echo ${VERSION} > ${DESTDIR}${PREFIX}/share/speedwm/speedwm-version
-	rm -f status
+	rm -f speedwm_status
 	rm -f *.o
 
 modules_install:
 	cp -f modules/module_* ${DESTDIR}${PREFIX}/bin
 	chmod +x ${DESTDIR}${PREFIX}/bin/module_*
-   
+
 uninstall:
 	rm -rf ${DESTDIR}${PREFIX}/bin/speedwm* ${DESTDIR}${PREFIX}/bin/speedwm-stellar ${DESTDIR}${PREFIX}/bin/module_*
 	rm -rf ${DESTDIR}${MANPREFIX}/man1/speedwm.1
@@ -204,7 +222,7 @@ upload:
 
 page:
 		make page_php
-	
+
 page_html:
 		chmod +x scripts/speedwm-mkpage
 		chmod +x scripts/speedwm-help
@@ -222,7 +240,7 @@ page_install:
 		make previmg_install
 		make css_install
 		@echo "Copied readme.html/php to ${PAGEDIR}."
-	
+
 previmg_install:
 		[ -f docs/preview.png ] && cp -f docs/preview.png ${PAGEDIR}
 		@echo "Copied preview image to ${PAGEDIR}/preview.png"
@@ -241,7 +259,7 @@ html:
 		chmod +x scripts/speedwm-mkpage
 		chmod +x scripts/speedwm-help
 		./scripts/speedwm-mkpage --make-html
-	
+
 php:
 		chmod +x scripts/speedwm-mkpage
 		chmod +x scripts/speedwm-help
@@ -252,7 +270,7 @@ markdown:
 		chmod +x scripts/speedwm-mkpage
 		chmod +x scripts/speedwm-help
 		./scripts/speedwm-mkpage --make-markdown
-	
+
 man:
 		chmod +x scripts/speedwm-mkpage
 		chmod +x scripts/speedwm-help

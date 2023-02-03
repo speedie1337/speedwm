@@ -2,6 +2,7 @@
 # dfmpeg module for status/stellar
 
 command -v speedwm-dfmpeg > /dev/null || exit
+[ -e "/tmp/module_dfmpeg_hidden" ] && exit
 
 # load config
 module_config
@@ -16,34 +17,34 @@ CLICK() {
 		[ -e "/tmp/outputfilename" ] && DFMPEG_REC_PATH="$(cat /tmp/outputfilename)"
 		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)"
         [ -z "$TERMINAL" ] && TERMINAL=st
-		
+
 		pgrep -x ffmpeg > /dev/null || return
-		
+
 		case "$BUTTON" in
 		"3") speedwm-dfmpeg ; exit ;;
 		"2") $DFMPEG_STOP_CMD ; exit ;;
 		esac
-		
+
 		# check a few things
 		[ -e "/tmp/isaudio" ] && DFMPEG_AUDIO="Recording audio" || DFMPEG_AUDIO="Not recording audio"
 		[ -e "/tmp/isencoding" ] && DFMPEG_ENCODING="Encoding"
         [ -e "/tmp/encoding-codec" ] && DFMPEG_ENCODING="Encoding with $(cat /tmp/encoding-codec)"
-		[ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
-		
+		[ -n "$ICON" ] && ICONSPACING=" " # one character spacing
+
 		# send the notification
 		SEND_NOTIF() {
 				FULL_RECSTATUS="$(printf "${ICON}${ICONSPACING}Recording video $DFMPEG_REC_PATH\n${DFMPEG_AUDIO}, ${DFMPEG_ENCODING}\nMiddle click to stop recording.")"
 				notify-send "$FULL_RECSTATUS"
-		
+
                 # some output
 				echo "Notification sent successfully!"
 				echo "INFO: $FULL_RECSTATUS"
-		
+
 				return
 		}
-		
+
 		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
-        
+
         return
 }
 

@@ -1,3 +1,4 @@
+#if USESYSTRAY
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
 
@@ -37,3 +38,9 @@ static void resizerequest(XEvent *e);
 static void updatesystrayicongeom(Client *i, int w, int h);
 static void updatesystrayiconstate(Client *i, XPropertyEvent *ev);
 static Client *wintosystrayicon(Window w);
+#endif
+
+/* bar integration */
+static int width_systray(Bar *bar, BarWidthArg *a);
+static int draw_systray(Bar *bar, BarDrawArg *a);
+static int click_systray(Bar *bar, Arg *arg, BarClickArg *a);

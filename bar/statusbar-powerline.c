@@ -4,7 +4,7 @@ click_status_pwl(Bar *bar, Arg *arg, BarClickArg *a)
     if (selmon->hidestatus) {
         return 0;
     } else {
-        return ClkStatusText;
+        return clickstatusbar;
     }
 }
 
@@ -81,7 +81,7 @@ drawpowerlinestatus(int xpos, char *stext)
 
 			drw_setscheme(drw, nxtscheme);
 			w = TEXTW(bs+2);
-     		drw_text(drw, x - w, 0, w, bh, lrpad / 2, bs+2, 0, False);
+     		drw_text(drw, x - w, 0, w, bh, lrpad / 2, bs+2, 0, True);
 			x -= w;
 
 			bp = *bs;

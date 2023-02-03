@@ -1,3 +1,4 @@
+#if USESYSTRAY
 static Systray *systray = NULL;
 static unsigned long systrayorientation = _NET_SYSTEM_TRAY_ORIENTATION_HORZ;
 
@@ -9,7 +10,7 @@ width_systray(Bar *bar, BarWidthArg *a)
 	if (!systray)
 		return 1;
 	if (!selmon->hidesystray) {
-        for (i = systray->icons; i; w += i->w + systrayspacing, i = i->next);
+        for (i = systray->icons; i; w += i->w + systrayspacing, i = i->next) {};
             return w ? w + lrpad - systrayspacing : 0;
     } else {
         return 0;
@@ -181,3 +182,22 @@ wintosystrayicon(Window w)
 	for (i = systray->icons; i && i->win != w; i = i->next);
 	return i;
 }
+#else
+int
+width_systray(Bar *bar, BarWidthArg *a)
+{
+	return 1;
+}
+
+int
+draw_systray(Bar *bar, BarDrawArg *a)
+{
+    return 0;
+}
+
+int
+click_systray(Bar *bar, Arg *arg, BarClickArg *a)
+{
+	return 1;
+}
+#endif

@@ -1042,7 +1042,7 @@ struct client_ref_t* copy_clients(Client *clients)
    for (Client *c = nexttiled(clients); c != NULL; c = nexttiled(c->next)) {
       tail->next = (struct client_ref_t*) malloc(sizeof(struct client_ref_t));
       tail = tail->next;
-      
+
       tail->next = NULL;
       tail->c = c;
    }
@@ -1190,7 +1190,7 @@ s_recur_analyze(struct client_ref_t **clients, node_t *node)
       for (; *clients != NULL && n != NULL; n = n->next )
       {
          x = s_recur_analyze(clients, n);
-         
+
          /* Attach the received tree to the tail of the previous element */
          if (x.head != NULL) {
             tail->next = x.head;
@@ -1248,7 +1248,7 @@ s_recur_resize(node_t *node, struct frame_t frame)
       frame.y += node->margin;
       frame.w -= 2 * node->margin;
       frame.h -= 2 * node->margin;
-      
+
       node_length(node->branch, &len, &wgt);
       if (len != 0) {
          delta = frame.h / len;
@@ -1277,7 +1277,7 @@ s_recur_resize(node_t *node, struct frame_t frame)
       frame.y += node->margin;
       frame.w -= 2 * node->margin;
       frame.h -= 2 * node->margin;
-      
+
       node_length(node->branch, &len, &wgt);
       if (len != 0) {
          delta = frame.w / len;
@@ -1320,11 +1320,15 @@ custom(Monitor *m)
 
    struct s_recur_analyze_ret ret = s_recur_analyze(&clients, s_layout_scheme);
 
+   int oh, ov, ih, iv;
+   unsigned int n;
+   getgaps(m, &oh, &ov, &ih, &iv, &n);
+
    struct frame_t frame;
-   frame.x = m->wx;
-   frame.y = m->wy;
-   frame.w = m->ww;
-   frame.h = m->wh;
+   frame.x = m->wx + ov;
+   frame.y = m->wy + oh;
+   frame.w = m->ww - 2 * ov;
+   frame.h = m->wh - 2 * oh;
 
    s_recur_resize(ret.head, frame);
 
@@ -1516,7 +1520,7 @@ node_t* parse_sexp(string_token_t **token)
          t = t->next;
          continue;
       }
-      
+
       /* 'n' client */
       unsigned long n = 0;
       char *endp = NULL;
@@ -1563,7 +1567,7 @@ node_t* parse_sexp(string_token_t **token)
       }
 
       /* margin */
-      if (((strcmp(t->token, "m:") == 0) || strcmp(t->token, ":m") == 0 
+      if (((strcmp(t->token, "m:") == 0) || strcmp(t->token, ":m") == 0
                || strcmp(t->token, "margin:") == 0
                || strcmp(t->token, ":margin") == 0) && head != NULL) {
          t = t->next;
@@ -1626,46 +1630,40 @@ node_t* parse_sexp(string_token_t **token)
    *token = t;
    return head;
 }
-
-void
-set_s_layout(const Arg *arg)
+void set_s_layout(const Arg *arg)
 {
    FILE *pp, *hf;
 
    char pathbuf[1024];
    char *home = getenv("HOME");
+   int sortout = 0;
+   int histout = 0;
    if (home != NULL) {
-      snprintf(pathbuf, 1023, "%s/", customhistfile, home);
+      snprintf(pathbuf, 1023, "%s/" CUSTOM_HISTORY, home);
       pathbuf[1023] = '\0';
-      
-      /* make sure the history file exists */
-      hf = fopen(customhistfile, "a"); fclose(hf);
-      if (!system("sort" customhistfile " | uniq > " customhistfile "~"))
-          return;
 
-      if (!system("mv " customhistfile "~ " customhistfile))
-          return;
+      // make sure the history file exists
+      hf = fopen(CUSTOM_HISTORY, "a"); fclose(hf);
 
-      pp = popen(customprompt customhistfile, "r");
+      sortout = system("sort " CUSTOM_HISTORY " | uniq > " CUSTOM_HISTORY "~");
+      histout = system("mv " CUSTOM_HISTORY "~ " CUSTOM_HISTORY);
+
+      pp = popen("dmenu -i -l 10 -p 'Enter expression:' <" CUSTOM_HISTORY, "r");
    } else {
-      pp = popen(customprompt, "r");
+      pp = popen("dmenu -i -l 10 -p 'Enter expression:'", "r");
    }
 
+   if (sortout || !sortout || histout || !histout)
+    if (!pp) return;
 
-   if (!pp) 
-		return;
-   
-   char buf[2048];
-   buf[2048] = '\0';
-
-   if (!fgets(buf, 1024, pp))
-       return;
-
+   char buf[1024 + 1];
+   buf[1024] = '\0';
+   if (!fgets(buf, 1024, pp)) return;
    fclose(pp);
-   if (buf[0] == '\0')
-		   return;
+   if (buf[0] == '\0') return;
 
-   hf = fopen(customhistfile, "a");
+   // Write to history file
+   hf = fopen(CUSTOM_HISTORY, "a");
    fprintf(hf, "%s", buf);
    fclose(hf);
 
@@ -1679,7 +1677,8 @@ set_s_layout(const Arg *arg)
 
    s_layout_scheme = parse_sexp(&token);
 
-   /* Free the token list */
+   setlayout(arg);
+
    while (token_root != NULL) {
       token = token_root->next;
       free(token_root);

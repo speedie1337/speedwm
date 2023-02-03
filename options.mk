@@ -4,7 +4,7 @@
 ###################################################################################
 
 # speedwm version
-VERSION = 1.8
+VERSION = 1.9
 
 X11INC = /usr/X11R6/include
 X11LIB = /usr/X11R6/lib

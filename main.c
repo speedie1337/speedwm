@@ -1,5 +1,4 @@
 /* This contains the code for ending speedwm, along with memory allocation and IPC support.
- *
  * See LICENSE file for copyright and license details.
  */
 #include <stdarg.h>

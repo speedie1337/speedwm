@@ -360,7 +360,7 @@ ipc_parse_run_command(char *msg, IPCParsedCommand *parsed_command)
   if (*argc == 0) {
     *args = (Arg *)malloc(sizeof(Arg));
     *arg_types = (ArgType *)malloc(sizeof(ArgType));
-    (*arg_types)[0] = ARG_TYPE_NONE;
+    (*arg_types)[0] = arg_none;
     (*args)[0].i = 0;
     (*argc)++;
   } else if (*argc > 0) {
@@ -375,18 +375,18 @@ ipc_parse_run_command(char *msg, IPCParsedCommand *parsed_command)
           // Any values below 0 must be a signed int
           if (YAJL_GET_INTEGER(arg_val) < 0) {
             (*args)[i].i = YAJL_GET_INTEGER(arg_val);
-            (*arg_types)[i] = ARG_TYPE_SINT;
+            (*arg_types)[i] = arg_sint;
             DEBUG("i=%ld\n", (*args)[i].i);
             // Any values above 0 should be an unsigned int
           } else if (YAJL_GET_INTEGER(arg_val) >= 0) {
             (*args)[i].ui = YAJL_GET_INTEGER(arg_val);
-            (*arg_types)[i] = ARG_TYPE_UINT;
+            (*arg_types)[i] = arg_uint;
             DEBUG("ui=%ld\n", (*args)[i].i);
           }
           // If the number is not an integer, it must be a float
         } else {
           (*args)[i].f = (float)YAJL_GET_DOUBLE(arg_val);
-          (*arg_types)[i] = ARG_TYPE_FLOAT;
+          (*arg_types)[i] = arg_float;
           DEBUG("f=%f\n", (*args)[i].f);
           // If argument is not a number, it must be a string
         }
@@ -437,10 +437,10 @@ ipc_validate_run_command(IPCParsedCommand *parsed, const IPCCommand actual)
     ArgType atype = actual.arg_types[i];
 
     if (ptype != atype) {
-      if (ptype == ARG_TYPE_UINT && atype == ARG_TYPE_PTR)
+      if (ptype == arg_uint && atype == arg_ptr)
         // If this argument is supposed to be a void pointer, cast it
         parsed->args[i].v = (void *)parsed->args[i].ui;
-      else if (ptype == ARG_TYPE_UINT && atype == ARG_TYPE_SINT)
+      else if (ptype == arg_uint && atype == arg_sint)
         // If this argument is supposed to be a signed int, cast it
         parsed->args[i].i = parsed->args[i].ui;
       else

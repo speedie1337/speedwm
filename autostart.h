@@ -10,9 +10,6 @@
  *************************************************************/
 
 static const char *autostart[]          = {
-   /* Run the built in status bar */
-   shell, "-c", "pkill status; status &", NULL,
-
    /* Autostart script, if it exists */
    shell, "-c", "$HOME/.config/speedwm/autostart.sh", NULL,
 

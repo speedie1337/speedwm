@@ -14,35 +14,60 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "speedwm" "1" "" "1.8" "speedie\[cq]s window manager."
+.TH "speedwm" "1" "" "1.9" "speedie\[cq]s window manager."
 .hy
 .SH speedwm
-.SS What is speedwm?
+.SS Table of contents
+.IP " 0." 4
+Table of contents
+.IP " 1." 4
+What is speedwm?
+.IP " 2." 4
+Installation
+.IP " 3." 4
+Layouts
+.IP " 4." 4
+Default keybinds
+.IP " 5." 4
+Dependencies
+.IP " 6." 4
+Important
+.IP " 7." 4
+Configuration and .Xresources
+.IP " 8." 4
+Signals
+.IP " 9." 4
+Status bar
+.IP "10." 4
+Additional note on autostart
+.IP "11." 4
+Configuring the bar
+.IP "12." 4
+Keybinds
+.IP "13." 4
+Credits
+.SS 1. What is speedwm?
 .PP
-speedwm is a window manager forked from suckless.org\[cq]s dwm or
-dynamic window manager.
+speedwm is a window manager forked from dwm or dynamic window manager.
 It manages the user\[cq]s open windows and tiles them according to a set
 layout (dynamic).
 .PP
 Just like dwm, speedwm also tries to be minimal but also has
 functionality and aesthetics as a goal.
-It is also much more minimal than other window managers like i3-gaps
-while offering many more features.
-.PP
 Tiling window managers (unlike floating window managers that you may be
 used to) tile windows based on a set layout making them easy to get
 productive on.
 They also encourage the user to use their keyboard instead of the mouse
-so that the user doesn\[cq]t have to move their hands much but there are
-mouse keybinds and more can be added.
-.SS Installation
+so that the user doesn\[cq]t have to move his hands much but there are
+also mouse binds and more can be added by the user if desired.
+.SS 2. Installation
 .PP
 In order to install this build of speedwm, all dependencies must be
 installed.
-You can see (Dependencies) for a list of all dependencies required to
-use this fork.
+You can see `Dependencies' for a list of all dependencies required and
+optionally recommended to use speedwm.
 .IP \[bu] 2
-git clone https://codeberg.org/speedie/speedwm
+git clone https://git.speedie.gq/speedwm
 .IP \[bu] 2
 cd speedwm
 .IP \[bu] 2
@@ -53,13 +78,38 @@ If any warnings/errors show up, fix it by installing the missing
 dependency.
 .RE
 .IP \[bu] 2
-If a .xinitrc is used, add `speedwm' to the end.
+If a .xinitrc is used, add \f[V]speedwm\f[R] to the end of the file.
+If you\[cq]re using .xinit you can also just
+\f[V]startx /usr/bin/speedwm\f[R].
 .RS 2
 .IP \[bu] 2
 If you do not have a .xinitrc, you can add autostart commands to the
 file \[ti]/.config/speedwm/autostart.sh.
 .RE
-.SS Layouts
+.IP \[bu] 2
+If a display manager is used, make sure it supports .desktop entries.
+.IP \[bu] 2
+NOTE: \f[V]ly\f[R] is known to have issues with dwm and speedwm.
+.PP
+If you see a bar or at least a cursor, your X server is likely working.
+If you do \f[B]not\f[R] see a cursor or a bar, and no keys seem to do
+anything, your X server is most likely not configured properly.
+If you get sent back to the TTY, your X server is most likely not
+configured properly.
+In this case, see your distro\[cq]s wiki page on how to set up X11.
+.PP
+Note that speedwm is not and will \f[B]never\f[R] be compatible with
+Wayland.
+I have no interest in ever supporting or developing for it.
+Please don\[cq]t create any issues regarding Wayland support.
+.PP
+If you\[cq]re having any issues on operating systems with the BSD
+kernel, or something like NixOS, please file a bug report here on
+Codeberg, or by emailing me.
+.PP
+If you have any questions, see the official speedwm
+wiki (https://speedwm.speedie.gq).
+.SS 3. Layouts
 .PP
 speedwm comes with the following layouts:
 .IP \[bu] 2
@@ -88,53 +138,26 @@ Horizonal Grid
 Dynamic Grid
 .IP \[bu] 2
 Custom
+.IP \[bu] 2
+Empty
 .PP
 They can be switched between using a little menu (See Keybinds for more
 information) or by right clicking the Layout indicator.
 The more commonly used layouts can be switched between using a quick
 keybind.
-.SS Keybinds
+.SS 4. Default keybinds
 .PP
 This is a full list of keybinds.
 Please let me know if any keybinds are missing as these have been
 manually added.
-.PP
-Keybinds for regular applications
+.SS Keybinds for regular applications
 .IP \[bu] 2
 Super+Shift+Enter - Opens the defined terminal (default is st)
 .IP \[bu] 2
-Super+Shift+Colon - Opens a dmenu prompt
-.IP \[bu] 2
-Super+Shift+s - Opens `maim' to take a screenshot and copies it to the
-clipboard using `xclip' (requires speedwm-extras)
-.IP \[bu] 2
-Super+Shift+f - Opens the defined file manager
+Super+Shift+Colon - Opens an spmenu prompt
 .IP \[bu] 2
 Super+Shift+w - Opens the defined web browser
-.IP \[bu] 2
-Super+Shift+o - Opens the speedwm-dfmpeg dmenu script to record your
-screen.
-(requires speedwm-extras)
-.IP \[bu] 2
-Super+Shift+t - Opens the defined editor in your terminal
-.IP \[bu] 2
-Super+Shift+m - Kills the defined music player
-.IP \[bu] 2
-Super+Shift+a - Opens the defined mixer in your terminal
-.IP \[bu] 2
-Super+Shift+m - Opens the defined music player
-.IP \[bu] 2
-Super+Shift+x - Opens the defined system process viewer in your terminal
-.IP \[bu] 2
-Super+Shift+c - Opens the defined chat client
-.IP \[bu] 2
-Super+Shift+d - Opens iron in the terminal if it is installed
-.IP \[bu] 2
-Super+Shift+u - Opens the defined RSS reader
-.IP \[bu] 2
-Super+Shift+r - Opens the defined email client
-.PP
-These keybinds are for navigating speedwm
+.SS These keybinds are for navigating speedwm
 .IP \[bu] 2
 Super+f - Fullscreen the selected window
 .IP \[bu] 2
@@ -158,8 +181,6 @@ Super+Minus - Show the scratchpad
 Super+Equal - Remove the scratchpad
 .IP \[bu] 2
 Super+Enter - Switch order of windows
-.IP \[bu] 2
-Super+Colon - Open a list of desktop entries in dmenu
 .IP \[bu] 2
 Super+Tab - Switch between windows on the same tag.
 (Microsoft Windows-like Alt+Tab)
@@ -225,6 +246,8 @@ Super+Shift+9 - Preview tag 9
 .IP \[bu] 2
 Super+Shift+q - Close the current window
 .IP \[bu] 2
+Super+Shift+\  - Kill all clients except focused.
+.IP \[bu] 2
 Super+Shift+.
 - Increase bar padding and gaps by 1
 .IP \[bu] 2
@@ -235,11 +258,6 @@ Super+Shift+/ - Reset bar padding and gaps
 Super+Shift+h/j/k/l - Rotates a stack.
 .IP \[bu] 2
 Super+Shift+Arrow - Resizes a window in floating mode
-.IP \[bu] 2
-Super+Shift+Escape - Ask the user if they want to shutdown or reboot or
-nothing
-.IP \[bu] 2
-Super+Shift+Tab - Switch between windows and tags in detail.
 .IP \[bu] 2
 Super+Shift+Equal - Toggle scratchpads
 .IP \[bu] 2
@@ -265,12 +283,6 @@ Super+Control+8 - Combine the current tag with tag 8
 .IP \[bu] 2
 Super+Control+9 - Combine the current tag with tag 9
 .IP \[bu] 2
-Super+Control+q - Mutes your audio
-.IP \[bu] 2
-Super+Control+w - Increases your volume
-.IP \[bu] 2
-Super+Control+e - Decreases your volume
-.IP \[bu] 2
 Super+Control+0 - Tag all tags at once.
 .IP \[bu] 2
 Super+Control+Enter - Mirror the layout
@@ -286,10 +298,8 @@ Super+Control+j/k - Move focus between hidden windows (Can then `Show')
 Super+Control+Arrow - Moves a window to any corner of your screen (Arrow
 key)
 .IP \[bu] 2
-Super+Control+Tab - Open a dmenu prompt asking the user what layout to
+Super+Control+Tab - Open a spmenu prompt asking the user what layout to
 switch to
-.IP \[bu] 2
-Super+Control+h - Open the man page for speedwm in dmenu.
 .IP \[bu] 2
 Super+Control+o - Show a hidden focused window
 .IP \[bu] 2
@@ -298,8 +308,6 @@ Super+Control+a/d - Move to the next/previous tag
 Super+Control+Shift+o - Show all hidden windows
 .IP \[bu] 2
 Super+Control+Shift+p - Hide all windows
-.IP \[bu] 2
-Super+Control+Shift+Colon - Open a list of extra software in dmenu
 .IP \[bu] 2
 Super+Control+Shift+z/c - Move to the next/previous tag skipping any
 without windows open
@@ -324,37 +332,14 @@ Super+Control+Shift+8 - Move the focused window to tag 8
 .IP \[bu] 2
 Super+Control+Shift+9 - Move the focused window to tag 9
 .IP \[bu] 2
-Super+Control+Shift+Esc - Open speedwm-utils (requires speedwm-extras)
-.IP \[bu] 2
 Super+Control+Shift+Arrow - Resize the window to the screen size.
-.IP \[bu] 2
-Super+Control+Shift+s - Set a wallpaper (requires speedwm-extras)
-.IP \[bu] 2
-Super+Control+Shift+n - Connect to WLAN using iwd (requires
-speedwm-extras)
-.IP \[bu] 2
-Super+Control+Shift+b - Connect to a Bluetooth device using bluez
-(requires speedwm-extras)
-.IP \[bu] 2
-Super+Control+Shift+q - Pauses your music
-.IP \[bu] 2
-Super+Control+Shift+w - Decreases your music volume
-.IP \[bu] 2
-Super+Control+Shift+e - Increase your music volume
-.IP \[bu] 2
-Super+Control+Shift+r - Restart speedwm
 .IP \[bu] 2
 Super+Control+Shift+j/k - Change window size vertically (cfact)
 .IP \[bu] 2
 Super+Control+Shift+Equal - Increase bar height by 1
 .IP \[bu] 2
 Super+Control+Shift+Minus - Decrease bar height by 1
-.PP
-Chained keybinds
-.IP \[bu] 2
-Super+r & s - Run screenkey if it is installed
-.IP \[bu] 2
-Super+r & d - Kill screenkey
+.SS Chained keybinds
 .IP \[bu] 2
 Super+t & r - Reorganize tags and move windows
 .IP \[bu] 2
@@ -376,23 +361,6 @@ Super+t & r - Reset all bar modules
 .IP \[bu] 2
 Super+t & s - Make the current selected window sticky
 .IP \[bu] 2
-Super+c & w - Get the weather (Using wttr.in) using speedwm-core
-(requires speedwm-extras)
-.IP \[bu] 2
-Super+c & n - Switch to the next track
-.IP \[bu] 2
-Super+c & p - Switch to the previous track
-.IP \[bu] 2
-Super+g & t - Toggle gaps
-.IP \[bu] 2
-Super+g & 0 - Reset gaps
-.IP \[bu] 2
-Super+g & i - Increase inner gaps by 1
-.IP \[bu] 2
-Super+g & o - Increase outer gaps by 1
-.IP \[bu] 2
-Super+g & j/k - Increase/decrease gaps between windows by 1
-.IP \[bu] 2
 Super+p & j/k - Increase/decrease bar padding by 1
 .IP \[bu] 2
 Super+p & u/d - Increase/decrease bar padding by 5
@@ -403,60 +371,49 @@ Super+p & t - Toggle bar padding on/off
 .IP \[bu] 2
 Super+, & r - Reset powerline options
 .IP \[bu] 2
-Super+q & o - Kill every window except the focused
+Super+l & q - Rotate forward in the layout axis
 .IP \[bu] 2
-Super+q & n/p - Switch to the next/previous track
+Super+l & w - Rotate forward in the master axis
 .IP \[bu] 2
-Super+q & l/h - Seek 3 seconds forward/backwards
+Super+l & e - Rotate forward in the stack axis
 .IP \[bu] 2
-Super+q & u/d - Seek 10 seconds forward/backwards
+Super+l & r - Rotate forward in the secondary stack axis
 .IP \[bu] 2
-Super+q & 0 - Seek to the beginning of the track
+Super+l & q - Rotate backwards in the layout axis
+.IP \[bu] 2
+Super+l & w - Rotate backwards in the master axis
+.IP \[bu] 2
+Super+l & e - Rotate backwards in the stack axis
+.IP \[bu] 2
+Super+l & r - Rotate backwards in the secondary stack axis
+.IP \[bu] 2
+Super+l & 1 - Set layout to layout 0
+.IP \[bu] 2
+Super+l & 2 - Set layout to layout 1
+.IP \[bu] 2
+Super+l & 3 - Set layout to layout 2
+.IP \[bu] 2
+Super+l & 4 - Set layout to layout 3
+.IP \[bu] 2
+Super+l & 5 - Set layout to layout 4
+.IP \[bu] 2
+Super+l & 6 - Set layout to layout 5
+.IP \[bu] 2
+Super+l & 7 - Set layout to layout 6
+.IP \[bu] 2
+Super+l & 8 - Set layout to layout 7
+.IP \[bu] 2
+Super+l & 9 - Set layout to layout 8
+.IP \[bu] 2
+Super+l & 0 - Set layout to layout 9
 .IP \[bu] 2
 Super+Shift+g & i - Decrease inner gaps by 1
 .IP \[bu] 2
 Super+Shift+g & o - Decrease outer gaps by 1
-.IP \[bu] 2
-Super+Shift+e & a - Open the virtual keyboard
-.IP \[bu] 2
-Super+Shift+e & e - Open a list of all emojis and copy the selection
-.IP \[bu] 2
-Super+Shift+e & r - Randomize wallpaper
-.IP \[bu] 2
-Super+Shift+e & p - Set wallpaper to the previous
-.PP
-These will only work if your keyboard has special multimedia buttons.
-.IP \[bu] 2
-Mute button - Mutes your audio
-.IP \[bu] 2
-Up Volume button - Increases your volume
-.IP \[bu] 2
-Next/Previous song button - Switch to the next/previous track
-.PD 0
-.P
-.PD
-.IP \[bu] 2
-Down Volume button - Decreases your volume
-.IP \[bu] 2
-Pause button - Pauses the current track
-.IP \[bu] 2
-Stop button - Stops your defined music player
+.SS These will only work if your keyboard has special multimedia buttons.
 .IP \[bu] 2
 Browser button - Opens your defined web browser
-.IP \[bu] 2
-Power button - Ask if you wanna shut down, restart or lock your
-computer.
-(requires speedwm-extras)
-.IP \[bu] 2
-Email button - Open your defined email client
-.IP \[bu] 2
-System button - Open your defined status viewer in a terminal
-.IP \[bu] 2
-Music button - Open your defined music player
-.IP \[bu] 2
-WLAN button - Disconnect from WLAN (requires speedwm-extras)
-.PP
-These binds can be activated using your mouse
+.SS These binds can be activated using your mouse
 .IP \[bu] 2
 Tag (Left click) - Switch to tag
 .IP \[bu] 2
@@ -464,13 +421,17 @@ Tag (Scrolling up/down) - Switch to the next/previous tag
 .IP \[bu] 2
 Layout indicator (Left click) - Switch to the next layout
 .IP \[bu] 2
-Layout indicator (Middle click) - Switch to the previous layout
+Layout indicator (Right click) - Switch to the previous layout
 .IP \[bu] 2
-Layout indicator (Right click) - Open a dmenu list of all layouts
+Layout indicator (Middle click) - Open an spmenu list of all layouts
 (requires speedwm-extras)
 .IP \[bu] 2
-Window title (Right click) - Open speedwm-utils (requires
-speedwm-extras)
+Layout indicator (Scrolling up/down) - Switch to the next/previous
+layout
+.IP \[bu] 2
+Window title (Left click) - Show/hide the window
+.IP \[bu] 2
+Window title (Scrolling up/down) - Move windows around in the stack.
 .IP \[bu] 2
 Focused window (Super+Alt+Left click) - Move the focused window around
 .IP \[bu] 2
@@ -483,110 +444,86 @@ Dragging (Super+Right click) - Increase/decrease size of each window
 (mfact)
 .IP \[bu] 2
 Dragging (SuperControl+Right click) - Increase/decrease cfact
-.IP \[bu] 2
-Root window (Right click) - List .desktop entries and open them
-(requires j4-dmenu-desktop)
-.SS Dependencies
+.SS 5. Dependencies
+.SS Required
 .PP
 These are absolutely necessary, speedwm will NOT compile without them -
-libxft - pango - libXinerama - Can be disabled through editing toggle.mk
-if you\[cq]re not interested in multiple monitors.
-- imlib2 - Tag previews, Window icons.
-Can be disabled through editing toggle.mk and toggle.h if you don\[cq]t
-want these features.
-- yajl - Required for the IPC patch.
-If the IPC patch is disabled, you do not need this.
-- tcc - Very minimal C compiler that speedwm uses to speed up compile
-times.
-If you don\[cq]t want this dependency, edit host.mk and set CC to `cc'
-(or what you prefer).
+libxft - Used for rendering text - pango - Used to markup text -
+libXinerama - Used for multi-monitor support.
+- Can be disabled through editing toggle.mk if you\[cq]re not interested
+in multiple monitors.
+- imlib2 - Used for tag previews, window icons.
+- Can be disabled through editing toggle.mk and toggle.h if you
+don\[cq]t want these features.
+- yajl - Used to interact with speedwm through a sock.
+- Required for the IPC patch.
+If the IPC patch is disabled through toggle.mk and toggle.h, you do not
+need this.
+- tcc - Very minimal C compiler that speedwm uses to greatly speed up
+compile times.
+If you do not want this dependency, edit host.mk and set CC to `cc' (or
+what C99 compiler you prefer).
 .SS Features
 .PP
 These are necessary for certain features and keybinds.
 If you want to use an alternative, change it in options.h and/or
 keybinds.h and mouse.h.
 .IP \[bu] 2
-dmenu
+spmenu (https://speedie.gq/projects/spmenu.php)
 .RS 2
 .IP \[bu] 2
-NOTE: dmenu is required for most scripts included with this build of
-speedwm.
-My build is required for proper Pywal support.
+As of speedwm 1.9, speedwm now expects spmenu (fork of dmenu) to be on
+the system instead of dmenu.
+While you can revert this change I cannot provide support due to missing
+arguments.
 .RE
 .IP \[bu] 2
-picom
+xrdb
 .RS 2
 .IP \[bu] 2
-Optional but speedwm looks sort of ugly without a compositor.
-.RE
-.IP \[bu] 2
-xrdb (Install if you want .Xresources support)
-.IP \[bu] 2
-pywal (Install if you want pywal support.
-Requires swal (the default way to set wallpapers) or a tool that
-supports the correct signal for instant reloading)
-.IP \[bu] 2
-j4-dmenu-desktop
-.RS 2
-.IP \[bu] 2
-Required for dmenu desktop entries..
+xrdb is used for external speedwm configuration (ie.
+after compiling).
+It is \f[B]not\f[R] mandatory if you don\[cq]t need this.
 .RE
 .SS Software
 .PP
-This build of speedwm comes with binds for software.
-You can add, change and remove keybinds by editing `keybinds.h' and
-running `make clean install'.
-.IP \[bu] 2
-libspeedwm
+This build of speedwm comes with keybinds for software.
+You can add, change and remove keybinds by editing \f[V]keybinds.h\f[R]
+and \f[V]mouse.h\f[R] and running \f[V]make clean install\f[R].
 .IP \[bu] 2
 speedwm-extras
 .RS 2
 .IP \[bu] 2
-Important metapackage containing extra scripts that speedwm makes use
-of.
+Metapackage containing extra scripts that speedwm makes use of.
 (https://codeberg.org/speedie/speedwm-extras)
 .RE
 .IP \[bu] 2
-st (Terminal)
-.IP \[bu] 2
-Chromium (Web browser)
-.IP \[bu] 2
-htop (Status monitor)
-.IP \[bu] 2
-newsboat (RSS reader)
-.IP \[bu] 2
-zathura (PDF reader)
-.IP \[bu] 2
-cmus (Default music player)
+libspeedwm
 .RS 2
 .IP \[bu] 2
-Default status bar also has support for moc (Music On Console)
+Dependency for speedwm-extras allowing you to perform actions
+externally.
 .RE
 .IP \[bu] 2
-neovim (Text editor)
+st - Default terminal
 .IP \[bu] 2
-neomutt (Email client)
-.IP \[bu] 2
-lf (File manager)
-.IP \[bu] 2
-slock (Lock screen)
-.IP \[bu] 2
-weechat (IRC client)
-.IP \[bu] 2
-tmux (Used for the music player and IRC client)
+Chromium - Default web browser
 .PP
-And everything under `Features'.
-.SS Important
+And everything under \f[V]Features\f[R].
+.SS 6. Important
 .PP
 If you\[cq]re used to dwm, speedwm might be a little unfamiliar to you
 at first.
 This is because speedwm doesn\[cq]t use config.h (or config.def.h).
+.PP
 Instead, config.h is split into different parts to make it easier to
 edit.
 Instead of editing config.h you\[cq]ll want to edit:
 .IP \[bu] 2
 autostart.h for starting stuff right before speedwm (For example xclip,
 pywal, etc.)
+.IP \[bu] 2
+bar.h for configuring bar rules.
 .IP \[bu] 2
 options.h for changing colors and applications to use with keybinds.
 .IP \[bu] 2
@@ -603,10 +540,13 @@ keybinds.h for adding/removing keybinds.
 .IP \[bu] 2
 mouse.h for adding/removing mouse binds.
 .IP \[bu] 2
-statusbar.h for adding/removing statuscmd clicks.
+status.h for adding/removing status modules and aadding/removing
+statuscmd clicks.
 .IP \[bu] 2
 ipc.h for adding/removing IPC commands.
 (If support is compiled in)
+.IP \[bu] 2
+query.h for adding/removing queries.
 .IP \[bu] 2
 toggle.h for adding/removing features from getting compiled in.
 .PP
@@ -615,31 +555,31 @@ install' to reinstall speedwm.
 Remember that you can change colors through your .Xresources file (see
 \&.Xresources and Pywal) meaning you do not need to recompile speedwm.
 .PP
-Another important detail you must keep in mind is that this build comes
-with a status bar simply named `speedwm_status'.
-It can be found in the speedwm source code directory.
-It is just a shell script which adds stuff to your status bar.
-It will automatically be started when speedwm starts.
+You can edit the status bar simply by editing its modules
+(modules_\&...)
+and running `make clean install'.
+You can also configure the modules by editing
+`\[ti]/.config/speedwm/statusrc' which is configured entirely in shell
+script syntax.
+.SS 7. Configuration and .Xresources
 .PP
-You can edit the status bar simply by editing `speedwm_stellar' or its
-modules (modules_*) and running `make clean install'.
-You can also configure it by editing `\[ti]/.config/speedwm/statusrc'.
-.PP
-If you want to change status bar, edit options.h and set `static char
-status' to your status bar binary (must be in $PATH).
-Alternatively, you can also set it in .Xresources (See .Xresources and
-Pywal).
-.SS .Xresources and Pywal
-.PP
-This fork of speedwm has .Xresources support thanks to the .Xresources
-patch.
+speedwm has .Xresources support thanks to the .Xresources patch.
 It also has pywal support (tool which grabs colors based on your
 wallpaper).
+.PP
+To configure speedwm, you may /usr/share/speedwm/example.Xresources to
+either \[ti]/.speedwmrc or \[ti]/.config/speedwm/speedwmrc.
+Alternatively, you can also copy the values to your .Xresources file.
+.PP
+\&.speedwmrc or speedwm/speedwmrc will be loaded when speedwm restarts.
+If you want to load a .Xresources file you\[cq]ll need to add that to
+autostart.sh.
 .PP
 Colors do not reload automatically though, you must reload them
 manually.
 Use a signal for this (See list of signals above) or simply `libspeedwm
 \[en]perform core_wm_reload'.
+This won\[cq]t restart speedwm, but it will reload colors.
 .PP
 To use .Xresources, make sure `xrdb' is installed.
 If a .xinitrc is used, add `xrdb /path/to/.Xresources/file' before
@@ -663,13 +603,19 @@ general/mainstream .Xresources configurations.
 .PP
 Below is a list of all .Xresources values you can define.
 .IP \[bu] 2
-speedwm.bar.height: 4
+speedwm.bar.alpha: 1
+.IP \[bu] 2
+speedwm.bar.height: 3
 .IP \[bu] 2
 speedwm.bar.position: 1
 .IP \[bu] 2
-speedwm.bar.paddingh: 10
+speedwm.bar.paddingoh: 0
 .IP \[bu] 2
-speedwm.bar.paddingv: 10
+speedwm.bar.paddingov: 0
+.IP \[bu] 2
+speedwm.bar.paddingih: 0
+.IP \[bu] 2
+speedwm.bar.paddingiv: 0
 .IP \[bu] 2
 speedwm.bar.hide: 0
 .IP \[bu] 2
@@ -685,7 +631,9 @@ speedwm.bar.hide.sticky: 0
 .IP \[bu] 2
 speedwm.bar.hide.status: 0
 .IP \[bu] 2
-speedwm.bar.hide.systray: 0
+speedwm.bar.hide.systray: 1
+.IP \[bu] 2
+speedwm.bar.hide.unselected.title: 0
 .IP \[bu] 2
 speedwm.bar.hide.title: 0
 .IP \[bu] 2
@@ -693,13 +641,19 @@ speedwm.bar.hide.icon: 0
 .IP \[bu] 2
 speedwm.bar.hide.clientindicator: 0
 .IP \[bu] 2
+speedwm.inset.x: 0
+.IP \[bu] 2
+speedwm.inset.y: 0
+.IP \[bu] 2
+speedwm.inset.w: 0
+.IP \[bu] 2
+speedwm.inset.h: 0
+.IP \[bu] 2
 speedwm.bar.titleposition: 1
 .IP \[bu] 2
-speedwm.border.roundedcorners: 0
-.IP \[bu] 2
-speedwm.border.cornerradius: 2
-.IP \[bu] 2
 speedwm.border.size: 1
+.IP \[bu] 2
+speedwm.client.map: 1
 .IP \[bu] 2
 speedwm.client.allowurgent: 1
 .IP \[bu] 2
@@ -713,7 +667,7 @@ speedwm.client.decorhints: 1
 .IP \[bu] 2
 speedwm.client.hide.border: 0
 .IP \[bu] 2
-speedwm.client.hide.singleborder: 1
+speedwm.client.hide.unselected.border: 1
 .IP \[bu] 2
 speedwm.client.fade.inactive: 1
 .IP \[bu] 2
@@ -729,9 +683,7 @@ speedwm.client.swallowfloating: 1
 .IP \[bu] 2
 speedwm.client.wmclass: 1
 .IP \[bu] 2
-speedwm.fonts.font: NotoSans Regular 8
-.IP \[bu] 2
-speedwm.col.background: #222222
+speedwm.fonts.font: NotoSans Regular 9
 .IP \[bu] 2
 speedwm.col.layout: #99b3ff
 .IP \[bu] 2
@@ -805,41 +757,43 @@ speedwm.col.systray: #222222
 .IP \[bu] 2
 speedwm.col.tag1: #99b3ff
 .IP \[bu] 2
-speedwm.col.tag1.text: #eeeeee
-.IP \[bu] 2
 speedwm.col.tag2: #99b3ff
-.IP \[bu] 2
-speedwm.col.tag2.text: #eeeeee
 .IP \[bu] 2
 speedwm.col.tag3: #99b3ff
 .IP \[bu] 2
-speedwm.col.tag3.text: #eeeeee
-.IP \[bu] 2
 speedwm.col.tag4: #99b3ff
-.IP \[bu] 2
-speedwm.col.tag4.text: #eeeeee
 .IP \[bu] 2
 speedwm.col.tag5: #99b3ff
 .IP \[bu] 2
-speedwm.col.tag5.text: #eeeeee
-.IP \[bu] 2
 speedwm.col.tag6: #99b3ff
-.IP \[bu] 2
-speedwm.col.tag6.text: #eeeeee
 .IP \[bu] 2
 speedwm.col.tag7: #99b3ff
 .IP \[bu] 2
-speedwm.col.tag7.text: #eeeeee
-.IP \[bu] 2
 speedwm.col.tag8: #99b3ff
 .IP \[bu] 2
-speedwm.col.tag8.text: #eeeeee
-.IP \[bu] 2
 speedwm.col.tag9: #99b3ff
+.IP \[bu] 2
+speedwm.col.tag1.text: #eeeeee
+.IP \[bu] 2
+speedwm.col.tag2.text: #eeeeee
+.IP \[bu] 2
+speedwm.col.tag3.text: #eeeeee
+.IP \[bu] 2
+speedwm.col.tag4.text: #eeeeee
+.IP \[bu] 2
+speedwm.col.tag5.text: #eeeeee
+.IP \[bu] 2
+speedwm.col.tag6.text: #eeeeee
+.IP \[bu] 2
+speedwm.col.tag7.text: #eeeeee
+.IP \[bu] 2
+speedwm.col.tag8.text: #eeeeee
 .IP \[bu] 2
 speedwm.col.tag9.text: #eeeeee
 .IP \[bu] 2
 speedwm.col.tagurgent: #f0e68c
+.IP \[bu] 2
+speedwm.col.background: #222222
 .IP \[bu] 2
 speedwm.col.textnorm: #bbbbbb
 .IP \[bu] 2
@@ -857,17 +811,79 @@ speedwm.col.windowbordersel: #eeeeee
 .IP \[bu] 2
 speedwm.col.windowborderurg: #f0e68c
 .IP \[bu] 2
+speedwm.text.tag1.empty: \[uF8A5]
+.IP \[bu] 2
+speedwm.text.tag2.empty: \[uF8A8]
+.IP \[bu] 2
+speedwm.text.tag3.empty: \[uF8AB]
+.IP \[bu] 2
+speedwm.text.tag4.empty: \[uF8AE]
+.IP \[bu] 2
+speedwm.text.tag5.empty: \[uF8B1]
+.IP \[bu] 2
+speedwm.text.tag6.empty: \[uF8B4]
+.IP \[bu] 2
+speedwm.text.tag7.empty: \[uF8B7]
+.IP \[bu] 2
+speedwm.text.tag8.empty: \[uF8BA]
+.IP \[bu] 2
+speedwm.text.tag9.empty: \[uF8BD]
+.IP \[bu] 2
+speedwm.text.tag1.used: \[uF8A3]
+.IP \[bu] 2
+speedwm.text.tag2.used: \[uF8A6]
+.IP \[bu] 2
+speedwm.text.tag3.used: \[uF8A9]
+.IP \[bu] 2
+speedwm.text.tag4.used: \[uF8AC]
+.IP \[bu] 2
+speedwm.text.tag5.used: \[uF8AF]
+.IP \[bu] 2
+speedwm.text.tag6.used: \[uF8B2]
+.IP \[bu] 2
+speedwm.text.tag7.used: \[uF8B5]
+.IP \[bu] 2
+speedwm.text.tag8.used: \[uF8B8]
+.IP \[bu] 2
+speedwm.text.tag9.used: \[uF8BB]
+.IP \[bu] 2
+speedwm.text.layout1: \[uF330]
+.IP \[bu] 2
+speedwm.text.layout2: \[uF331]
+.IP \[bu] 2
+speedwm.text.layout3: \[uF332]
+.IP \[bu] 2
+speedwm.text.layout4: \[uF333]
+.IP \[bu] 2
+speedwm.text.layout5: \[uF334]
+.IP \[bu] 2
+speedwm.text.layout6: \[uF335]
+.IP \[bu] 2
+speedwm.text.layout7: \[uF336]
+.IP \[bu] 2
+speedwm.text.layout8: \[uF337]
+.IP \[bu] 2
+speedwm.text.layout9: \[uF338]
+.IP \[bu] 2
+speedwm.text.layout10: \[uF339]
+.IP \[bu] 2
+speedwm.text.layout11: \[uF33A]
+.IP \[bu] 2
+speedwm.text.layout12: \[uF33B]
+.IP \[bu] 2
+speedwm.text.layout13: \[uF33C]
+.IP \[bu] 2
+speedwm.text.layout14: \[uF33D]
+.IP \[bu] 2
+speedwm.text.layout15: \[uF33E]
+.IP \[bu] 2
 speedwm.color.hiddentitle: 1
 .IP \[bu] 2
 speedwm.color.layout: 0
 .IP \[bu] 2
-speedwm.color.selectedtitle: 1
+speedwm.color.selectedtitle: 0
 .IP \[bu] 2
 speedwm.bar.powerline.tag.shape: 0
-.IP \[bu] 2
-speedwm.cursor.warp: 1
-.IP \[bu] 2
-speedwm.focus.spawned: 0
 .IP \[bu] 2
 speedwm.fullscreen.hidebar: 1
 .IP \[bu] 2
@@ -889,7 +905,7 @@ speedwm.gaps.smartgaps: 0
 .IP \[bu] 2
 speedwm.gaps.smartgapsize: 0
 .IP \[bu] 2
-speedwm.icon.size: 10
+speedwm.icon.size: 15
 .IP \[bu] 2
 speedwm.icon.spacing: 5
 .IP \[bu] 2
@@ -924,6 +940,8 @@ speedwm.stack.i3mcount: 0
 speedwm.stack.mastercount: 1
 .IP \[bu] 2
 speedwm.stack.snap: 20
+.IP \[bu] 2
+speedwm.status.separator: ;
 .IP \[bu] 2
 speedwm.status.defaultstatus:
 .IP \[bu] 2
@@ -976,7 +994,15 @@ speedwm.tag.urgentwindows: 1
 speedwm.tiling.resizehints: 0
 .IP \[bu] 2
 speedwm.run.shell: /bin/sh
-.SS Signals
+.IP \[bu] 2
+speedwm.status.hideemptymodule: 1
+.IP \[bu] 2
+speedwm.status.leftpadding:
+.IP \[bu] 2
+speedwm.status.rightpadding:
+.IP \[bu] 2
+speedwm.status.separator:
+.SS 8. Signals
 .PP
 Thanks to the `fsignal' patch available on suckless.org\[cq]s website,
 we can easily write shell scripts to interact with dwm and therefore
@@ -1238,24 +1264,43 @@ Below is a list of all signums and what they do.
 .IP \[bu] 2
 120 - Toggle border for the focused window
 .IP \[bu] 2
-121 - Toggle border for when there\[cq]s only one window.
-.IP \[bu] 2
-122 - Reset bar padding and gaps
-.SS Status bar
+121 - Reset bar padding and gaps
+.SS 9. Status bar
 .PP
-speedwm has a status bar.
-It\[cq]s the right part of the bar.
-It supports Pango, status2d and statuscmd markup as well as regular
-plain text and colored emojis or glyphs.
-To override this status, you can use the `speedwm -s ' command.
+speedwm has a status bar module which is enabled by default.
+It\[cq]s the (by default) right part of the bar.
+It supports:
+.IP \[bu] 2
+Pango markup
+.IP \[bu] 2
+Colored glyphs
+.PP
+The regular (non-powerline) bar also supports:
+.IP \[bu] 2
+status2d markup
+.RS 2
+.IP \[bu] 2
+This allows you to color the status bar text at any time.
+.RE
+.IP \[bu] 2
+statuscmd markup
+.RS 2
+.IP \[bu] 2
+This allows the status bar to have clickable modules.
+.RE
+.PP
+as well as regular plain text and colored emojis or glyphs.
+To override this status, you can use the `speedwm -s \[lq]status
+text\[rq]' command.
+If you prefer, you can also use \f[V]xsetroot -name\f[R] which does the
+same thing.
 .PP
 Bundled with speedwm is a fork of dwmblocks.
 dwmblocks is a dwm status bar that handles this all for you through a
 block system.
 This fork has been integrated into the Makefile and is (by default)
 installed when speedwm is compiled.
-The status bar can be configured in the status.c and status.h and
-clickability can be configured in statusbar.h.
+The status bar can be configured in the status.c and status.h.
 .PP
 By default the status bar runs modules that are also bundled with
 speedwm (see modules/ directory).
@@ -1267,20 +1312,309 @@ If you want to use your own status bar, comment out `USESTATUS' in
 toggle.mk and remove /usr/bin/status if speedwm has been installed
 previously.
 Then simply start the status bar through autostart.h,
-\[ti]/.config/speedwm/autostart.sh or .xinitrc if you are using that.
-.SS Additional note on autostart
+\[ti]/.config/speedwm/autostart.sh, .xinitrc or some other means of
+running a program.
+## 10.
+Additional note on autostart
 .PP
 If you wish to add autostart entries without recompiling, consider using
 $HOME/.config/speedwm/autostart.sh.
 This is a path added to autostart.h and you can fill it with anything
 you want.
+Make sure your user has permission to execute the script.
 .PP
-Do note that it will NOT just run once.
-It will run every time you restart and start speedwm (restart signals
-count as well, color reloads do not).
-To get around this, you may wrap stuff in a function in the script and
-have some way of checking if it has ran before such as pgrep.
-If it hasn\[cq]t, call the function.
+Note that this script or any other commands in autostart.h will
+\f[B]not\f[R] run when speedwm is restarted, only when speedwm is first
+started.
+.SS 11. Configuring the bar
+.PP
+As of 1.8, speedwm has a module system.
+It is based on the \f[V]barmodules\f[R] patch for dwm and allows
+extensive control over the way the speedwm bar functions.
+This control has its own header, \f[V]bar.h\f[R].
+.PP
+\f[V]bar.h\f[R] contains a somewhat detailed list of all possible
+options here, but more importantly it contains a \f[V]barrules\f[R]
+array which allows extensive control over where each bar module is
+placed and how it functions.
+In theory, this means you could put 22 instances of the same, boring
+tags on one bar, although why would one do that?
+.PP
+Each module can be aligned to any part of the bar (See `Alignment' for
+possible values).
+If, let\[cq]s say multiple modules both align to the right next to the
+center split (middle), the first module takes priority.
+.SS Module list
+.PP
+Below is a list of all modules bundled with speedwm.
+The source code for these modules are all in \f[V]bar/\f[R] and declared
+in \f[V]bar/items.c\f[R] and \f[V]bar/items.h\f[R].
+.IP \[bu] 2
+ltsymbol: Standard, basic layout icon.
+.IP \[bu] 2
+tags: Basic tags, without powerlines.
+.IP \[bu] 2
+tags_pwl: Tags with powerlines.
+.IP \[bu] 2
+systray: Basic X11 system tray.
+.IP \[bu] 2
+status_basic: Basic status bar.
+.IP \[bu] 2
+status_basic_es: Basic status bar.
+.IP \[bu] 2
+status: Clickable status bar with color support through status2d.
+.IP \[bu] 2
+status_es: Clickable status bar with color support through status2d
+(Extra status).
+.IP \[bu] 2
+status_pwl: Non-clickable status bar with powerlines.
+It supports colors by cycling through colorschemes.
+.IP \[bu] 2
+status_pwl_es: Non-clickable status bar with powerlines.
+It supports colors by cycling through colorschemes (Extra status).
+.IP \[bu] 2
+title: Title, shows all windows, including hidden windows.
+.IP \[bu] 2
+title_basic: Basic title, shows focused window.
+.SS Monitor
+.PP
+The monitor value allows you to specify which monitor the module should
+be placed on.
+In addition to this, you can also choose to only draw the module on the
+focused monitor.
+.PP
+-1: Show the module on all monitors.
+0: Show on the main monitor (monitor 0).
+1: Show on monitor #1 (This can be any monitor you want).
+.SS Bar
+.PP
+This value allows you to specify which bar the module is placed on.
+speedwm supports two (0 and 1) bars.
+0 is the main bar, which is by default placed at the top.
+1 is the second bar which is only visible if modules actively use it.
+If the main bar is placed on the top, the second bar is placed on the
+bottom and vice versa.
+.PP
+0: Place the module on the main bar 1: Place the module on the extra bar
+.SS Alignment
+.PP
+This value allows you to specify an alignment for the module in
+question.
+As previously mentioned, the first module takes priority if multiple
+modules have the same alignment.
+The `center split' refers to the middle of the bar, and that\[cq]s where
+any free space/remainder of the screen ends up for other modules to use
+if desired.
+.IP \[bu] 2
+bar_align_left: Force the module to be placed on the left side of the
+bar if possible.
+.IP \[bu] 2
+bar_align_right: Force the module to be placed on the right side of the
+bar if possible.
+.IP \[bu] 2
+bar_align_center: Force the module to be placed in the center of the bar
+if possible.
+.IP \[bu] 2
+bar_align_left_left: Force the module to be placed on the left side of
+the bar next to the center split.
+.IP \[bu] 2
+bar_align_left_right: Force the module to be placed on the right side of
+the bar next to the center split.
+.IP \[bu] 2
+bar_align_left_center: Force the module to be placed on the center in
+the middle of the remaining space left of the center split on the left..
+.IP \[bu] 2
+bar_align_right_left: Force the module to be placed on the left side of
+the bar next to the center split.
+.IP \[bu] 2
+bar_align_right_right: Force the module to be placed on the right side
+of the bar next to the center split.
+.IP \[bu] 2
+bar_align_right_center: Force the module to be placed on the center in
+the middle of the remaining space left of the center split on the right.
+.IP \[bu] 2
+bar_align_none: No specific alignment.
+This will give the module the remaining space.
+.SS Width
+.PP
+`Width' refers to the function to call which returns the width of a
+module.
+The syntax below applies to all default modules.
+.PP
+Syntax: width_ Example: width_tags_pwl
+.SS Draw
+.PP
+`Draw' refers to the function to call which draws the module on the bar.
+The syntax below applies to all default modules.
+.PP
+Syntax: draw_ Example: draw_tags_pwl
+.SS Click
+.PP
+`Click' refers to the function to call which checks if you clicked on
+said module.
+The syntax below applies to all default modules.
+.PP
+Syntax: click_ Example: click_tags_pwl
+.SS Module name
+.PP
+The module name really doesn\[cq]t mean anything at all.
+.SS Example module
+.PP
+With all that said, you should now be able to add a module.
+In case you weren\[cq]t able to follow along, here is an example of how
+you can add powerline tags on the focused monitor.
+.IP "1." 3
+\f[V]{ \[aq]A\[aq],\f[R]
+.IP "2." 3
+\f[V]0,\f[R]
+.IP "3." 3
+\f[V]bar_align_left,\f[R]
+.IP "4." 3
+\f[V]width_tags_pwl,\f[R]
+.IP "5." 3
+\f[V]draw_tags_pwl,\f[R]
+.IP "6." 3
+\f[V]click_tags_pwl,\f[R]
+.IP "7." 3
+\f[V]\[dq]my cool powerline tags\[dq] },\f[R]
+.PP
+Combined into one line:
+\f[V]{ \[aq]A\[aq], 0, bar_align_left, width-tags_pwl, draw_tags_pwl, click_tags_pwl, \[dq]my cool powerline tags\[dq] },\f[R]
+.PP
+Remember that you can have put any module wherever you want.
+Nothing is stopping you from having your tags on the right.
+This is what makes bar rules so powerful.
+.SS 12. Keybinds
+.PP
+Like the bar array mentioned previously, there is a \f[V]Key keys\f[R]
+array in \f[V]keybinds.h\f[R] which contains all keybinds speedwm will
+recognize.
+While this isn\[cq]t the only way to add keybinds in speedwm, it does
+not require any additional software to be installed.
+.SS Event
+.PP
+The event value allow you to specify when a keybind is executed.
+.IP \[bu] 2
+KeyPress: Activate immediately on key press.
+.IP \[bu] 2
+KeyRelease: Activate immediately on key release.
+.SS Modifier
+.PP
+There are a lot of different modifiers, this list is only going to list
+the ones declared in speedwm.
+.IP \[bu] 2
+CONTROL Left Control (Ctrl) key.
+.IP \[bu] 2
+SHIFT Left Shift key.
+.IP \[bu] 2
+ALT Left Alt key.
+.IP \[bu] 2
+SUPER Left Super (Windows) key.
+.IP \[bu] 2
+SUPERR Right Super (Windows) key.
+.PP
+In keybinds.h, MODIFIER1 and MODIFIER2 are also defined.
+MODIFIER1 is defined in order to make modifying keybinds easier.
+MODIFIER1 is by default defined as SUPER or Mod4Mask.
+For instance, if you want to use MODIFIER1 as your modifier,
+\f[V]MODIFIER1\f[R] would be the right value here.
+.PP
+Do note that you can may use multiple modifiers.
+Do this by adding two or more modifiers separated by a pipe
+(MODIFIER1|SHIFT)
+.SS Chain key
+.PP
+This value \f[I]is\f[R] mandatory, but it does not have to be used.
+speedwm has supported chained keybinds since 0.4.
+Chained keybinds allow more keybinds as like the name implies, the user
+has to press multiple keys to activate it.
+You can think of it as in Vim where there\[cq]s different modes.
+.PP
+The first key that needs to be pressed to activate a chain needs to be
+the key specified here.
+In order to see a list of possible keys, see
+\f[V]/usr/include/X11/keysymdef.h\f[R].
+If, let\[cq]s say we want to use simply the letter \f[V]a\f[R] as the
+key to start a chain, the value here would be \f[V]XK_a\f[R].
+.PP
+If we want a normal key, one that is \f[B]not\f[R] chained, we can
+accomplish that by simply setting the Chain key to \f[V]-1\f[R].
+.SS Key
+.PP
+The next value, similar to the Chain key also needs to be a keysym.
+If the key is a chained key, this is the second key that needs to be
+pressed.
+If it isn\[cq]t a chained key, this is the key that needs to be pressed
+while the Modifier is pressed.
+.PP
+In order to see a list of possible keys, see
+\f[V]/usr/include/X11/keysymdef.h\f[R].
+Note that this path may differ depending on your operating system.
+.PP
+There are a lot more keys technically defined, see
+\f[V]/usr/include/X11/XF86keysym.h\f[R] for a list of media keys.
+.SS Function
+.PP
+Many functions expect an argument to be passed to them.
+However this value does require any function argument to be specified
+because it simply passes the next value to the function and calls it.
+.PP
+There is no list of functions, but \f[V]speedwm.c\f[R] has a lot of
+declared functions which you may use in keybinds provided the function
+expects \f[V]const Arg *arg\f[R].
+.SS Function arguments
+.PP
+This is the actual argument passed to the function we\[cq]re calling
+when the keybind is activated.
+.PP
+Passing a float (such as mfact) through would mean I should override
+\f[V].f\f[R], passing an integer (such as barposition) through would
+mean I should override \f[V].i\f[R].
+There\[cq]s also \f[V].v\f[R] for \f[V]void\f[R] and \f[V].ui\f[R] for
+tags.
+This is not used unless you want to mess with tag keybinds.
+.PP
+When you don\[cq]t care about the value given to the function, you may
+simply enter a \f[V]0\f[R].
+.SS Example keybind
+.PP
+With all that said, you probably get the idea of how it works.
+But you still don\[cq]t know how to put all this knowledge together.
+.IP "1." 3
+\f[V]{ KeyPress,\f[R]
+.IP "2." 3
+\f[V]MODIFIER1|SHIFT,\f[R]
+.IP "3." 3
+\f[V]-1,\f[R]
+.IP "4." 3
+\f[V]XK_w,\f[R]
+.IP "5." 3
+\f[V]spawn,\f[R]
+.IP "6." 3
+\f[V]cmd( \[dq]firefox\[dq] ) },\f[R]
+.PP
+Combined into one line:
+\f[V]{ KeyPress, MODIFIER1|SHIFT, -1, XK_w, spawn, cmd( \[dq]firefox\[dq] ) },\f[R]
+.SS Example chained keybind
+.IP "1." 3
+\f[V]{ KeyPress,\f[R]
+.IP "2." 3
+\f[V]MODIFIER1|SHIFT,\f[R]
+.IP "3." 3
+\f[V]XK_a,\f[R]
+.IP "4." 3
+\f[V]XK_w,\f[R]
+.IP "5." 3
+\f[V]togglebar,\f[R]
+.IP "6." 3
+\f[V]{0} },\f[R]
+.PP
+Combined into one line:
+\f[V]{ KeyPress, MODIFIER1|SHIFT, XK_a, XK_w, togglebar, {0} },\f[R]
+.PP
+This should give you a brief idea of how keybinds work in speedwm.
+Most of this carries over to \f[V]dwm\f[R] as well, although it does not
+have some of this stuff.
 .SS Credits
 .PP
 I far from wrote this entire project myself.

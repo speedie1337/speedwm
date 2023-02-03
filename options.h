@@ -1,7 +1,7 @@
 /* speedwm
  *
  * Below is a configuration file which is technically C source code.
- * See the man page (speedie.1), README.md, readme.php or https://speedie.gq/projects/speedwm.php (they're all identical) for help.
+ * See the man page (speedwm.1) or the speedwm wiki (https://speedwm.speedie.gq) for help.
  * See the LICENSE file for license details.
  */
 
@@ -14,9 +14,9 @@ static int resizehints                        = 0; /* Show resize hints */
 static int decorhints                         = 1; /* Respect decoration hints */
 static int savefloat                          = 1; /* Save position of floating windows */
 static int refreshrules                       = 0; /* Refresh rules when a CLASS or TITLE changes */
-static int i3mastercount                      = 0; /* Enable i3-gaps like mastercount (1/0) */
-static int mousemfact                         = 1; /* Enable adjusting mfact using the mouse (1/0) */
-static int mousecfact                         = 1; /* Enable adjusting cfact using the mouse (1/0) */
+static int i3mastercount                      = 0; /* Enable i3-gaps like mastercount (0/1) */
+static int mousemfact                         = 1; /* Enable adjusting mfact using the mouse (0/1) */
+static int mousecfact                         = 1; /* Enable adjusting cfact using the mouse (0/1) */
 static float mfact                            = 0.50; /* Default mfact value. 0.50 = each gets half the available space */
 static float lowestmfact                      = 0.05; /* Lowest possible mfact value on top of the existing. */
 
@@ -35,10 +35,6 @@ static int fadeinactive                       = 1; /* Fade inactive windows */
 static double activeopacity				      = 1.0f; /* Window opacity when it's focused (0 <= opacity <= 1) */
 static double inactiveopacity                 = 0.875f; /* Window opacity when it's inactive (0 <= opacity <= 1) */
 
-/* Rounded corners */
-static int roundedcorners                     = 0; /* Enable (1) rounded corners or disable (0) rounded corners. */
-static int cornerradius                       = 2; /* Radius of rounded corners, 10 is the default. */
-
 /* Tag preview options */
 static int tagpreview                         = 1; /* Enable tag previews */
 static int tagpreviewpaddingv                 = 0; /* Vertical tag padding */
@@ -47,14 +43,16 @@ static int barpreview                         = 1; /* Display the bar in the pre
 static int scalepreview                       = 4; /* Size of tag preview. Lower is bigger, higher is smaller. */
 
 /* Window spawning options */
+static int windowmap                          = 1; /* Map and unmap windows through X11 (0/1) */
 static int allowurgent                        = 1; /* Allow windows to have the 'urgent' status */
 static int attachdirection                    = 3; /* 0 default, 1 above, 2 aside, 3 below, 4 bottom, 5 top */
 static int swallowclients                     = 1; /* Swallow windows or not */
 static int swallowfloating                    = 1; /* Swallow floating windows by default */
 static int centerfloating                     = 1; /* Center floating windows by default */
 static int startontag                         = 1; /* Start on a tag or not? */
-static int floatscratchpad                    = 0; /* Float the scratchpad window on hide (1/0) */
-static int focusspawn                         = 0; /* Automatically focus the next spawned window. If warp is enabled, this is useless and will be disabled. (1/0) */
+static int floatscratchpad                    = 0; /* Float the scratchpad window on hide (0/1) */
+
+/* Client properties */
 static int autofocus                          = 1; /* Allow clients to automatically be focused when they request it. This comes with the side effect of potentially being annoying */
 static int automove                           = 1; /* Allow clients to automatically move when they request it */
 static int autoresize                         = 1; /* Allow resizing clients automatically when they request it. */
@@ -63,6 +61,7 @@ static int autoresize                         = 1; /* Allow resizing clients aut
 static char font[]                            = "Noto Sans Regular 9"; /* Font to draw the bar with */
 
 /* Status options */
+static char statussep                         = ';'; /* Separator used to switch from the main status bar to the next */
 static char defaultstatus[]                   = ""; /* What to print when a status bar is not running */
 
 /* Task switcher options
@@ -76,7 +75,7 @@ static int maxwidth							  = 600; /* Max menu width */
 static int maxheight						  = 200; /* Max menu height */
 
 /* Misc */
-static char shell[]                           = "/bin/sh"; /* Shell to use */ 
+static char shell[]                           = "/bin/sh"; /* Shell to use */
 static int warpcursor                         = 1; /* Warp cursor when switching client/monitor */
 static int urgentwindows                      = 1; /* Color urgent tags */
 static int pertag                             = 1; /* Use different mfact and layout for each layout */
@@ -89,14 +88,27 @@ static int fullscreenhidebar                  = 1; /* Hide the bar when full scr
 static int lockfullscreen                     = 1;
 
 /* Window icon options */
-static int iconsize                           = 10; /* Size of the icon */
+static int iconsize                           = 15; /* Size of the icon */
 static int iconspacing                        = 5; /* Spacing between the title and icon */
 
 /* Bar options */
+static int alpha                              = 1; /* Enable alpha */
 static int barposition                        = 1; /* Bar position. Top: 1, Bottom: 0 */
-static int barheight                          = 4; /* Bar height in pixels, 0 = calculate automatically */
-static int barpaddingv                        = 10; /* Vertical bar padding in pixels. */
-static int barpaddingh                        = 10; /* Horizontal bar padding in pixels. */
+static int barheight                          = 3; /* Bar height in pixels, 0 = calculate automatically */
+static int barpaddingov                       = 0; /* Vertical outer bar padding in pixels. */
+static int barpaddingoh                       = 0; /* Horizontal outer bar padding in pixels. */
+static int barpaddingiv                       = 0; /* Vertical inner bar padding in pixels. */
+static int barpaddingih                       = 0; /* Horizontal inner bar padding in pixels. */
+
+/* Inset options
+ *
+ * Insets allow you to add extra spacing on each edge of the screen.
+ * This is useful if you use a non-speedwm bar.
+ */
+static int insetx                             = 0; /* x inset */
+static int insety                             = 0; /* y inset */
+static int insetw                             = 0; /* w inset */
+static int inseth                             = 0; /* h inset */
 
 /* Title options */
 static int titleposition                      = 1; /* Title position. (0: Left, 1: Center) */
@@ -118,18 +130,18 @@ static int hidebar                            = 0; /* Hide the bar (1) or show (
 static int hidelayout                         = 0; /* Hide layout indicator (1) or show (0) */
 static int hidetitle                          = 0; /* Hide the title part of the bar (1) or show (0) */
 static int hideunselectedtitle                = 0; /* Hide unselected title (1) or show (0) */
+static int hideborder                         = 0; /* Hide window border (1) or show (0) */
+static int hideunselectedborder               = 1; /* Hide unselected window border (1) or show (0) */
 static int hidestatus                         = 0; /* Hide status bar (1) or show (0) */
 static int hideicon                           = 0; /* Hide icon (1) or show (0) */
 static int hidetags                           = 0; /* Hide status bar (1) or show (0) */
-static int hidesystray                        = 0; /* Hide systray by default (1) or show (0) */
+static int hidesystray                        = 1; /* Hide systray by default (1) or show (0) */
 static int hideemptytags                      = 1; /* Hide empty tags (1) or show (0) */
-static int hideborder                         = 0; /* Hide window border (1) or show (0) */
-static int hidesingleborder                   = 1; /* Hide window border when there's only one window (1) or show (0) */
 static int hidefloating                       = 0; /* Hide floating indicator (1) or show (0) */
 static int hidesticky                         = 0; /* Hide sticky indicator (1) or show (0) */
 static int hideclientindicator                = 0; /* Hide client indicator (1) or show (0) */
 
-/* Layout options 
+/* Layout options
  *
  * Monocle layout */
 static int monocleclientcount                 = 0; /* Display client count in the Monocle layout */
@@ -141,8 +153,7 @@ static int deckcount						  = 0; /* Display deck count in the deck layout */
 static char deckformat[]                      = "[%d]"; /* Format of the deck count. deckcount must be set to 1 for this to be used. */
 
 /* Custom layout */
-#define customhistfile                        ".config/speedwm/history" /* History file */
-#define customprompt                          "dmenu -i -l 10 -p 'Enter an S expression >' <" /* Run launcher to use for the custom layout */
+#define CUSTOM_HISTORY                      ".custom_history"
 
 /* Resetting */
 static int resetlayout                        = 0; /* Reset layout when there is only one client visible */
@@ -247,43 +258,43 @@ static int tagplshape                         = 0; /* Shape of the tag powerline
  *
  * Unused/empty tags
  */
-static char text_tag1_empty[]                 = "1"; /* Text for tag 1 when empty */
-static char text_tag2_empty[]                 = "2"; /* Text for tag 2 when empty */
-static char text_tag3_empty[]                 = "3"; /* Text for tag 3 when empty */
-static char text_tag4_empty[]                 = "4"; /* Text for tag 4 when empty */
-static char text_tag5_empty[]                 = "5"; /* Text for tag 5 when empty */
-static char text_tag6_empty[]                 = "6"; /* Text for tag 6 when empty */
-static char text_tag7_empty[]                 = "7"; /* Text for tag 7 when empty */
-static char text_tag8_empty[]                 = "8"; /* Text for tag 8 when empty */
-static char text_tag9_empty[]                 = "9"; /* Text for tag 9 when empty */
+static char text_tag1_empty[]                 = ""; /* Text for tag 1 when empty */
+static char text_tag2_empty[]                 = ""; /* Text for tag 2 when empty */
+static char text_tag3_empty[]                 = ""; /* Text for tag 3 when empty */
+static char text_tag4_empty[]                 = ""; /* Text for tag 4 when empty */
+static char text_tag5_empty[]                 = ""; /* Text for tag 5 when empty */
+static char text_tag6_empty[]                 = ""; /* Text for tag 6 when empty */
+static char text_tag7_empty[]                 = ""; /* Text for tag 7 when empty */
+static char text_tag8_empty[]                 = ""; /* Text for tag 8 when empty */
+static char text_tag9_empty[]                 = ""; /* Text for tag 9 when empty */
 
 /* Used/occupied tags */
-static char text_tag1_used[]                  = "[1]"; /* Text for tag 1 when used */
-static char text_tag2_used[]                  = "[2]"; /* Text for tag 2 when used */
-static char text_tag3_used[]                  = "[3]"; /* Text for tag 3 when used */
-static char text_tag4_used[]                  = "[4]"; /* Text for tag 4 when used */
-static char text_tag5_used[]                  = "[5]"; /* Text for tag 5 when used */
-static char text_tag6_used[]                  = "[6]"; /* Text for tag 6 when used */
-static char text_tag7_used[]                  = "[7]"; /* Text for tag 7 when used */
-static char text_tag8_used[]                  = "[8]"; /* Text for tag 8 when used */
-static char text_tag9_used[]                  = "[9]"; /* Text for tag 9 when used */
+static char text_tag1_used[]                  = ""; /* Text for tag 1 when used */
+static char text_tag2_used[]                  = ""; /* Text for tag 2 when used */
+static char text_tag3_used[]                  = ""; /* Text for tag 3 when used */
+static char text_tag4_used[]                  = ""; /* Text for tag 4 when used */
+static char text_tag5_used[]                  = ""; /* Text for tag 5 when used */
+static char text_tag6_used[]                  = ""; /* Text for tag 6 when used */
+static char text_tag7_used[]                  = ""; /* Text for tag 7 when used */
+static char text_tag8_used[]                  = ""; /* Text for tag 8 when used */
+static char text_tag9_used[]                  = ""; /* Text for tag 9 when used */
 
 /* Layouts */
-static char text_layout1[]                    = "(L1)"; /* Text for layout 1 */
-static char text_layout2[]                    = "(L2)"; /* Text for layout 2 */
-static char text_layout3[]                    = "(L3)"; /* Text for layout 3 */
-static char text_layout4[]                    = "(L4)"; /* Text for layout 4 */
-static char text_layout5[]                    = "(L5)"; /* Text for layout 5 */
-static char text_layout6[]                    = "(L6)"; /* Text for layout 6 */
-static char text_layout7[]                    = "(L7)"; /* Text for layout 7 */
-static char text_layout8[]                    = "(L8)"; /* Text for layout 8 */
-static char text_layout9[]                    = "(L9)"; /* Text for layout 9 */
-static char text_layout10[]                   = "(L10)"; /* Text for layout 10 */
-static char text_layout11[]                   = "(L11)"; /* Text for layout 11 */
-static char text_layout12[]                   = "(L12)"; /* Text for layout 12 */
-static char text_layout13[]                   = "(L13)"; /* Text for layout 13 */
-static char text_layout14[]                   = "(L14)"; /* Text for layout 14 */
-static char text_layout15[]                   = "(L15)"; /* Text for layout 15 */
+static char text_layout1[]                    = " "; /* Text for layout 1 */
+static char text_layout2[]                    = " "; /* Text for layout 2 */
+static char text_layout3[]                    = " "; /* Text for layout 3 */
+static char text_layout4[]                    = " "; /* Text for layout 4 */
+static char text_layout5[]                    = " "; /* Text for layout 5 */
+static char text_layout6[]                    = " "; /* Text for layout 6 */
+static char text_layout7[]                    = " "; /* Text for layout 7 */
+static char text_layout8[]                    = " "; /* Text for layout 8 */
+static char text_layout9[]                    = " "; /* Text for layout 9 */
+static char text_layout10[]                   = " "; /* Text for layout 10 */
+static char text_layout11[]                   = " "; /* Text for layout 11 */
+static char text_layout12[]                   = " "; /* Text for layout 12 */
+static char text_layout13[]                   = " "; /* Text for layout 13 */
+static char text_layout14[]                   = " "; /* Text for layout 14 */
+static char text_layout15[]                   = " "; /* Text for layout 15 */
 
 /* Alpha/opacity settings
  *
@@ -293,18 +304,18 @@ static char text_layout15[]                   = "(L15)"; /* Text for layout 15 *
  * You can also set opaque and transparent which are the same as 0 and 255 respectively.
  * To completely disable alpha, disable it in toggle.h.
  */
-#define baropacity                          160 /* Opacity for the overall bar */
-#define layoutopacity					    160 /* Opacity for the layout indicator */
-#define tagnormopacity						opaque /* Opacity for other tags */
-#define tagselopacity						160 /* Opacity for the selected tag */
-#define normtitleopacity					160 /* Opacity for all other windows in the speedwm bar */
-#define seltitleopacity						160 /* Opacity for the focused window in the speedwm bar */
-#define normborderopacity				    opaque /* Opacity for the all window borders except selected */
-#define selborderopacity					opaque /* Opacity for the selected window border */
-#define hiddenopacity						transparent /* Opacity for hidden/minimized windows */
-#define powerlineopacity                    160 /* Opacity for the speedwm powerline in the status bar */
-#define statusopacity						160 /* Opacity for speedwm status bar */
-#define systrayopacity						160 /* Opacity for the speedwm built in systray */
+#define baropacity                           160 /* Opacity for the overall bar */
+#define layoutopacity					     160 /* Opacity for the layout indicator */
+#define tagnormopacity						 opaque /* Opacity for other tags */
+#define tagselopacity						 160 /* Opacity for the selected tag */
+#define normtitleopacity					 160 /* Opacity for all other windows in the speedwm bar */
+#define seltitleopacity						 160 /* Opacity for the focused window in the speedwm bar */
+#define normborderopacity				     opaque /* Opacity for the all window borders except selected */
+#define selborderopacity					 opaque /* Opacity for the selected window border */
+#define hiddenopacity						 transparent /* Opacity for hidden/minimized windows */
+#define powerlineopacity                     opaque /* Opacity for the speedwm powerline in the status bar */
+#define statusopacity						 160 /* Opacity for speedwm status bar */
+#define systrayopacity						 160 /* Opacity for the speedwm built in systray */
 
 /* Icon misc options
  *

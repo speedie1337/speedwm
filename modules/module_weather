@@ -5,6 +5,7 @@
 module_config
 [ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
 [ "$ENABLE_ITEM5" = "true" ] || exit
+[ -e "/tmp/module_weather_hidden" ] && exit
 command -v curl > /dev/null || exit
 
 # weather data
@@ -56,29 +57,29 @@ CLICK() {
 		WEATHER_TERM="speedwm-core -curl-weather"
 		ICON="$ICON"
 		BUTTON="$(cat /tmp/speedwm-button)"
-        
+
         [ -z "$TERMINAL" ] && TERMINAL=st
-        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
-		
+        [ -n "$ICON" ] && ICONSPACING=" " # one character spacing
+
         # check value of button
 		case "$BUTTON" in
 		"3") $TERMINAL "clear ; curl -s wttr.in | head -n 38 | tail -n 37 ; read a ; return " ;;
 		esac
-		
+
 		# send the notification
 		SEND_NOTIF() {
 				FULL_WEATHER="${ICON}${ICONSPACING}$WEATHER_FULL"
 				notify-send "$FULL_WEATHER"
-		
+
                 # some information
 				echo "Notification sent successfully!"
 				echo "INFO: $FULL_WEATHER"
-		
+
 				return
 		}
-		
+
 		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
-		
+
 		return
 }
 

@@ -11,7 +11,7 @@ static char *colors[][3]                      = {
 	[SchemeTagsSel]                           = { col_textsel,			col_titlesel,		  NULL				   },
 	[SchemeTagsUrg]                           = { col_tagurgent,        col_tagurgent,		  NULL				   },
 	[SchemeBorderNorm]                        = { col_textnorm,         col_windowbordernorm, col_windowbordernorm },
-	[SchemeBorderSel]                         = { col_textsel,          col_windowbordersel,  col_windowbordersel  }, 
+	[SchemeBorderSel]                         = { col_textsel,          col_windowbordersel,  col_windowbordersel  },
 	[SchemeBorderUrg]                         = { col_textnorm,         col_windowbordersel,  col_windowborderurg  },
 	[SchemeStatus]                            = { col_textnorm,			col_background,       NULL                 },
 	[SchemeTitleNorm]                         = { col_textnorm,         col_titlenorm,        NULL				   },
@@ -29,14 +29,14 @@ static char *powerlinecolors[][2]             = {
 	[SchemeTagsSel]                           = { col_powerline2_text,	col_powerline2	},
 	[SchemeTagsUrg]                           = { col_powerline3_text,  col_powerline3	},
 	[SchemeBorderNorm]                        = { col_powerline4_text,  col_powerline4  },
-	[SchemeBorderSel]                         = { col_powerline5_text,  col_powerline5  }, 
+	[SchemeBorderSel]                         = { col_powerline5_text,  col_powerline5  },
 	[SchemeBorderUrg]                         = { col_powerline6_text,  col_powerline6  },
 	[SchemeStatus]                            = { col_powerline7_text,	col_powerline7  },
+    /*                                            fg                    bg              */
 };
 
 /* Alpha to use for the powerlines */
 static unsigned int powerlinealphas[][3]      = {
-       /*                                         fg             bg                 unused           */
        [SchemeBar]                            = { opaque,        powerlineopacity,  powerlineopacity },
 	   [SchemeTagsNorm]                       = { opaque,        powerlineopacity,  powerlineopacity },
 	   [SchemeTagsSel]                        = { opaque,        powerlineopacity,  powerlineopacity },
@@ -46,6 +46,7 @@ static unsigned int powerlinealphas[][3]      = {
 	   [SchemeBorderSel]                      = { opaque,        powerlineopacity,  powerlineopacity },
 	   [SchemeBorderUrg]                      = { opaque,        powerlineopacity,  powerlineopacity },
 	   [SchemeStatus]                         = { opaque,        powerlineopacity,  powerlineopacity },
+       /*                                         fg             bg                 unused           */
 };
 
 /* Colors for the status bar (.Xresources) */
@@ -89,7 +90,7 @@ static unsigned int alphas[][3]         = {
 
 /* Colors to use for tags */
 static char *tagsel[][2]                      = {
-	{ col_tag1_text, col_tag1 }, 
+	{ col_tag1_text, col_tag1 },
 	{ col_tag2_text, col_tag2 },
 	{ col_tag3_text, col_tag3 },
 	{ col_tag4_text, col_tag4 },
@@ -103,6 +104,6 @@ static char *tagsel[][2]                      = {
 
 /* Alpha for tags */
 static const unsigned int tagalpha[]          = {
-		tagselopacity, 
+		tagselopacity,
 		tagnormopacity,
 };

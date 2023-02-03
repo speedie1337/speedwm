@@ -14,7 +14,7 @@ cat <<CONFIG > ~/.config/speedwm/statusrc
 # To apply these changes, simply restart the status bar.
 
 # General settings
-SEPARATOR=" ❰" # Separator to use. Alternative separators: "❰", "<", "|"
+SEPARATOR=" " # Separator to use. Alternative separators: "❰", "<", "|"
 
 # Status bar modules
 # Set to true/false to enable/disable.
@@ -30,20 +30,22 @@ ENABLE_ITEM8=true # Enable CPU temp (true/false)
 ENABLE_ITEM9=true # Enable music status (true/false)
 ENABLE_ITEM10=false # Enable newsboat unread (true/false)
 ENABLE_ITEM11=true # Enable battery percentage and charging status (true/false)
+ENABLE_ITEM12=true # Enable unread email status (true/false)
 
 # Status bar module icons
 # Make sure dwm supports this icon/glyph.
 ITEM1_ICON=" " # Icon for ITEM1
 ITEM2_ICON=" " # Icon for ITEM2
 ITEM3_ICON=" " # Icon for ITEM3
-ITEM4_ICON=" " # Icon for ITEM4
-ITEM5_ICON="摒" # Icon for ITEM5
+ITEM4_ICON="  " # Icon for ITEM4
+ITEM5_ICON="摒 " # Icon for ITEM5
 ITEM6_ICON="  " # Icon for ITEM6
-ITEM7_ICON=" " # Icon for ITEM7
+ITEM7_ICON="  " # Icon for ITEM7
 ITEM8_ICON=" " # Icon for ITEM8
 ITEM9_ICON=" " # Icon for ITEM9
 ITEM10_ICON=" " # Icon for ITEM10
 ITEM11_ICON=" " # Icon for ITEM11
+ITEM12_ICON=" " # Icon for ITEM12
 
 # Status bar module separators
 ITEM1_SEPARATOR="\$SEPARATOR" # Separator for ITEM1
@@ -57,6 +59,7 @@ ITEM8_SEPARATOR="\$SEPARATOR" # Separator for ITEM8
 ITEM9_SEPARATOR="\$SEPARATOR" # Separator for ITEM9
 ITEM10_SEPARATOR="\$SEPARATOR" # Separator for ITEM10
 ITEM11_SEPARATOR="\$SEPARATOR" # Separator for ITEM11
+ITEM12_SEPARATOR="\$SEPARATOR" # Separator for ITEM12
 
 # RAM format
 # Format to display the RAM status in
@@ -91,7 +94,7 @@ ITEM4_SHOW_MUTE="false" # Show mute status (true/false)
 ITEM4_MUTE_TEXT="(Muted)" # Text to display when muted (text)
 
 ITEM4_ICON_100=" " # Icon when volume is at 100 or higher.
-ITEM4_ICON_75="墳" # Icon when volume is at 75 or lower.
+ITEM4_ICON_75="墳 " # Icon when volume is at 75 or lower.
 ITEM4_ICON_50="奔" # Icon when volume is at 50 or lower.
 ITEM4_ICON_25="奄" # Icon when volume is at 25 or lower.
 ITEM4_ICON_0="婢 " # Icon when volume is at 0.
@@ -147,12 +150,16 @@ ITEM11_CHARGING_TEXT="Charging" # Text when charging (text)
 ITEM11_FULL_TEXT="Fully charged" # Text when fully charged (text)
 
 # Icons that will be printed depending on your percentage.
-ITEM11_ICON_CHARGING=" " # Icon when your battery is charging. Yay!
-ITEM11_ICON_FULL=" " # Icon when your battery is full.
-ITEM11_ICON_75=" " # Icon when you have 75% battery left or less.
-ITEM11_ICON_50=" " # Icon when you have 50% battery left or less.
-ITEM11_ICON_25=" " # Icon when you have 25% battery left or less.
-ITEM11_ICON_5=" " # Icon when you have 5% battery left or less.
+ITEM11_ICON_CHARGING="  " # Icon when your battery is charging. Yay!
+ITEM11_ICON_FULL="   " # Icon when your battery is full.
+ITEM11_ICON_75="   " # Icon when you have 75% battery left or less.
+ITEM11_ICON_50="   " # Icon when you have 50% battery left or less.
+ITEM11_ICON_25="   " # Icon when you have 25% battery left or less.
+ITEM11_ICON_5="   " # Icon when you have 5% battery left or less.
+
+# Email module options
+ITEM12_UNREAD_TEXT="unread emails!" # Text to display next to email count.
+ITEM12_EMAIL_DIR="$HOME/.local/share/mail" # Email directory. Default will work if you use mutt-wizard.
 
 # For the rest of the options, see status.h.
 CONFIG

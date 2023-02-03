@@ -59,5 +59,5 @@ click_title_basic(Bar *bar, Arg *arg, BarClickArg *a)
         return 0;
     }
 
-	return ClkWinTitle;
+	return clicktitle;
 }

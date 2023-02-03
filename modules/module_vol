@@ -5,6 +5,7 @@
 module_config
 [ -e "$HOME/.config/speedwm/statusrc" ] && . $HOME/.config/speedwm/statusrc
 [ "$ENABLE_ITEM4" != "true" ] && exit
+[ -e "/tmp/module_vol_hidden" ] && exit
 
 command -v pactl > /dev/null && BACKEND=pactl || BACKEND=amixer
 command -v awk > /dev/null || exit
@@ -21,27 +22,27 @@ CLICK() {
 
 		[ -e "/tmp/speedwm-button" ] && BUTTON="$(cat /tmp/speedwm-button)" || BUTTON="0"
         [ -z "$TERMINAL" ] && TERMINAL=st
-        [ ! -z "$ICON" ] && ICONSPACING=" " # one character spacing
-		
+        [ -n "$ICON" ] && ICONSPACING=" " # one character spacing
+
         # check value of button
 		case "$BUTTON" in
 		"3") $TERMINAL speedwm-audioctrl -runmixer ; exit ;;
 		esac
-		
+
 		# send the notification
 		SEND_NOTIF() {
 				FULL_VOL="${ICON}${ICONSPACING}$VOL_VOLUME"
 				notify-send "$FULL_VOL"
-		
+
                 # some information
 				echo "Notification sent successfully!"
 				echo "INFO: $FULL_VOL"
-		
+
 				return
 		}
-		
+
 		command -v notify-send > /dev/null && SEND_NOTIF || echo "FATAL: libnotify not installed, can't send notification."
-		
+
         return
 }
 
@@ -50,11 +51,11 @@ GETDATA() {
     [ "$BACKEND" = "pactl" ] && VOL="$(pactl get-sink-volume @DEFAULT_SINK@ | awk '{ print $5; exit }' | sed "s/\%//g")" || VOL="$(amixer -c 0 get Master | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")"
 
     [ "$VOL" -gt "99" ] && ICON="$ITEM4_ICON_100 "
-    [ "$VOL" -lt "100" ] && ICON="$ITEM4_ICON_75" 
-    [ "$VOL" -lt "51" ] && ICON="$ITEM4_ICON_50" 
-    [ "$VOL" -lt "26" ] && ICON="$ITEM4_ICON_25" 
+    [ "$VOL" -lt "100" ] && ICON="$ITEM4_ICON_75"
+    [ "$VOL" -lt "51" ] && ICON="$ITEM4_ICON_50"
+    [ "$VOL" -lt "26" ] && ICON="$ITEM4_ICON_25"
     [ "$VOL" -lt "1" ] && ICON="$ITEM4_ICON_0"
-    
+
     # mute status
     [ "$BACKEND" = "pactl" ] && pactl get-sink-mute @DEFAULT_SINK@ | grep -q yes && ICON="$ITEM4_ICON_MUTED" && MUTEDATA=" $ITEM4_MUTE_TEXT" || MUTEDATA=""
     [ "$ITEM4_SHOW_MUTE" != "true" ] && MUTEDATA=""

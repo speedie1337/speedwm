@@ -1,0 +1,17 @@
+# files that should be ignored by git
+*.def*
+*docs/*.def*
+*.diff
+*.rej
+*.orig
+*.patch
+core
+*.tar.gz
+*.php
+*.css
+*.html
+speedwm
+speedwm-ipc
+.custom_history
+*.out
+*.rl*

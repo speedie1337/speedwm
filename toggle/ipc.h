@@ -50,11 +50,11 @@ typedef struct speedwm_ipc_header {
 } __attribute((packed)) speedwm_ipc_header_t;
 
 typedef enum ArgType {
-  ARG_TYPE_NONE = 0,
-  ARG_TYPE_UINT = 1,
-  ARG_TYPE_SINT = 2,
-  ARG_TYPE_FLOAT = 3,
-  ARG_TYPE_PTR = 4,
+  arg_none = 0,
+  arg_uint = 1,
+  arg_sint = 2,
+  arg_float = 3,
+  arg_ptr = 4,
   ARG_TYPE_STR = 5
 } ArgType;
 
