@@ -73,11 +73,15 @@ clean:
 
 dist: clean
 	mkdir -p speedwm-${VERSION}
+	rm -rf *.def* .tmp
+	mkdir .tmp/
+	find *.rl* && mv *.rl* .tmp/ || :
 	cp -R *.mk *.c *.h *.png docs/ modules/ scripts/ toggle/ bar/ LICENSE Makefile speedwm-${VERSION}
 	[ -f README.md ] && cp -f README.md speedwm-${VERSION} || :
 	[ -f speedwm.1 ] && cp -f speedwm.1 speedwm-${VERSION} || :
 	tar -cf speedwm-${VERSION}.tar speedwm-${VERSION}
 	gzip speedwm-${VERSION}.tar
+	cp .tmp/* . || :; rm -rf .tmp
 	rm -rf speedwm-${VERSION} speedwm
 	rm -rf speedwm-${VERSION} speedwm-ipc
 

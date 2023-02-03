@@ -1538,11 +1538,11 @@ cleanupmon(Monitor *mon)
     size_t i;
 
     for (i = 0; i < LENGTH(ftags); i++)
-		if (m->tagmap[i])
-			XFreePixmap(dpy, m->tagmap[i]);
-	free(m->tagmap);
-    XUnmapWindow(dpy, m->tagwin);
-	XDestroyWindow(dpy, m->tagwin);
+		if (mon->tagmap[i])
+			XFreePixmap(dpy, mon->tagmap[i]);
+	free(mon->tagmap);
+    XUnmapWindow(dpy, mon->tagwin);
+	XDestroyWindow(dpy, mon->tagwin);
     #endif
 	free(mon);
 }
