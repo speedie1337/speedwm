@@ -153,7 +153,7 @@ static int deckcount						  = 0; /* Display deck count in the deck layout */
 static char deckformat[]                      = "[%d]"; /* Format of the deck count. deckcount must be set to 1 for this to be used. */
 
 /* Custom layout */
-#define CUSTOM_HISTORY                      ".custom_history"
+static char *custom_cmd                       = "speedwm-sxp"; /* Command to run when setting S expression */
 
 /* Resetting */
 static int resetlayout                        = 0; /* Reset layout when there is only one client visible */

@@ -54,7 +54,11 @@ speedwm: ${OBJ}
 
 ifdef USESTATUS
 status: status.o
+	cp status.h status.def.h
+	[ -f "status.rl.h" ] && cp status.rl.h status.h || :
 	$(CC) status.o $(CFLAGS) $(LDFLAGS) -o speedwm_status
+	mv status.def.h status.h
+	chmod 0777 status.h
 status.o: status.c status.h
 	$(CC) -c status.c
 endif

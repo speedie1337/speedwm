@@ -639,7 +639,6 @@ static void hideall(const Arg *arg);
 static void showwin(Client *c);
 static void showhide(Client *c);
 
-static void sigchld(int unused);
 #ifdef XINERAMA
 static void sortscreens(XineramaScreenInfo *screens, int n);
 #endif
@@ -955,6 +954,7 @@ static xcb_connection_t *xcon;
 #include "toggle/query.h"
 #endif
 #include "options.h" /* Include options */
+#include "layouts.c" /* Enable patched layouts */
 
 /* Shell command */
 #define cmd( cmd ) {.v = (const char*[]){ shell, "-c", cmd, NULL } },
@@ -5126,11 +5126,31 @@ setup(void)
 {
 	XSetWindowAttributes wa;
     Atom utf8string;
+    struct sigaction sa;
+    pid_t pid;
 
-	/* clean up any zombies immediately */
-	if (signal(SIGCHLD, sigchld) == SIG_ERR)
-		die("can't install SIGCHLD handler:");
-	sigchld(0);
+    /* do not transform children into zombies when they terminate */
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT | SA_RESTART;
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGCHLD, &sa, NULL);
+
+	/* clean up any zombies (inherited from .xinitrc etc) immediately */
+	while ((pid = waitpid(-1, NULL, WNOHANG) > 0)) {
+    	pid_t *p, *lim;
+
+		if (!(p = autostart_pids))
+			continue;
+		lim = &p[autostart_len];
+
+		for (; p < lim; p++) {
+			if (*p == pid) {
+				*p = -1;
+				break;
+			}
+		}
+
+	}
 
 	signal(SIGHUP, sighup);
 	signal(SIGTERM, sigterm);
@@ -5324,28 +5344,6 @@ reloadcolors(const Arg *arg)
 		setup();
 }
 #endif
-
-void
-sigchld(int unused)
-{
-	pid_t pid;
-
-	while (0 < (pid = waitpid(-1, NULL, WNOHANG))) {
-		pid_t *p, *lim;
-
-		if (!(p = autostart_pids))
-			continue;
-		lim = &p[autostart_len];
-
-		for (; p < lim; p++) {
-			if (*p == pid) {
-				*p = -1;
-				break;
-			}
-		}
-
-	}
-}
 
 void
 sighup(int unused)
@@ -6672,13 +6670,11 @@ takepreview(void)
 	unsigned int occ = 0, i;
     Monitor *m = selmon;
 
-    if (!m->tagwin) {
-        updatepreviews(m);
+    updatepreviews(m);
 
-        /* failsafe, should prevent crashing if updatepreviews(m) doesn't create tagwin */
-        if (!m->tagwin) {
-            return;
-        }
+    /* failsafe, should prevent crashing if updatepreviews(m) doesn't create tagwin */
+    if (!m->tagwin) {
+        return;
     }
 
 	for (c = m->clients; c; c = c->next)
@@ -6731,7 +6727,7 @@ updatepreviews(Monitor *m)
     int y_pad = vp;
 
     if (m->tagwin) {
-        XMoveResizeWindow(dpy, m->tagwin, m->mx, m->bar->by + bh, m->mw / m->scalepreview, m->mh / m->scalepreview);
+        XMoveResizeWindow(dpy, m->tagwin, m->mx, m->bar->by + m->bar->bh, m->mw / m->scalepreview, m->mh / m->scalepreview);
         return;
     }
 
@@ -6743,7 +6739,7 @@ updatepreviews(Monitor *m)
 		.event_mask = ButtonPressMask|ExposureMask|PointerMotionMask
 	};
 
-     m->tagwin = XCreateWindow(dpy, root, m->wx + x_pad, m->bar->by + bh + y_pad + m->gapsizeov / 2, m->mw / m->scalepreview, m->mh / m->scalepreview, 0,
+     m->tagwin = XCreateWindow(dpy, root, m->wx + x_pad, m->bar->by + m->bar->bh + y_pad + m->gapsizeov / 2, m->mw / m->scalepreview, m->mh / m->scalepreview, 0,
 	    depth, CopyFromParent, visual, CWOverrideRedirect|CWBackPixel|CWBorderPixel|CWColormap|CWEventMask, &wa);
 
 	XDefineCursor(dpy, m->tagwin, cursor[CurNormal]->cursor);
@@ -6800,6 +6796,3 @@ togglewin(const Arg *arg)
     focus(c);
     arrange(selmon);
 }
-
-/* Layout code */
-#include "layouts.c" /* Enable patched layouts */

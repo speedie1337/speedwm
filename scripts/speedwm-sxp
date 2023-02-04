@@ -1,0 +1,25 @@
+#!/bin/sh
+# speedwm-sxp
+
+# function which returns history
+MENU_DATA() { cat "$CUSTOM_HISTFILE"; printf "%s\nClear\nExit\n" "------"; }
+
+# basic variables
+[ -z "$CUSTOM_HISTFILE" ] && CUSTOM_HISTFILE="$HOME/.config/speedwm/.custom_history"
+[ -z "$RUNLAUNCHER" ] && RUNLAUNCHER="spmenu"
+
+# make sure $CUSTOM_HISTFILE exists
+mkdir -p "$(dirname "$CUSTOM_HISTFILE")"; touch "$CUSTOM_HISTFILE"
+
+# prompt the user
+OP="$(MENU_DATA | "$RUNLAUNCHER" -g 1 -l 40 -p 'Enter an S expression:')"
+
+# parse current expression
+[ "$OP" = "Clear" ] && printf "" > "$CUSTOM_HISTFILE" && exit
+[ "$OP" = "Exit" ] && exit 0
+[ "$OP" = "------" ] && exit 0
+[ -z "$OP" ] && exit 0
+
+# write expression
+printf "%s\n" "$OP" >> "$CUSTOM_HISTFILE"
+printf "%s\n" "$OP"

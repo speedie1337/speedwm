@@ -1436,7 +1436,8 @@ struct string_token_t* tokenize_string(char *str)
 }
 
 /* Parse s-expression to node_t structure */
-node_t* parse_sexp(string_token_t **token)
+node_t*
+parse_sexp(string_token_t **token)
 {
    node_t *head = NULL;
    node_t branch, *p = &branch;
@@ -1630,42 +1631,22 @@ node_t* parse_sexp(string_token_t **token)
    *token = t;
    return head;
 }
-void set_s_layout(const Arg *arg)
+
+void
+set_s_layout(const Arg *arg)
 {
-   FILE *pp, *hf;
+   char *cf;
+   //char *cmd = "printf 'CUCK' | spmenu -i -l 10 -p 'sxp>'";
+   FILE *pp = popen(custom_cmd, "r");
 
-   char pathbuf[1024];
-   char *home = getenv("HOME");
-   int sortout = 0;
-   int histout = 0;
-   if (home != NULL) {
-      snprintf(pathbuf, 1023, "%s/" CUSTOM_HISTORY, home);
-      pathbuf[1023] = '\0';
-
-      // make sure the history file exists
-      hf = fopen(CUSTOM_HISTORY, "a"); fclose(hf);
-
-      sortout = system("sort " CUSTOM_HISTORY " | uniq > " CUSTOM_HISTORY "~");
-      histout = system("mv " CUSTOM_HISTORY "~ " CUSTOM_HISTORY);
-
-      pp = popen("dmenu -i -l 10 -p 'Enter expression:' <" CUSTOM_HISTORY, "r");
-   } else {
-      pp = popen("dmenu -i -l 10 -p 'Enter expression:'", "r");
-   }
-
-   if (sortout || !sortout || histout || !histout)
-    if (!pp) return;
-
-   char buf[1024 + 1];
-   buf[1024] = '\0';
-   if (!fgets(buf, 1024, pp)) return;
-   fclose(pp);
+   if (!pp) return;
+   char buf[1024] = "";
+   //buf[1024+1] = '\0';
+   cf = fgets(buf, 1024, pp);
    if (buf[0] == '\0') return;
+   //fclose(pp);
 
-   // Write to history file
-   hf = fopen(CUSTOM_HISTORY, "a");
-   fprintf(hf, "%s", buf);
-   fclose(hf);
+   if (!cf) return;
 
    if (s_layout_scheme != NULL) {
       free_node(s_layout_scheme);
@@ -1675,6 +1656,7 @@ void set_s_layout(const Arg *arg)
    struct string_token_t *token_root = tokenize_string(buf),
                          *token = token_root;
 
+   if (!token_root) return;
    s_layout_scheme = parse_sexp(&token);
 
    setlayout(arg);

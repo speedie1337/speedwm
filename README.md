@@ -476,6 +476,7 @@ Below is a list of all .Xresources values you can define.
 - speedwm.layout.monocle.clientcount:    0 
 - speedwm.layout.monocle.count:          0 
 - speedwm.layout.monocle.format:         [%d/%d]
+- speedwm.layout.custom.cmd:             printf '' | spmenu -i -l 10 -p 'Enter S expression:'
 - speedwm.mfact:                         0.50 
 - speedwm.mfact.lowest:                  0.05 
 - speedwm.mouse.clicktofocus:            0 

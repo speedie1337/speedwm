@@ -187,6 +187,7 @@ ResourcePref resources[]                                            = {
 	   { "layout.monocle.count",         INTEGER, &monoclecount },
 	   { "layout.deck.format",           STRING,  &deckformat },
 	   { "layout.deck.count",		     INTEGER, &deckcount },
+       { "layout.custom.cmd",            STRING,  &custom_cmd },
        #if USEWINICON
        { "icon.size",					 INTEGER, &iconsize },
        { "icon.spacing",				 INTEGER, &iconspacing },

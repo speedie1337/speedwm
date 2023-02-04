@@ -223,6 +223,9 @@ speedwm.layout.monocle.clientcount:    0 ! Enable client count in the monocle la
 speedwm.layout.monocle.count:          0 ! Enable focused client and number of total clients in the monocle layout (0/1)
 speedwm.layout.monocle.format:         [%d/%d]
 
+!! Custom layout
+speedwm.layout.custom.cmd:             speedwm-sxp
+
 !! mfact options
 speedwm.mfact:                         0.50 ! Default mfact (0-1)
 speedwm.mfact.lowest:                  0.05 ! Lowest possible mfact (0-1)
